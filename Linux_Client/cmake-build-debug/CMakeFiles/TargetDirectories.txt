@@ -1,0 +1,3 @@
+/home/tazukiswift/Programming/UoA/p4p/opentok-linux-sdk-samples/Signaling/cmake-build-debug/CMakeFiles/signaling.dir
+/home/tazukiswift/Programming/UoA/p4p/opentok-linux-sdk-samples/Signaling/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/tazukiswift/Programming/UoA/p4p/opentok-linux-sdk-samples/Signaling/cmake-build-debug/CMakeFiles/rebuild_cache.dir
