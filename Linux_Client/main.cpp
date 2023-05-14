@@ -7,6 +7,8 @@
 #include "config.h"
 #include "renderer.h"
 
+#include <serial.h>
+
 static std::atomic<bool> g_is_connected(false);
 
 static void on_session_connected(otc_session *session, void *user_data) {
@@ -43,9 +45,7 @@ static void on_session_signal_received(otc_session *session,
   if (session == nullptr) {
     return;
   }
-    // It echoes back whatever is sent to it.
-//  otc_session_send_signal_to_connection(session, type, signal, connection);
-    // View contents of signal
+
     std::cout << "Type: " << type << ", Signal: " << signal <<std::endl;
 }
 
@@ -76,6 +76,9 @@ int main(int argc, char** argv) {
     std::cout << "Could not init OpenTok library" << std::endl;
     return EXIT_FAILURE;
   }
+
+  // Begin Serial Setup
+
 
 #ifdef CONSOLE_LOGGING
   otc_log_set_logger_callback(on_otc_log_message);
