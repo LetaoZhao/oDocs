@@ -1,4 +1,5 @@
 from opentok import Client, MediaModes
+import configparser
 
 # Set your OpenTok API credentials
 api_key = '47679271'
@@ -19,3 +20,17 @@ token2 = opentok.generate_token(session_id)
 print('Session ID:', session_id)
 print('Token 1:', token1)
 print('Token 2:', token2)
+
+# creating object of configparser
+config = configparser.ConfigParser()
+
+# creating a section
+config.add_section("OpenTok Token")
+
+# adding key-value pairs
+config.set("OpenTok Token", "Token1", token1)
+config.set("OpenTok Token", "Token2", token2)
+
+#Write the above sections to config.ini file
+with open('token_storage.ini', 'w') as conf:
+    config.write(conf)
