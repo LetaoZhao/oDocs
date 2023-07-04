@@ -22,6 +22,10 @@ int main() {
     }
 
     struct termios tty;
+
+    char read_buf [256];
+    char write_buf[32];
+
     // Read in existing settings, and handle any error
     // NOTE: This is important! POSIX states that the struct passed to tcsetattr()
     // must have been initialized with a call to tcgetattr() overwise behaviour
@@ -48,6 +52,8 @@ int main() {
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
+    memset(&write_buf, '\0', sizeof(write_buf));
+    memset(&read_buf, '\0', sizeof(read_buf));
 
     // writing
     // Will only function if output buffer is not full
@@ -60,15 +66,6 @@ int main() {
     commands.emplace_back("G21G91G1X-1F100\n");
     commands.emplace_back("G21G91G1Z1F100\n");
     commands.emplace_back("G21G91G1Z-1F100\n");
-
-    char read_buf [256];
-    char write_buf[32];
-
-    memset(&write_buf, '\0', sizeof(write_buf));
-    memset(&read_buf, '\0', sizeof(read_buf));
-
-    // flag for waiting after wakeup message
-    bool first_loop_flag = true;
 
     // we need to read from the read_buf and print whatever characters there are
     int buf_pointer = 0;
