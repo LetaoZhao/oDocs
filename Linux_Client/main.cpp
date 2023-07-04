@@ -7,8 +7,6 @@
 #include "config.h"
 #include "renderer.h"
 
-#include <serial.h>
-
 static std::atomic<bool> g_is_connected(false);
 
 static void on_session_connected(otc_session *session, void *user_data) {

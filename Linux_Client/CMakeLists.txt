@@ -14,7 +14,7 @@ SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(LIBSDL2 REQUIRED sdl2)
 
-set(ENV{LIBOPENTOK_PATH} /home/tazukiswift/Programming/toolchains/libopentok_linux_llvm_x86_64/)
+set(ENV{LIBOPENTOK_PATH} /home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/)
 
 if (DEFINED ENV{LIBOPENTOK_PATH})
     find_path(LIBOPENTOK_HEADER opentok.h PATHS $ENV{LIBOPENTOK_PATH}/include NO_DEFAULT_PATH)
@@ -29,7 +29,6 @@ else ()
 endif ()
 
 FIND_PACKAGE(Threads)
-FIND_PACKAGE(serial PATHS /tmp/usr/local/share/serial/cmake/ NO_DEFAULT_PATH REQUIRED)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCLUDE_DIRS} ${LIBOPENTOK_INCLUDE_DIRS} ${serial_INCLUDE_DIRS}/serial/)
 

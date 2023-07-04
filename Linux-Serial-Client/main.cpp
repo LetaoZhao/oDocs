@@ -2,6 +2,9 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
+
 // Linux headers
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <errno.h> // Error integer and strerror() function
@@ -38,7 +41,8 @@ int main() {
     tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-    cfsetispeed(&tty, 112500);
+    int ispeed_error = cfsetispeed(&tty, 112500);
+    int ospeed_error = cfsetospeed(&tty, 112500);
 
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
@@ -57,17 +61,19 @@ int main() {
     commands.emplace_back("G21G91G1Z1F100\n");
     commands.emplace_back("G21G91G1Z-1F100\n");
 
-    sleep(0.01);
     char read_buf [256];
     char write_buf[32];
 
     memset(&write_buf, '\0', sizeof(write_buf));
     memset(&read_buf, '\0', sizeof(read_buf));
 
+    // flag for waiting after wakeup message
+    bool first_loop_flag = true;
+
     // we need to read from the read_buf and print whatever characters there are
     int buf_pointer = 0;
     while(1) {
-        if ((read_buf[buf_pointer] == '\n')&&(!commands.empty())) {
+        if (((read_buf[buf_pointer] == '\n')&&(!commands.empty()))) {
             std::copy( commands.front().begin(), commands.front().end(), write_buf);
             write(serial_port,write_buf,commands.front().length());
             commands.erase(commands.begin());
@@ -80,6 +86,7 @@ int main() {
         if (num_bytes < 0) {
             std::cout << "Error reading: " << strerror(errno) << std::endl;
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 
     std::cout << "End of commands " << std::endl;
