@@ -5,6 +5,25 @@
 #include <mutex>
 #include <string>
 
+// Linux headers
+#include <fcntl.h> // Contains file controls like O_RDWR
+#include <errno.h> // Error integer and strerror() function
+
+#include <sys/ioctl.h>
+
+//#include <asm/termios.h> // Contains POSIX terminal control definitions
+#define termios asmtermios
+
+#include <asm/termbits.h>
+#include <asm/ioctls.h>
+
+#undef termios
+
+#include <termios.h>
+
+#include <unistd.h> // write(), read(), close()
+
+
 // sudo adduser $USER dialout if get error 13
 int serial_port;
 struct termios tty;
@@ -30,9 +49,9 @@ void init_serial_port() {
     // NOTE: This is important! POSIX states that the struct passed to tcsetattr()
     // must have been initialized with a call to tcgetattr() overwise behaviour
     // is undefined
-    if (tcgetattr(serial_port, &tty) != 0) {
-        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
-    }
+//    if (tcgetattr(serial_port, &tty) != 0) {
+//        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
+//    }
 
     // Configure serial port
     tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
@@ -47,19 +66,28 @@ void init_serial_port() {
                      ICRNL); // Disable any special handling of received bytes
     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-    int ispeed_error = cfsetispeed(&tty, 112500);
-    int ospeed_error = cfsetospeed(&tty, 112500);
+
+//    int ispeed_error = cfsetispeed(&tty, (speed_t) 112500);
+//    int ospeed_error = cfsetospeed(&tty, (speed_t) 112500);
 
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
     }
 
+    struct termios2 tio;
+    ioctl(serial_port, TCGETS2, &tio);
+    tio.c_cflag &= ~CBAUD;
+    tio.c_cflag |= CBAUDEX;
+    tio.c_ispeed = 112500;
+    tio.c_ospeed = 112500;
+/* do other miscellaneous setup options with the flags here */
+    int error = ioctl(serial_port, TCSETS2, &tio);
+
     // empty buffers
     memset(&write_buf, '\0', sizeof(write_buf));
     memset(&read_buf, '\0', sizeof(read_buf));
 }
-
 
 // writing
 // Will only function if output buffer is not full
@@ -70,14 +98,19 @@ void process_message(const char *message) {
     char delimiter = ',';
 
     // Fix delimiter finder
-    std::string x_position = message_string.substr(0, message_string.find(delimiter));
-    std::string y_position = message_string.substr(0, message_string.find(delimiter));
+    int delimiter_1 = message_string.find(delimiter, 0);
+    int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
 
+    std::string x_position = message_string.substr(0, delimiter_1);
+    std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
+    std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
     std::string command = "";
     command.append("G21G91G0X");
     command.append(x_position);
     command.append("Y");
     command.append(y_position);
+    command.append("Z");
+    command.append(z_position);
     command.append("F100\n");
 
     std::lock_guard<std::mutex> guard(command_queue_mutex);

@@ -93,8 +93,8 @@ int main(int argc, char **argv) {
 
     // Begin Serial Setup
     init_serial_port();
-    char *command_1 = "1,0";
-    char *command_2 = "-1,0";
+    char *command_1 = "1.1,1.0,-1.2";
+    char *command_2 = "-1.1,-1.0,1.2";
     process_message(command_1);
     process_message(command_2);
 #ifdef CONSOLE_LOGGING
