@@ -14,7 +14,7 @@ static std::atomic<bool> g_is_connected(false);
 
 static void on_session_connected(otc_session *session, void *user_data) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
-
+    std::cout << "HELLOOOOOOOOOO" << std::endl;
     g_is_connected = true;
 }
 
@@ -42,7 +42,7 @@ static void on_session_signal_received(otc_session *session,
                                        const char *signal,
                                        const otc_connection *connection) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
-
+    std::cout << "RECEIVED A SIGNAL" << std::endl;
     if (session == nullptr) {
         return;
     }
@@ -75,10 +75,6 @@ static void on_otc_log_message(const char *message) {
 // Cursed
 RendererManager renderer_manager;
 
-void event_loop_wrapper() {
-    renderer_manager.runEventLoop();
-}
-
 void system_loop_wrapper() {
     while (process_interface_io()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -93,10 +89,6 @@ int main(int argc, char **argv) {
 
     // Begin Serial Setup
     init_serial_port();
-    char *command_1 = "1.1,1.0,-1.2";
-    char *command_2 = "-1.1,-1.0,1.2";
-    process_message(command_1);
-    process_message(command_2);
 #ifdef CONSOLE_LOGGING
     otc_log_set_logger_callback(on_otc_log_message);
     otc_log_enable(OTC_LOG_LEVEL_ALL);
@@ -124,10 +116,9 @@ int main(int argc, char **argv) {
 
     otc_session_connect(session, TOKEN);
 
-//  renderer_manager.runEventLoop();
-    std::thread event_loop(event_loop_wrapper);
-
     std::thread system_loop(system_loop_wrapper);
+
+    renderer_manager.runEventLoop();
 
     if ((session != nullptr) && g_is_connected.load()) {
         otc_session_disconnect(session);
@@ -136,8 +127,6 @@ int main(int argc, char **argv) {
     if (session != nullptr) {
         otc_session_delete(session);
     }
-
-    event_loop.join();
 
 
     otc_destroy();

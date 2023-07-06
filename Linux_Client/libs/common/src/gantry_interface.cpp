@@ -122,7 +122,7 @@ void process_message(const char *message) {
 bool process_interface_io() {
     // Lock mutex while in scope
     std::lock_guard<std::mutex> guard(command_queue_mutex);
-    if (((read_buf[buf_pointer] == '\n') && (!commands.empty()))) {
+    if ((((read_buf[buf_pointer] == '\n') || (read_buf[buf_pointer] == 0)) && (!commands.empty()))) {
         std::copy(commands.front().begin(), commands.front().end(), write_buf);
         write(serial_port, write_buf, commands.front().length());
         commands.erase(commands.begin());
