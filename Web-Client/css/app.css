@@ -27,7 +27,7 @@ body, html {
     border: 3px solid white;
     border-radius: 3px;
 }
-#textchat {
+#textchat{
     position: relative;
     width: 20%;
     float: right;
@@ -36,15 +36,32 @@ body, html {
     background-color: #333;
 }
 #history {
-     width: 100%;
-     height: calc(100% - 40px);
-     overflow: auto;
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: auto;
 }
-input#msgTxt {
-            height: 40px;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+input#msgTxt1 {
+    height: 40px;
+    position: absolute;
+    bottom: 5px;
+    border: 2px solid rgb(255, 0, 0);
+    width: 32%;
+}
+input#msgTxt2 {
+    height: 40px;
+    position: absolute;
+    bottom: 5px;
+    right: 95px;
+    border: 2px solid rgb(255, 0, 0);
+    width: 32%;
+}
+input#msgTxt3 {
+    height: 40px;
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    border: 2px solid rgb(255, 0, 0);
+    width: 32%;
 }
 #history .mine {
     color: #00FF00;

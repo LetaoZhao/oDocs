@@ -60,23 +60,49 @@ function initializeSession() {
 
 // Text chat
 const form = document.querySelector('form');
-const msgTxt = document.querySelector('#msgTxt');
+const msgTxt1 = document.querySelector('#msgTxt1');
+const msgTxt2 = document.querySelector('#msgTxt2');
+const msgTxt3 = document.querySelector('#msgTxt3');
 
-// Send a signal once the user enters data in the form
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  // Get the input values
+  const inputValues1 = msgTxt1.value.trim();
+  const inputValues2 = msgTxt2.value.trim();
+  const inputValues3 = msgTxt3.value.trim();
+
+  // Validate the input
+  if (inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) {
+    alert('Please enter valid values for x, y or z.');
+    return;
+  }
+
+  // Parse the input values into numbers
+  const x = parseFloat(inputValues1);
+  const y = parseFloat(inputValues2);
+  const z = parseFloat(inputValues3);
+
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  // Send a signal with the combined message
   session.signal({
     type: 'msg',
-    data: msgTxt.value
+    data: newMessage
   }, (error) => {
     if (error) {
+      alert(error);
       handleError(error);
     } else {
-      msgTxt.value = '';
+      document.querySelector('#msgTxt1').value = '';
+      document.querySelector('#msgTxt2').value = '';
+      document.querySelector('#msgTxt3').value = '';
     }
   });
 });
+
 
 // See the config.js file.
 if (API_KEY && TOKEN && SESSION_ID) {
