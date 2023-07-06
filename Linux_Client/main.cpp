@@ -81,6 +81,10 @@ void system_loop_wrapper() {
     };
 }
 
+void event_loop_wrapper() {
+    renderer_manager.runEventLoop();
+}
+
 int main(int argc, char **argv) {
     if (otc_init(nullptr) != OTC_SUCCESS) {
         std::cout << "Could not init OpenTok library" << std::endl;
@@ -118,7 +122,9 @@ int main(int argc, char **argv) {
 
     std::thread system_loop(system_loop_wrapper);
 
-    renderer_manager.runEventLoop();
+    std::thread event_loop(event_loop_wrapper);
+
+    event_loop.join();
 
     if ((session != nullptr) && g_is_connected.load()) {
         otc_session_disconnect(session);
