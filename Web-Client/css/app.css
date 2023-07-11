@@ -51,7 +51,7 @@ input#msgTxt2 {
     height: 40px;
     position: absolute;
     bottom: 5px;
-    right: 95px;
+    right: 33%;
     border: 2px solid rgb(255, 0, 0);
     width: 32%;
 }
@@ -59,7 +59,7 @@ input#msgTxt3 {
     height: 40px;
     position: absolute;
     bottom: 5px;
-    right: 0;
+    right: 0%;
     border: 2px solid rgb(255, 0, 0);
     width: 32%;
 }
