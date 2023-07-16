@@ -1,16 +1,21 @@
 /* global API_KEY TOKEN SESSION_ID SAMPLE_SERVER_BASE_URL OT */
 /* eslint-disable no-alert */
 
-let apiKey;
-let session;
-let sessionId;
-let token;
 
+// handle error----------------------------------------------------------------------------------------
 function handleError(error) {
   if (error) {
     console.error(error);
   }
 }
+// handle error----------------------------------------------------------------------------------------
+
+
+// initialise session----------------------------------------------------------------------------------
+let apiKey;
+let session;
+let sessionId;
+let token;
 
 function initializeSession() {
   session = OT.initSession(apiKey, sessionId);
@@ -57,13 +62,14 @@ function initializeSession() {
     msg.scrollIntoView();
   });
 }
+// initialise session----------------------------------------------------------------------------------
 
-// Text chat
+
+// Text chat-------------------------------------------------------------------------------------------
 const form = document.querySelector('form');
 const msgTxt1 = document.querySelector('#msgTxt1');
 const msgTxt2 = document.querySelector('#msgTxt2');
 const msgTxt3 = document.querySelector('#msgTxt3');
-
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -102,9 +108,133 @@ form.addEventListener('submit', (event) => {
     }
   });
 });
+// Text chat-------------------------------------------------------------------------------------------
 
 
-// See the config.js file.
+// move tool box---------------------------------------------------------------------------------------
+const toolBox = $('#toolBox');
+toolBox.draggable();
+// move video window-----------------------------------------------------------------------------------
+
+
+// able to toggle video window-------------------------------------------------------------------------
+const toggleButton = document.querySelector('#toggleButton');
+
+let isHidden = false;
+
+toggleButton.addEventListener('click', () => {
+  if (isHidden) {
+    publisher.style.display = 'block';
+    isHidden = false;
+  } else {
+    publisher.style.display = 'none';
+    isHidden = true;
+  }
+});
+// able to toggle video window-------------------------------------------------------------------------
+
+
+// able to toggle video window-------------------------------------------------------------------------
+const toggleChat = document.querySelector('#toggleChat');
+
+let isChatHidden = false;
+
+toggleChat.addEventListener('click', () => {
+  if (isChatHidden) {
+    textchat.style.display = 'block';
+    isChatHidden = false;
+  } else {
+    textchat.style.display = 'none';
+    isChatHidden = true;
+  }
+});
+// able to toggle video window-------------------------------------------------------------------------
+
+
+// able to toggle camera view--------------------------------------------------------------------------
+const toggleCameraButton = document.querySelector('#toggleCamera');
+let isSwapped = false;
+const originalPublisherStyle = {
+  position: 'absolute',
+  width: '360px',
+  height: '240px',
+  bottom: '10px',
+  left: '10px',
+  zIndex: '100',
+  border: '3px solid white',
+  borderRadius: '3px'
+};
+const originalSubscriberStyle = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  bottom: '0',
+  left: '0',
+  zIndex: '10',
+  border: 'none',
+  borderRadius: '0'
+};
+
+toggleCameraButton.addEventListener('click', () => {
+  // Get the publisher and subscriber elements
+  const publisherElement = document.getElementById('publisher');
+  const subscriberElement = document.getElementById('subscriber');
+
+  // Swap the display formats of publisher and subscriber elements
+  if (!isSwapped) {
+    // Change the video format
+    Object.assign(publisherElement.style, originalSubscriberStyle);
+    Object.assign(subscriberElement.style, originalPublisherStyle);
+
+    isSwapped = true;
+  } else {
+    // Change back the video format
+    Object.assign(publisherElement.style, originalPublisherStyle);
+    Object.assign(subscriberElement.style, originalSubscriberStyle);
+
+    isSwapped = false;
+  }
+});
+// able to toggle camera view--------------------------------------------------------------------------
+
+
+// able to screenshot subscriber video-----------------------------------------------------------------
+function takeScreenshot() {
+  // Get the subscriber video element
+  const subscriberVideo = document.querySelector('#subscriber video');
+
+  // Create a canvas element with the same dimensions as the video
+  const canvas = document.createElement('canvas');
+  canvas.width = subscriberVideo.videoWidth;
+  canvas.height = subscriberVideo.videoHeight;
+
+  // Draw the video frame onto the canvas
+  const context = canvas.getContext('2d');
+  context.drawImage(subscriberVideo, 0, 0, canvas.width, canvas.height);
+
+  // Convert the canvas image data to a data URL (PNG format)
+  const dataURL = canvas.toDataURL('image/png');
+
+  // Get the current date and time
+  const now = new Date();
+  const timestamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+
+  // Create a link element to download the image
+  const link = document.createElement('a');
+  link.href = dataURL;
+  link.download = `subscriber_screenshot_${timestamp}.png`; // Set the filename with timestamp
+
+  // Append the link to the document and click it to trigger the download
+  document.body.appendChild(link);
+  link.click();
+
+  // Clean up by removing the link element
+  document.body.removeChild(link);
+}
+// able to screenshot subscriber video-----------------------------------------------------------------
+
+
+// See the config.js file------------------------------------------------------------------------------
 if (API_KEY && TOKEN && SESSION_ID) {
   apiKey = API_KEY;
   sessionId = SESSION_ID;
@@ -125,3 +255,4 @@ if (API_KEY && TOKEN && SESSION_ID) {
     alert('Failed to get opentok sessionId and token. Make sure you have updated the config.js file.');
   });
 }
+// See the config.js file------------------------------------------------------------------------------
