@@ -18,6 +18,12 @@ let sessionId;
 let token;
 
 function initializeSession() {
+  const sessionOptions = {
+    apiKey: apiKey,
+    sessionId: sessionId,
+    token: token,
+    screenSharing: true // Enable screen sharing in the session options
+  };
   session = OT.initSession(apiKey, sessionId);
 
   // Subscribe to a newly created stream
@@ -234,6 +240,50 @@ function takeScreenshot() {
   document.body.removeChild(link);
 }
 // able to screenshot subscriber video-----------------------------------------------------------------
+
+
+// start video share-----------------------------------------------------------------------------------
+// Get the start screen share button element
+const startScreenShareButton = document.getElementById('startScreenShare');
+
+// Add click event listener to the screen sharing button
+startScreenShareButton.addEventListener('click', () => {
+  // Replace 'your-screen-share-stream-id' with a unique stream name for the screen sharing stream
+  const screenShareStreamId = 'your-screen-share-stream-id';
+
+  // Get the publisher element
+  const publisherElement = document.getElementById('publisher');
+
+  // Create a screen sharing publisher
+  const screenSharingPublisher = OT.initPublisher(publisherElement, {
+    insertMode: 'append',
+    width: '100%',
+    height: '100%',
+    publishAudio: false, // Set to false if you don't want to publish audio along with screen share
+    videoSource: 'screen' // Use 'screen' to enable screen sharing
+  }, handleError);
+
+  // Start publishing the screen sharing stream
+  session.publish(screenSharingPublisher, { streamId: screenShareStreamId }, handleError);
+});
+// start video share-----------------------------------------------------------------------------------
+
+
+// end video share-----------------------------------------------------------------------------------
+// Get the stop screen share button element
+const stopScreenShareButton = document.getElementById('stopScreenShare');
+
+// Add click event listener to the stop screen share button
+stopScreenShareButton.addEventListener('click', () => {
+  // Get the screen sharing publisher
+  const screenSharingPublisher = session.getPublisherForStream('your-screen-share-stream-id');
+
+  // Stop publishing the screen sharing stream
+  if (screenSharingPublisher) {
+    session.unpublish(screenSharingPublisher);
+  }
+});
+// end video share-----------------------------------------------------------------------------------
 
 
 // able to make subcriber full screen------------------------------------------------------------------

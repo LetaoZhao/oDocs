@@ -14,6 +14,9 @@
 
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- screen sharing library -->
+    <script src="https://static.opentok.com/v2/js/opentok-screen-sharing.js"></script>
 </head>
 
 <body>
@@ -23,7 +26,8 @@
         <button id="toggleChat" class="btn"><i class="fa fa-comments"></i></button>
         <button id="toggleCamera" class="btn"><i class="fa fa-refresh"></i></button>
         <button id="screenShot" class="btn" onclick="takeScreenshot()"><i class="fa fa-camera"></i></button>
-        <button id="shareScreen" class="btn"><i class="fa fa-desktop"></i></button>
+        <button id="startScreenShare" class="btn"><i class="fa fa-play"></i></button>
+        <button id="stopScreenShare" class="btn"><i class="fa fa-stop-circle-o"></i></button>
         <button id="fullScreen" class="btn"><i class="fa fa-arrows-alt"></i></button>
     </div>
 
