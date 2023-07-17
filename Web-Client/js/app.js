@@ -240,12 +240,12 @@ function takeScreenshot() {
 const fullScreenButton = document.querySelector('#fullScreen');
 let isFullScreen = false;
 const newSubscriberStyle = {
-  position: 'fix',
+  position: 'fixed',
   width: '100%',
   height: '100%',
   bottom: '0',
   left: '0',
-  marginLeft: '50px',
+  marginLeft: '0px',
   zIndex: '10',
   border: 'none',
   borderRadius: '0px'
@@ -258,15 +258,26 @@ fullScreenButton.addEventListener('click', () => {
 
   // Swap the display formats of publisher and subscriber elements
   if (!isFullScreen) {
-    // make subcriber fullscreen and publisher disappear
-    publisher.style.display = 'block';
-    Object.assign(subscriberElement.style, newSubscriberStyle);
-
+    if(isSwapped){
+      // make publisher fullscreen and subcriber disappear
+      subscriber.style.display = 'none';
+      Object.assign(publisherElement.style, newSubscriberStyle);
+    } else{
+      // make subcriber fullscreen and publisher disappear
+      publisher.style.display = 'none';
+      Object.assign(subscriberElement.style, newSubscriberStyle);
+    }
     isFullScreen = true;
   } else {
-    // Change back
-    publisher.style.display = 'none';
-    Object.assign(subscriberElement.style, originalSubscriberStyle);
+    if(isSwapped){
+      // Change back
+      subscriber.style.display = 'block';
+      Object.assign(publisherElement.style, originalSubscriberStyle);
+    } else{
+      // Change back
+      publisher.style.display = 'block';
+      Object.assign(subscriberElement.style, originalSubscriberStyle);
+    }
 
     isFullScreen = false;
   }
