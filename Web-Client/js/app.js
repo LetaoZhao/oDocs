@@ -160,6 +160,7 @@ const originalPublisherStyle = {
   height: '240px',
   bottom: '10px',
   left: '10px',
+  marginLeft: '0px',
   zIndex: '100',
   border: '3px solid white',
   borderRadius: '3px'
@@ -170,9 +171,10 @@ const originalSubscriberStyle = {
   height: '100%',
   bottom: '0',
   left: '0',
+  marginLeft: '50px',
   zIndex: '10',
   border: 'none',
-  borderRadius: '0'
+  borderRadius: '0px'
 };
 
 toggleCameraButton.addEventListener('click', () => {
@@ -232,6 +234,44 @@ function takeScreenshot() {
   document.body.removeChild(link);
 }
 // able to screenshot subscriber video-----------------------------------------------------------------
+
+
+// able to make subcriber full screen------------------------------------------------------------------
+const fullScreenButton = document.querySelector('#fullScreen');
+let isFullScreen = false;
+const newSubscriberStyle = {
+  position: 'fix',
+  width: '100%',
+  height: '100%',
+  bottom: '0',
+  left: '0',
+  marginLeft: '50px',
+  zIndex: '10',
+  border: 'none',
+  borderRadius: '0px'
+};
+
+fullScreenButton.addEventListener('click', () => {
+  // Get the publisher and subscriber elements
+  const publisherElement = document.getElementById('publisher');
+  const subscriberElement = document.getElementById('subscriber');
+
+  // Swap the display formats of publisher and subscriber elements
+  if (!isFullScreen) {
+    // make subcriber fullscreen and publisher disappear
+    publisher.style.display = 'block';
+    Object.assign(subscriberElement.style, newSubscriberStyle);
+
+    isFullScreen = true;
+  } else {
+    // Change back
+    publisher.style.display = 'none';
+    Object.assign(subscriberElement.style, originalSubscriberStyle);
+
+    isFullScreen = false;
+  }
+});
+// able to make subcriber full screen------------------------------------------------------------------
 
 
 // See the config.js file------------------------------------------------------------------------------
