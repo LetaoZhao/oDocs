@@ -246,41 +246,70 @@ function takeScreenshot() {
 // Get the start screen share button element
 const startScreenShareButton = document.getElementById('startScreenShare');
 
+let isSharing = false;
+
 // Add click event listener to the screen sharing button
 startScreenShareButton.addEventListener('click', () => {
-  // Replace 'your-screen-share-stream-id' with a unique stream name for the screen sharing stream
-  const screenShareStreamId = 'your-screen-share-stream-id';
+  
+  if(!isSharing){
+    // Get the publisher element
+    const publisherElement = document.getElementById('publisher');
 
-  // Get the publisher element
-  const publisherElement = document.getElementById('publisher');
+    // Create a screen sharing publisher
+    const screenSharingPublisher = OT.initPublisher(publisherElement, {
+      insertMode: 'replace',
+      position: 'absolute',
+      width: '360px',
+      height: '240px',
+      bottom: '10px',
+      left: '373px',
+      marginLeft: '0px',
+      zIndex: '100',
+      border: '3px solid white',
+      borderRadius: '3px',
+      publishAudio: true, // Set to false if you don't want to publish audio along with screen share
+      videoSource: 'screen' // Use 'screen' to enable screen sharing
+    }, handleError);
 
-  // Create a screen sharing publisher
-  const screenSharingPublisher = OT.initPublisher(publisherElement, {
-    insertMode: 'append',
-    width: '100%',
-    height: '100%',
-    publishAudio: false, // Set to false if you don't want to publish audio along with screen share
-    videoSource: 'screen' // Use 'screen' to enable screen sharing
-  }, handleError);
+    // Start publishing the screen sharing stream
+    session.publish(screenSharingPublisher, handleError);
 
-  // Start publishing the screen sharing stream
-  session.publish(screenSharingPublisher, { streamId: screenShareStreamId }, handleError);
+    isSharing = true;
+  }
 });
 // start video share-----------------------------------------------------------------------------------
 
 
-// end video share-----------------------------------------------------------------------------------
+// end video share-------------------------------------------------------------------------------------
 // Get the stop screen share button element
 const stopScreenShareButton = document.getElementById('stopScreenShare');
 
 // Add click event listener to the stop screen share button
 stopScreenShareButton.addEventListener('click', () => {
-  // Get the screen sharing publisher
-  const screenSharingPublisher = session.getPublisherForStream('your-screen-share-stream-id');
 
   // Stop publishing the screen sharing stream
-  if (screenSharingPublisher) {
-    session.unpublish(screenSharingPublisher);
+  if (isSharing) {
+    // Get the publisher element
+    const publisherElement = document.getElementById('publisher');
+
+    // // Create a screen sharing publisher
+    const webCamPublisher = OT.initPublisher(publisherElement, {
+      insertMode: 'replace',
+      position: 'absolute',
+      width: '360px',
+      height: '240px',
+      bottom: '10px',
+      left: '10px',
+      marginLeft: '0px',
+      zIndex: '100',
+      border: '3px solid white',
+      borderRadius: '3px',
+      publishAudio: true, // Set to false if you don't want to publish audio along with screen share
+    }, handleError);
+
+    session.publish(webCamPublisher, handleError);
+
+    isSharing = false;
   }
 });
 // end video share-----------------------------------------------------------------------------------
