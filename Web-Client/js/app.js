@@ -29,7 +29,7 @@ function initializeSession() {
   // Subscribe to a newly created stream
   session.on('streamCreated', (event) => {
     const subscriberOptions = {
-      insertMode: 'append',
+      insertMode: 'replace',
       width: '100%',
       height: '100%'
     };
