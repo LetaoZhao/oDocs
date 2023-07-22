@@ -46,7 +46,7 @@ static void on_session_signal_received(otc_session *session,
     if (session == nullptr) {
         return;
     }
-    process_message(signal);
+    process_message(type, signal);
     std::cout << "Type: " << type << ", Signal: " << signal << std::endl;
 }
 

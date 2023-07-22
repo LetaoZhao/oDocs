@@ -4,6 +4,7 @@
 #include "gantry_interface.h"
 #include <mutex>
 #include <string>
+#include <deque>
 
 // Linux headers
 #include <fcntl.h> // Contains file controls like O_RDWR
@@ -20,7 +21,6 @@
 #undef termios
 
 #include <termios.h>
-
 #include <unistd.h> // write(), read(), close()
 
 
@@ -29,14 +29,41 @@ int serial_port;
 struct termios tty;
 
 char read_buf[256];
-char write_buf[32];
+char write_buf[256];
 
 std::mutex command_queue_mutex;
 
-// we need to read from the read_buf and print whatever characters there are
-int buf_pointer = 0;
+// TODO: replace this with a deque
+std::deque<std::string> commands;
 
-std::vector<std::string> commands;
+// Read Write Functions
+bool write_command(std::string const &command) {
+    std::copy(command.begin(), command.end(), write_buf);
+    int bytes_written = write(serial_port, write_buf, command.length());
+    memset(&write_buf, '\0', sizeof(write_buf));
+    if (bytes_written == -1) return false;
+    if (bytes_written != command.length()) return false;
+    return true;
+};
+
+bool newline_received() {
+    bool newline = false;
+    memset(&read_buf, '\0', sizeof(read_buf));
+
+    // TODO: rewrite so only clears readbuff when "ok" was received
+    int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
+
+    for (int i = 0; i < num_bytes; i++) {
+        if (read_buf[i] == '\n') newline = true;
+    }
+
+    std::cout << read_buf;
+    if (num_bytes < 0) {
+        std::cout << "Error reading: " << strerror(errno) << std::endl;
+        newline = false;
+    }
+    return newline;
+}
 
 void init_serial_port() {
     serial_port = open("/dev/ttyUSB0", O_RDWR);
@@ -44,14 +71,6 @@ void init_serial_port() {
     if (serial_port < 0) {
         printf("Error %i from open: %s\n", errno, strerror(errno));
     }
-
-    // Read in existing settings, and handle any error
-    // NOTE: This is important! POSIX states that the struct passed to tcsetattr()
-    // must have been initialized with a call to tcgetattr() overwise behaviour
-    // is undefined
-//    if (tcgetattr(serial_port, &tty) != 0) {
-//        printf("Error %i from tcgetattr: %s\n", errno, strerror(errno));
-//    }
 
     // Configure serial port
     tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
@@ -66,9 +85,6 @@ void init_serial_port() {
                      ICRNL); // Disable any special handling of received bytes
     tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
     tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-
-//    int ispeed_error = cfsetispeed(&tty, (speed_t) 112500);
-//    int ospeed_error = cfsetospeed(&tty, (speed_t) 112500);
 
     // Save tty settings, also checking for error
     if (tcsetattr(serial_port, TCSANOW, &tty) != 0) {
@@ -87,13 +103,22 @@ void init_serial_port() {
     // empty buffers
     memset(&write_buf, '\0', sizeof(write_buf));
     memset(&read_buf, '\0', sizeof(read_buf));
+
+    while (!newline_received()) {}
+    write_command("$100 = 5.020\n");
+    while (!newline_received()) {}
+    write_command("$101 = 6.198\n");
+    while (!newline_received()) {}
+    write_command("$102 = 25.000\n");
+    while (!newline_received()) {}
 }
 
 // writing
 // Will only function if output buffer is not full
 // So we have to read the output buffer
 
-void process_message(const char *message) {
+// TODO: strip G21G91 from this command, should be a config option
+void process_message(const char *type, const char *message) {
     std::string message_string(message);
     char delimiter = ',';
 
@@ -115,26 +140,19 @@ void process_message(const char *message) {
 
     std::lock_guard<std::mutex> guard(command_queue_mutex);
     // Process message into command here
-    commands.emplace_back(command);
+    commands.push_back(command);
 }
-
 
 bool process_interface_io() {
     // Lock mutex while in scope
     std::lock_guard<std::mutex> guard(command_queue_mutex);
-    if ((((read_buf[buf_pointer] == '\n') || (read_buf[buf_pointer] == 0)) && (!commands.empty()))) {
-        std::copy(commands.front().begin(), commands.front().end(), write_buf);
-        write(serial_port, write_buf, commands.front().length());
-        commands.erase(commands.begin());
-        memset(&write_buf, '\0', sizeof(write_buf));
+    if (!commands.empty()) {
+        // if an ack was received, queue the current front command
+        write_command(commands.front());
+        commands.pop_front();
+        while (!newline_received()) {}
     }
-    memset(&read_buf, '\0', sizeof(read_buf));
-    int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
-    buf_pointer = num_bytes - 1;
-    std::cout << read_buf;
-    if (num_bytes < 0) {
-        std::cout << "Error reading: " << strerror(errno) << std::endl;
-    }
+    // Process readbuffer
     return true;
 }
 

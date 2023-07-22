@@ -14,7 +14,7 @@
 
 void init_serial_port();
 
-void process_message(const char *message);
+void process_message(const char *type, const char *message);
 
 bool process_interface_io();
 
