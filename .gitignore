@@ -9,8 +9,8 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
-Linux_Client/cmake-build-debug/
-Linux_Client/cmake-build-release/
+cmake-build-debug/
+cmake-build-release/
 develop-eggs/
 dist/
 downloads/

@@ -1,3 +1,0 @@
-/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/cmake-build-release/CMakeFiles/signaling.dir
-/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/cmake-build-release/CMakeFiles/edit_cache.dir
-/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/cmake-build-release/CMakeFiles/rebuild_cache.dir
