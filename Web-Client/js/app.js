@@ -58,14 +58,23 @@ function initializeSession() {
     }
   });
 
-  // Receive a message and append it to the history
+    // Receive a message and append it to the history
   const msgHistory = document.querySelector('#history');
   session.on('signal:msg', (event) => {
+    alert("local mode");
     const msg = document.createElement('p');
     msg.textContent = event.data;
     msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
     msgHistory.appendChild(msg);
     msg.scrollIntoView();
+  });
+  session.on('signal:coord', (event) => {
+    alert("global mode");
+    const coord = document.createElement('p');
+    coord.textContent = event.data;
+    coord.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    msgHistory.appendChild(coord);
+    coord.scrollIntoView();
   });
 }
 // initialise session----------------------------------------------------------------------------------
@@ -86,8 +95,11 @@ form.addEventListener('submit', (event) => {
   const inputValues3 = msgTxt3.value.trim();
 
   // Validate the input
-  if (inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) {
+  if ((inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) && (!isChatSwapped)) {
     alert('Please enter valid values for x, y or z.');
+    return;
+  } else if((inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) && (isChatSwapped)) {
+    alert('Please enter valid coords for x, y or z.');
     return;
   }
 
@@ -100,19 +112,35 @@ form.addEventListener('submit', (event) => {
   const newMessage = `${x},${y},${z}`;
 
   // Send a signal with the combined message
-  session.signal({
-    type: 'msg',
-    data: newMessage
-  }, (error) => {
-    if (error) {
-      alert(error);
-      handleError(error);
-    } else {
-      document.querySelector('#msgTxt1').value = '';
-      document.querySelector('#msgTxt2').value = '';
-      document.querySelector('#msgTxt3').value = '';
-    }
-  });
+  if(!isChatSwapped){
+    session.signal({
+      type: 'msg',
+      data: newMessage
+    }, (error) => {
+      if (error && (!isChatSwapped)) {
+        alert(error);
+        handleError(error);
+      } else {
+        document.querySelector('#msgTxt1').value = '';
+        document.querySelector('#msgTxt2').value = '';
+        document.querySelector('#msgTxt3').value = '';
+      }
+    });
+  } else {
+    session.signal({
+      type: 'coord',
+      data: newMessage
+    }, (error) => {
+      if (error && (isChatSwapped)) {
+        alert(error);
+        handleError(error);
+      } else {
+        document.querySelector('#msgTxt1').value = '';
+        document.querySelector('#msgTxt2').value = '';
+        document.querySelector('#msgTxt3').value = '';
+      }
+    });
+  }
 });
 // Text chat-------------------------------------------------------------------------------------------
 
@@ -362,6 +390,47 @@ fullScreenButton.addEventListener('click', () => {
   }
 });
 // able to make subcriber full screen------------------------------------------------------------------
+
+
+// able to swtich coord mode---------------------------------------------------------------------------
+const txt1Element = document.getElementById('msgTxt1');
+const txt2Element = document.getElementById('msgTxt2');
+const txt3Element = document.getElementById('msgTxt3');
+
+const switchCoord = document.querySelector('#switchCoord');
+const oldTxtStyle = {
+  backgroundColor: '#f0f0f0',
+};
+const newTxtStyle = {
+  backgroundColor: '#ccffcc',
+};
+
+let isChatSwapped = false;
+
+switchCoord.addEventListener('click', () => {
+  if (isChatSwapped) {
+    Object.assign(txt1Element.style, oldTxtStyle);
+    Object.assign(txt2Element.style, oldTxtStyle);
+    Object.assign(txt3Element.style, oldTxtStyle);
+    txt1Element.placeholder = "Enter x value";
+    txt2Element.placeholder = "Enter y value";
+    txt3Element.placeholder = "Enter z value";
+    isChatSwapped = false;
+    session.on('signal:msg');
+    session.off('signal:coord');
+  } else {
+    Object.assign(txt1Element.style, newTxtStyle);
+    Object.assign(txt2Element.style, newTxtStyle);
+    Object.assign(txt3Element.style, newTxtStyle);
+    txt1Element.placeholder = "Enter x coord";
+    txt2Element.placeholder = "Enter y coord";
+    txt3Element.placeholder = "Enter z coord";
+    isChatSwapped = true;
+    session.on('signal:coord');
+    session.off('signal:msg');
+  }
+});
+// able to swtich coord mode---------------------------------------------------------------------------
 
 
 // See the config.js file------------------------------------------------------------------------------
