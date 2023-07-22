@@ -28,11 +28,11 @@ endif ()
 
 FIND_PACKAGE(Threads)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCLUDE_DIRS} ${LIBOPENTOK_INCLUDE_DIRS} ${serial_INCLUDE_DIRS}/serial/)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCLUDE_DIRS} ${LIBOPENTOK_INCLUDE_DIRS} ${serial_INCLUDE_DIRS}/serial/ include)
 
 LINK_DIRECTORIES(${LIBSDL2_LIBRARY_DIRS} ${LIBOPENTOK_LIBRARY_DIRS} ${serial_LIBRARY_DIRS})
 
-ADD_EXECUTABLE(${PROJECT_NAME} main.cpp ${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src/renderer.cpp libs/common/src/gantry_interface.cpp libs/common/src/gantry_interface.h)
+ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/config-sample.h include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/config.h)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES})
 
 get_cmake_property(_variableNames VARIABLES)

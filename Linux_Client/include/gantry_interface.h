@@ -32,7 +32,6 @@
 
 class GantryInterface {
 private:
-    void _init_serial_port();
 
     bool _newline_received();
 
@@ -41,10 +40,10 @@ private:
 private:
     // sudo adduser $USER dialout if get error 13
     int _serial_port;
-    struct termios _tty;
+    struct termios _tty = {0};  // NGL this kinda scuffed
 
-    char _read_buf[256];
-    char _write_buf[256];
+    char _read_buf[256] = {0};
+    char _write_buf[256] = {0};
 
     std::mutex _command_queue_mutex;
 

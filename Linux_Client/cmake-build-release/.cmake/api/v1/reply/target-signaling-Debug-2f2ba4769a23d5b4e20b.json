@@ -1,0 +1,243 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "signaling"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"ADD_EXECUTABLE",
+			"LINK_DIRECTORIES",
+			"TARGET_LINK_LIBRARIES",
+			"INCLUDE_DIRECTORIES"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 35,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 33,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 36,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 31,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -fdiagnostics-color=always"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/./libs/common/src"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/usr/include/SDL2"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/serial"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/include"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0,
+				3,
+				6
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g -fdiagnostics-color=always"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/./libs/common/src"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/usr/include/SDL2"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/include"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/serial"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/home/tazukiswift/Work/Prog/p4p27_python_client/Linux_Client/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				5
+			]
+		}
+	],
+	"id" : "signaling::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-L/home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/lib",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-lSDL2",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/lib/libopentok.so",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "signaling",
+	"nameOnDisk" : "signaling",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				3,
+				5,
+				6
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2,
+				4,
+				7
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/config-sample.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/otk_thread.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/gantry_interface.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/renderer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "src/otk_thread.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/renderer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/config.h",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}

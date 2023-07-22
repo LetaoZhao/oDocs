@@ -1,4 +1,4 @@
-#include "gantry_interface.h"
+#include "../include/gantry_interface.h"
 
 GantryInterface::GantryInterface() {
     // empty buffers
@@ -10,8 +10,6 @@ GantryInterface::GantryInterface() {
     if (_serial_port < 0) {
         printf("Error %i from open: %s\n", errno, strerror(errno));
     }
-
-    _tty = {0};
 
     // Configure serial port
     _tty.c_cflag &= ~PARENB; // Clear parity bit, disabling parity (most common)
@@ -43,7 +41,6 @@ GantryInterface::GantryInterface() {
         std::cout << "ERROR: couldn't initialize baud rate...";
     };
 
-
     while (!_newline_received()) {}
     _write_command("$100 = 5.020\n");
     while (!_newline_received()) {}
@@ -56,6 +53,7 @@ GantryInterface::GantryInterface() {
 // Read Write Functions
 bool GantryInterface::_write_command(std::string const &command) {
     std::copy(command.begin(), command.end(), _write_buf);
+    std::cout << _write_buf;
     int bytes_written = write(_serial_port, _write_buf, command.length());
     memset(&_write_buf, '\0', sizeof(_write_buf));
     if (bytes_written == -1) return false;
@@ -80,10 +78,6 @@ bool GantryInterface::_newline_received() {
         newline = false;
     }
     return newline;
-}
-
-void GantryInterface::_init_serial_port() {
-
 }
 
 // writing
