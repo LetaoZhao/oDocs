@@ -61,7 +61,7 @@ function initializeSession() {
     // Receive a message and append it to the history
   const msgHistory = document.querySelector('#history');
   session.on('signal:msg', (event) => {
-    alert("local mode");
+    // alert("local mode");
     const msg = document.createElement('p');
     msg.textContent = event.data;
     msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
@@ -69,7 +69,7 @@ function initializeSession() {
     msg.scrollIntoView();
   });
   session.on('signal:coord', (event) => {
-    alert("global mode");
+    // alert("global mode");
     const coord = document.createElement('p');
     coord.textContent = event.data;
     coord.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
@@ -409,6 +409,7 @@ let isChatSwapped = false;
 
 switchCoord.addEventListener('click', () => {
   if (isChatSwapped) {
+    alert("local mode");
     Object.assign(txt1Element.style, oldTxtStyle);
     Object.assign(txt2Element.style, oldTxtStyle);
     Object.assign(txt3Element.style, oldTxtStyle);
@@ -419,6 +420,7 @@ switchCoord.addEventListener('click', () => {
     session.on('signal:msg');
     session.off('signal:coord');
   } else {
+    alert("global mode");
     Object.assign(txt1Element.style, newTxtStyle);
     Object.assign(txt2Element.style, newTxtStyle);
     Object.assign(txt3Element.style, newTxtStyle);
