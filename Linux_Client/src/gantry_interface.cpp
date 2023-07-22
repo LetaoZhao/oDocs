@@ -48,6 +48,9 @@ GantryInterface::GantryInterface() {
     while (!_newline_received()) {}
     _write_command("$102 = 25.000\n");
     while (!_newline_received()) {}
+    _write_command("G21G91\n");
+    while (!_newline_received()) {}
+
 }
 
 // Read Write Functions
@@ -86,24 +89,39 @@ bool GantryInterface::_newline_received() {
 
 // TODO: strip G21G91 from this command, should be a config option
 void GantryInterface::process_message(const char *type, const char *message) {
+    std::string type_string(type);
     std::string message_string(message);
+    std::string command;
     char delimiter = ',';
 
-    // Fix delimiter finder
-    int delimiter_1 = message_string.find(delimiter, 0);
-    int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
+    if (type_string == "movement") {
+        // Fix delimiter finder
+        int delimiter_1 = message_string.find(delimiter, 0);
+        int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
 
-    std::string x_position = message_string.substr(0, delimiter_1);
-    std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
-    std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
-    std::string command;
-    command.append("G21G91G0X");
-    command.append(x_position);
-    command.append("Y");
-    command.append(y_position);
-    command.append("Z");
-    command.append(z_position);
-    command.append("F100\n");
+        std::string x_position = message_string.substr(0, delimiter_1);
+        std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
+        std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
+
+        command.append("G21G91G0X");
+        command.append(x_position);
+        command.append("Y");
+        command.append(y_position);
+        command.append("Z");
+        command.append(z_position);
+        command.append("F100");
+    } else if (type_string == "coordsys") {
+        if (message_string == "local") {
+            command = "G91";
+        } else {
+            command = "G90";
+        }
+    } else if (type_string == "home_to_eye") {
+        // Begin CV Eye Homing Sequence
+    }
+
+    // Append "\n"
+    command.append("\n");
 
     std::lock_guard<std::mutex> guard(_command_queue_mutex);
     // Process message into command here
