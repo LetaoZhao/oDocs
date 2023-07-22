@@ -22,6 +22,7 @@ def Token_generate():
         return [session_id, token1]
     elif token_request_count == 2:
         # Second person, return [session_id, token2]
+        token_request_count = 0
         return [session_id, token2]
     else:
         # Third person or more, return an empty response

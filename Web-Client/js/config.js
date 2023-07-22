@@ -29,7 +29,7 @@ fetch(SAMPLE_SERVER_BASE_URL) // Replace with the appropriate URL of your Flask 
   })
   .catch((error) => {
     console.error('Failed to fetch session info:', error);
-    alert('Failed to fetch session info. Please check your Flask server.');
+    // alert('Failed to fetch session info. Please check your Flask server.');
   });
 
 
