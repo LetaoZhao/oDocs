@@ -11,10 +11,11 @@
 
 static std::atomic<bool> g_is_connected(false);
 
+// Don't tell anyone but...
+GantryInterface gantry;
 
 static void on_session_connected(otc_session *session, void *user_data) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
-    std::cout << "HELLOOOOOOOOOO" << std::endl;
     g_is_connected = true;
 }
 
@@ -46,7 +47,7 @@ static void on_session_signal_received(otc_session *session,
     if (session == nullptr) {
         return;
     }
-    process_message(type, signal);
+    gantry.process_message(type, signal);
     std::cout << "Type: " << type << ", Signal: " << signal << std::endl;
 }
 
@@ -76,7 +77,7 @@ static void on_otc_log_message(const char *message) {
 RendererManager renderer_manager;
 
 void system_loop_wrapper() {
-    while (process_interface_io()) {
+    while (gantry.process_interface_io()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     };
 }
@@ -91,8 +92,6 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    // Begin Serial Setup
-    init_serial_port();
 #ifdef CONSOLE_LOGGING
     otc_log_set_logger_callback(on_otc_log_message);
     otc_log_enable(OTC_LOG_LEVEL_ALL);
