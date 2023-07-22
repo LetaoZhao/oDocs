@@ -1,37 +1,31 @@
+from flask import Flask
 from opentok import Client, MediaModes, Roles
-from flask import Flask, jsonify
-import configparser
+from flask_cors import CORS
 
-# Set your OpenTok API credentials
-api_key = '47679271'
-api_secret = '70ff52066683b509b47555760b60f3d963752106'
+app = Flask(__name__)
+CORS(app)
+token_request_count = 0
 
-# Initialize the OpenTok client
-opentok = Client(api_key, api_secret)
+@app.route('/')
+def Token_generate():
+    global token_request_count  # Use the global token_request_count variable
+    token_request_count += 1
 
-# Create a session
-session = opentok.create_session(media_mode=MediaModes.routed)
-session_id = session.session_id
+    opentok = Client('47679271', '70ff52066683b509b47555760b60f3d963752106')
+    session = opentok.create_session(media_mode=MediaModes.routed)
+    session_id = session.session_id
+    token1 = session.generate_token(role=Roles.publisher, data=u'name=YJ', initial_layout_class_list=[u'focus'])
+    token2 = session.generate_token(role=Roles.publisher, data=u'name=Toby', initial_layout_class_list=[u'focus'])
 
-# Generate tokens for participants
-token1 = session.generate_token(role=Roles.publisher, data=u'name=YJ', initial_layout_class_list=[u'focus'])
-token2 = session.generate_token(role=Roles.publisher, data=u'name=Toby', initial_layout_class_list=[u'focus'])
+    if token_request_count == 1:
+        # First person, return [session_id, token1]
+        return [session_id, token1]
+    elif token_request_count == 2:
+        # Second person, return [session_id, token2]
+        return [session_id, token2]
+    else:
+        # Third person or more, return an empty response
+        return 'none'
 
-# Use session ID and tokens in your application
-print('Session ID:', session_id)
-print('Token 1:', token1)
-print('Token 2:', token2)
-
-# creating object of configparser
-config = configparser.ConfigParser()
-
-# creating a section
-config.add_section("OpenTok Token")
-
-# adding key-value pairs
-config.set("OpenTok Token", "Token1", token1)
-config.set("OpenTok Token", "Token2", token2)
-
-#Write the above sections to config.ini file
-with open('token_storage.ini', 'w') as conf:
-    config.write(conf)
+if __name__ == '__main__':
+    app.run(debug=True)
