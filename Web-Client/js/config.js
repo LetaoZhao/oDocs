@@ -13,24 +13,25 @@ const SAMPLE_SERVER_BASE_URL = 'http://127.0.0.1:5001';
 
 // config.js
 const API_KEY = '47679271';
-let SESSION_ID = '';
+let SESSION_ID= '';
 let TOKEN = '';
 
-// Fetch session info from your Flask server
-fetch(SAMPLE_SERVER_BASE_URL) // Replace with the appropriate URL of your Flask server
-  .then((response) => response.json())
-  .then((json) => {
-    // Update SESSION_ID and TOKEN with the fetched values
-    SESSION_ID = json.session_id;
-    TOKEN = json.token;
+// // // Fetch session info from your Flask server
+// fetch(SAMPLE_SERVER_BASE_URL) // Replace with the appropriate URL of your Flask server
+//   .then((response) => response.json())
+//   .then((json) => {
+//     // Update SESSION_ID and TOKEN with the fetched values
+//     SESSION_ID = json[0];
+//     TOKEN = json[1];
 
-    // Initialize the session using the updated SESSION_ID and TOKEN
-    initializeSession();
-  })
-  .catch((error) => {
-    console.error('Failed to fetch session info:', error);
-    // alert('Failed to fetch session info. Please check your Flask server.');
-  });
+//     // Initialize the session using the updated SESSION_ID and TOKEN
+//     // initializeSession();
+//   })
+//   .catch((error) => {
+//     console.error('Failed to fetch session info:', error);
+//     alert('Failed to get opentok sessionId and token. Make sure you have updated the config.js file.');
+//   });
+
 
 
 

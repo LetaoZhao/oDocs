@@ -76,9 +76,10 @@ function initializeSession() {
     msgHistory.appendChild(coord);
     coord.scrollIntoView();
   });
+
+  // alert(token);
 }
 // initialise session----------------------------------------------------------------------------------
-
 
 // Text chat-------------------------------------------------------------------------------------------
 const form = document.querySelector('form');
@@ -436,24 +437,35 @@ switchCoord.addEventListener('click', () => {
 
 
 // See the config.js file------------------------------------------------------------------------------
+// Fetch session data from Flask server and initialize the session
+function fetchSessionData() {
+  fetch(SAMPLE_SERVER_BASE_URL) // Replace 'http://localhost:5001/' with the appropriate URL of your Flask server
+    .then((response) => response.json())
+    .then((data) => {
+      apiKey = API_KEY;
+      sessionId = data[0];
+      token = data[1];
+
+      // Initialize the session using the updated SESSION_ID and TOKEN
+      initializeSession();
+    })
+    .catch((error) => {
+      console.error('Failed to fetch session info:', error);
+      alert('Failed to get OpenTok sessionId and token from the server. Make sure your Flask server is running and returning the correct data.');
+    });
+}
+
+// See the config.js file
 if (API_KEY && TOKEN && SESSION_ID) {
   apiKey = API_KEY;
   sessionId = SESSION_ID;
   token = TOKEN;
-  // initializeSession();
+  initializeSession();
 } else if (SAMPLE_SERVER_BASE_URL) {
-  // Make a GET request to get the OpenTok API key, session ID, and token from the server
-  fetch(SAMPLE_SERVER_BASE_URL + '/session')
-  .then((response) => response.json())
-  .then((json) => {
-    apiKey = json.apiKey;
-    sessionId = json.sessionId;
-    token = json.token;
-    // Initialize an OpenTok Session object
-    initializeSession();
-  }).catch((error) => {
-    handleError(error);
-    // alert('Failed to get opentok sessionId and token. Make sure you have updated the config.js file.');
-  });
+  // Fetch session data from the Flask server
+  fetchSessionData();
+} else {
+  alert('You need to set either API_KEY, TOKEN, and SESSION_ID in config.js or SAMPLE_SERVER_BASE_URL to fetch session data from the Flask server.');
 }
+
 // See the config.js file------------------------------------------------------------------------------
