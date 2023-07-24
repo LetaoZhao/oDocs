@@ -3,9 +3,9 @@
 #include <atomic>
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
 #include <thread>
 
-#include "config.h"
 #include "renderer.h"
 #include "gantry_interface.h"
 
@@ -109,15 +109,28 @@ int main(int argc, char **argv) {
     session_callbacks.on_error = on_session_error;
 
     otc_session *session = nullptr;
+    std::fstream config_file;
+    config_file.open("../session.cfg", std::ios::in);
+    std::string API_KEY;
+    std::string SESSION_ID;
+    std::string TOKEN;
 
-    session = otc_session_new(API_KEY, SESSION_ID, &session_callbacks);
+    if (config_file.is_open()) {
+        getline(config_file, API_KEY);
+        getline(config_file, SESSION_ID);
+        getline(config_file, TOKEN);
+    } else {
+        return EXIT_FAILURE;
+    }
+
+    session = otc_session_new(API_KEY.c_str(), SESSION_ID.c_str(), &session_callbacks);
 
     if (session == nullptr) {
         std::cout << "Could not create OpenTok session successfully" << std::endl;
         return EXIT_FAILURE;
     }
 
-    otc_session_connect(session, TOKEN);
+    otc_session_connect(session, TOKEN.c_str());
 
     std::thread system_loop(system_loop_wrapper);
 

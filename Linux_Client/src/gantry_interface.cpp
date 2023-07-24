@@ -42,11 +42,29 @@ GantryInterface::GantryInterface() {
     };
 
     while (!_newline_received()) {}
-    _write_command("$100 = 5.020\n");
+    _write_command("$100 = 200\n");
     while (!_newline_received()) {}
-    _write_command("$101 = 6.198\n");
+    _write_command("$101 = 200\n");
     while (!_newline_received()) {}
-    _write_command("$102 = 25.000\n");
+    _write_command("$102 = 800\n");
+    while (!_newline_received()) {}
+    _write_command("$110 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$111 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$112 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$110 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$111 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$112 = 2000\n");
+    while (!_newline_received()) {}
+    _write_command("$120 = 100\n");
+    while (!_newline_received()) {}
+    _write_command("$121 = 100\n");
+    while (!_newline_received()) {}
+    _write_command("$122 = 100\n");
     while (!_newline_received()) {}
     _write_command("G21G91\n");
     while (!_newline_received()) {}
@@ -94,7 +112,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
     std::string command;
     char delimiter = ',';
 
-    if (type_string == "movement") {
+    if (type_string == "msg") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
         int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
