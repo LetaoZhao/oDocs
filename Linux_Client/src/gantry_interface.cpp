@@ -1,4 +1,5 @@
 #include "../include/gantry_interface.h"
+#include "error_handler.h"
 
 GantryInterface::GantryInterface() {
     // empty buffers
@@ -9,6 +10,7 @@ GantryInterface::GantryInterface() {
     // Check for errors
     if (_serial_port < 0) {
         printf("Error %i from open: %s\n", errno, strerror(errno));
+        error_handler();
     }
 
     // Configure serial port
@@ -28,6 +30,7 @@ GantryInterface::GantryInterface() {
     // Save _tty settings, also checking for error
     if (tcsetattr(_serial_port, TCSANOW, &_tty) != 0) {
         printf("Error %i from tcsetattr: %s\n", errno, strerror(errno));
+        error_handler();
     }
 
     struct termios2 tio = {0};
@@ -39,8 +42,9 @@ GantryInterface::GantryInterface() {
 /* do other miscellaneous setup options with the flags here */
     if (ioctl(_serial_port, TCSETS2, &tio) != 0) {
         std::cout << "ERROR: couldn't initialize baud rate...";
+        error_handler();
     };
-
+    // Probably should be in a config file somewhere
     while (!_newline_received()) {}
     _write_command("$100 = 200\n");
     while (!_newline_received()) {}
