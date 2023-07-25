@@ -3,6 +3,24 @@ body, html {
     height: 100%;
 }
 /* ------------------------------------------------------ */
+.text1 {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    color: white;
+    font-size: 15px;
+    left: 4%;
+    top: 69.5%;
+  }
+/* ------------------------------------------------------ */
+.text2 {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    color: white;
+    font-size: 15px;
+    left: 15.5%;
+    top: 86%;
+  }
+/* ------------------------------------------------------ */
 .angle45-icon {
     transform: rotate(45deg); /* Rotate the icon by 45 degrees */
 }
@@ -216,12 +234,11 @@ button#move_Y_Neg {
 /* ------------------------------------------------------ */
 input#stepSize_XYZ {
     background-color: rgb(222, 222, 222);
-    border-radius: 13%;
     position: absolute;
     top: 65.8%;
-    Left: 26.5%;
+    Left: 36.5%;
     transition: all 0.3s;
-    width: 45%;
+    width: 35%;
     height: 10%;
 }
 #tepSize_XYZ:hover {
@@ -231,17 +248,70 @@ input#stepSize_XYZ {
 /* ------------------------------------------------------ */
 input#feedRate {
     background-color: rgb(222, 222, 222);
-    border-radius: 13%;
     position: absolute;
-    top: 65.8%;
-    Left: 26.5%;
+    top: 82.8%;
+    Left: 36.5%;
     transition: all 0.3s;
-    width: 45%;
+    width: 35%;
     height: 10%;
 }
 #tepSize_XYZ:hover {
     border: 3px solid rgb(122, 176, 136);
     z-index: 50;
+}
+/* ------------------------------------------------------ */
+button#update {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 61.8%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#update:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 62.1%;
+}
+#update:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#larger {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 74.53%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#larger:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 74.83%;
+}
+#larger:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#smaller {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 87.26%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#smaller:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 87.56%;
+}
+#smaller:hover {
+    cursor: hand;
+    cursor: pointer;
 }
 /* ------------------------------------------------------ */
 #toolBox {
