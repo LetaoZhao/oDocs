@@ -29,26 +29,81 @@ body, html {
     transform: rotate(315deg); /* Rotate the icon by 45 degrees */
 }
 /* ------------------------------------------------------ */
-#controlPanel {
+#eyeTractingPanel {
     position: absolute;
-    width: 20%;
-    height: 50%;
-    bottom: 0%;
-    right: 0%;
-    z-index: 100;
+    width: 19%;
+    height: 6%;
+    bottom: 51%;
+    right: 0.6%;
+    z-index: 50;
     border: 5px solid white;
     background-color: rgb(47, 47, 47);
     border-radius: 5%;
     cursor: move;
 }
 /* ------------------------------------------------------ */
-#eyeTractingPanel {
+button#left_eye_home {
+    background-color: rgb(222, 222, 222);
     position: absolute;
-    width: 20%;
-    height: 20%;
-    bottom: 80%;
-    right: 0%;
-    z-index: 100;
+    top: 0%;
+    Left: 0%;
+    width: 33.4%;
+    height: 100%;
+}
+#left_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#left_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#zero_eye_home {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 0%;
+    Left: 33.4%;
+    width: 33.4%;
+    height: 100%;
+}
+#zero_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#zero_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#right_eye_home {
+    /* font-size: 10px; */
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 0%;
+    Left: 66.8%;
+    width: 33.4%;
+    height: 100%;
+}
+#right_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#right_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+#controlPanel {
+    position: absolute;
+    width: 19%;
+    height: 50%;
+    bottom: 0%;
+    right: 0.6%;
+    z-index: 50;
     border: 5px solid white;
     background-color: rgb(47, 47, 47);
     border-radius: 5%;
@@ -381,6 +436,7 @@ button#smaller {
     right: 0;
     height: 100%;
     background-color: #333;
+    z-index: 100;
 }
 /* ------------------------------------------------------ */
 #history {

@@ -26,9 +26,6 @@ function initializeSession() {
   };
   session = OT.initSession(apiKey, sessionId);
 
-  // start the session without showing the control panel
-  const controlPanel = document.querySelector('#controlPanel');
-  controlPanel.style.display = 'none';
 
   // Subscribe to a newly created stream
   session.on('streamCreated', (event) => {
@@ -88,6 +85,14 @@ function initializeSession() {
     config_step.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
     msgHistory.appendChild(config_step);
     config_step.scrollIntoView();
+  });
+  session.on('signal:home', (event) => {
+    // alert("global mode");
+    const home = document.createElement('p');
+    home.textContent = event.data;
+    home.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    msgHistory.appendChild(home);
+    home.scrollIntoView();
   });
   // alert(token);
 }
@@ -187,13 +192,12 @@ const toggleChat = document.querySelector('#toggleChat');
 let jogging_mode = false;
 
 toggleChat.addEventListener('click', () => {
+  // alert(jogging_mode)
   if (jogging_mode) {
     textchat.style.display = 'block';
-    controlPanel.style.display = 'none';
     jogging_mode = false;
   } else {
     textchat.style.display = 'none';
-    controlPanel.style.display = 'block';
     jogging_mode = true;
   }
 });
@@ -748,6 +752,68 @@ move_Y_Neg.addEventListener('click', () => {
   });
 });
 // send message to move in X Y Z direction depening on button and step size----------------------------
+
+
+// left eye home---------------------------------------------------------------------------------------
+const left_eye_home = document.querySelector('#left_eye_home');
+
+left_eye_home.addEventListener('click', () => {
+  // Combine the values into one message
+  const newMessage = 'left';
+
+  // Send a signal with the combined message
+  session.signal({
+    type: 'home',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+// left eye home---------------------------------------------------------------------------------------
+
+// zero eye home---------------------------------------------------------------------------------------
+const zero_eye_home = document.querySelector('#zero_eye_home');
+
+zero_eye_home.addEventListener('click', () => {
+  // Combine the values into one message
+  const newMessage = 'zero';
+
+  // Send a signal with the combined message
+  session.signal({
+    type: 'home',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+// zero eye home---------------------------------------------------------------------------------------
+
+
+// right eye home---------------------------------------------------------------------------------------
+const right_eye_home = document.querySelector('#right_eye_home');
+
+right_eye_home.addEventListener('click', () => {
+  // Combine the values into one message
+  const newMessage = 'right';
+
+  // Send a signal with the combined message
+  session.signal({
+    type: 'home',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+// zero eye home---------------------------------------------------------------------------------------
 
 
 // See the config.js file------------------------------------------------------------------------------
