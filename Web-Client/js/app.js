@@ -26,6 +26,10 @@ function initializeSession() {
   };
   session = OT.initSession(apiKey, sessionId);
 
+  // start the session without showing the control panel
+  const controlPanel = document.querySelector('#controlPanel');
+  controlPanel.style.display = 'none';
+
   // Subscribe to a newly created stream
   session.on('streamCreated', (event) => {
     const subscriberOptions = {
@@ -58,6 +62,7 @@ function initializeSession() {
     }
   });
 
+
     // Receive a message and append it to the history
   const msgHistory = document.querySelector('#history');
   session.on('signal:move_local', (event) => {
@@ -75,6 +80,14 @@ function initializeSession() {
     coord.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
     msgHistory.appendChild(coord);
     coord.scrollIntoView();
+  });
+  session.on('signal:config_step', (event) => {
+    // alert("global mode");
+    const config_step = document.createElement('p');
+    config_step.textContent = event.data;
+    config_step.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    msgHistory.appendChild(config_step);
+    config_step.scrollIntoView();
   });
   // alert(token);
 }
@@ -168,21 +181,23 @@ toggleButton.addEventListener('click', () => {
 // able to toggle video window-------------------------------------------------------------------------
 
 
-// able to toggle video window-------------------------------------------------------------------------
+// change between text mode and jogging mode------------------------------------------------------------
 const toggleChat = document.querySelector('#toggleChat');
 
-let isChatHidden = false;
+let jogging_mode = false;
 
 toggleChat.addEventListener('click', () => {
-  if (isChatHidden) {
+  if (jogging_mode) {
     textchat.style.display = 'block';
-    isChatHidden = false;
+    controlPanel.style.display = 'none';
+    jogging_mode = false;
   } else {
     textchat.style.display = 'none';
-    isChatHidden = true;
+    controlPanel.style.display = 'block';
+    jogging_mode = true;
   }
 });
-// able to toggle video window-------------------------------------------------------------------------
+// change between text mode and jogging mode------------------------------------------------------------
 
 
 // able to toggle camera view--------------------------------------------------------------------------
@@ -434,10 +449,305 @@ switchCoord.addEventListener('click', () => {
 });
 // able to swtich coord mode---------------------------------------------------------------------------
 
-// move tool box---------------------------------------------------------------------------------------
-const controlPanel = $('#controlPanel');
-controlPanel.draggable();
-// move video window-----------------------------------------------------------------------------------
+
+// able update step size and feed rate-----------------------------------------------------------------
+const update = document.querySelector('#update');
+const stepSize_XYZ = document.querySelector('#stepSize_XYZ');
+const feedRate = document.querySelector('#feedRate');
+let updated = false;
+let stepSize_Value = '';
+
+update.addEventListener('click', () => {
+  // Get the input values
+  const input1 = stepSize_XYZ.value.trim();
+  const input2 = feedRate.value.trim();
+
+  // Validate the input
+  if (input1 === '' || input2 === '' || isNaN(input1) || isNaN(input2)) {
+    alert('Please enter valid feed rate or step size.');
+    return;
+  } else{
+    updated = true;
+  }
+
+  // Parse the input values into numbers
+  const step_size = parseFloat(input1);
+  stepSize_Value = step_size;
+  const feed_rate = parseFloat(input2);
+
+  // Combine the values into one message
+  const newMessage = `${step_size},${feed_rate}`;
+
+  // Send a signal with the combined message
+  if(jogging_mode){
+    session.signal({
+      type: 'config_step',
+      data: newMessage
+    }, (error) => {
+      if (error && (!jogging_mode)) {
+        alert(error);
+        handleError(error);
+      }
+    });
+  } else {
+    alert('Please turn on jogging mode.');
+  }
+});
+// able update step size and feed rate-----------------------------------------------------------------
+
+
+// send message to move in X Y Z direction depening on button and step size----------------------------
+const move_X_Neg_Z_Pos = document.querySelector('#move_X_Neg_Z_Pos'); // 1
+const move_Z_Pos = document.querySelector('#move_Z_Pos'); // 2
+const move_X_Pos_Z_Pos = document.querySelector('#move_X_Pos_Z_Pos'); // 3
+const move_X_Neg = document.querySelector('#move_X_Neg'); // 4
+const move_X_Pos = document.querySelector('#move_X_Pos'); // 5
+const move_X_Neg_Z_Neg = document.querySelector('#move_X_Neg_Z_Neg'); // 6
+const move_Z_Neg = document.querySelector('#move_Z_Neg'); // 7
+const move_X_Pos_Z_Neg = document.querySelector('#move_X_Pos_Z_Neg'); //8
+const move_Y_Pos = document.querySelector('#move_Y_Pos'); //9
+const move_Y_Neg = document.querySelector('#move_Y_Neg'); //10
+
+move_X_Neg_Z_Pos.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '-' + stepSize_Value;
+  const y = '0';
+  const z = stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_Z_Pos.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '0';
+  const y = '0';
+  const z = stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_X_Pos_Z_Pos.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = stepSize_Value;
+  const y = '0';
+  const z = stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_X_Neg.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '-' + stepSize_Value;
+  const y = '0';
+  const z = '0';
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_X_Pos.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = stepSize_Value;
+  const y = '0';
+  const z = '0';
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_X_Neg_Z_Neg.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '-' + stepSize_Value;
+  const y = '0';
+  const z = '-' + stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_Z_Neg.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '0';
+  const y = '0';
+  const z = '-' + stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_X_Pos_Z_Neg.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = stepSize_Value;
+  const y = '0';
+  const z = '-' + stepSize_Value;
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_Y_Pos.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '0';
+  const y = stepSize_Value;
+  const z = '0';
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+
+move_Y_Neg.addEventListener('click', () => {
+  // Validate the input
+  if (!updated) {
+    alert('Please set feed rate or step size first.');
+    return;
+  }
+  // Parse the input values into numbers
+  const x = '0';
+  const y = '-' + stepSize_Value;
+  const z = '0';
+  // Combine the values into one message
+  const newMessage = `${x},${y},${z}`;
+
+  session.signal({
+    type: 'move_local',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+// send message to move in X Y Z direction depening on button and step size----------------------------
 
 
 // See the config.js file------------------------------------------------------------------------------
