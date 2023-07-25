@@ -45,18 +45,32 @@ GantryInterface::GantryInterface() {
         error_handler();
     };
     // Probably should be in a config file somewhere
-    while (!_newline_received()) {};
-    _commands.emplace_back("$100 = 200\n");
+//    while (!_newline_received()) {};
+    _commands.emplace_back("$100 = 200\n");     // Resolutions
     _commands.emplace_back("$101 = 200\n");
     _commands.emplace_back("$102 = 800\n");
-    _commands.emplace_back("$110 = 2000\n");
+    _commands.emplace_back("$110 = 2000\n");    // Max Speeds
     _commands.emplace_back("$111 = 2000\n");
     _commands.emplace_back("$112 = 2000\n");
-    _commands.emplace_back("$120 = 2000\n");
+    _commands.emplace_back("$120 = 2000\n");    // Max Accelerations
     _commands.emplace_back("$121 = 2000\n");
     _commands.emplace_back("$122 = 2000\n");
-    _commands.emplace_back("$H\n");
-    _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");
+
+    _commands.emplace_back("$21 = 1\n");    // Enable Limits and Homing
+    _commands.emplace_back("$22 = 1\n");
+    _commands.emplace_back("$5 = 1\n");     // Invert limit switches
+    _commands.emplace_back("$23 = 7\n");    // Invert homing directions
+
+    _commands.emplace_back("$20 = 1\n");    // Enable Soft-Limits
+
+    _commands.emplace_back("$130 = 200\n");
+    _commands.emplace_back("$131 = 200\n");
+    _commands.emplace_back("$132 = 226\n");
+
+    _commands.emplace_back("$H\n");             // Home Device
+    _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
+    _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
+    _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
 }
 
 // Read Write Functions
