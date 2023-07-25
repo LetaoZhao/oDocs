@@ -45,34 +45,18 @@ GantryInterface::GantryInterface() {
         error_handler();
     };
     // Probably should be in a config file somewhere
-    while (!_newline_received()) {}
-    _write_command("$100 = 200\n");
-    while (!_newline_received()) {}
-    _write_command("$101 = 200\n");
-    while (!_newline_received()) {}
-    _write_command("$102 = 800\n");
-    while (!_newline_received()) {}
-    _write_command("$110 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$111 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$112 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$110 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$111 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$112 = 2000\n");
-    while (!_newline_received()) {}
-    _write_command("$120 = 100\n");
-    while (!_newline_received()) {}
-    _write_command("$121 = 100\n");
-    while (!_newline_received()) {}
-    _write_command("$122 = 100\n");
-    while (!_newline_received()) {}
-    _write_command("G21G91\n");
-    while (!_newline_received()) {}
-
+    while (!_newline_received()) {};
+    _commands.emplace_back("$100 = 200\n");
+    _commands.emplace_back("$101 = 200\n");
+    _commands.emplace_back("$102 = 800\n");
+    _commands.emplace_back("$110 = 2000\n");
+    _commands.emplace_back("$111 = 2000\n");
+    _commands.emplace_back("$112 = 2000\n");
+    _commands.emplace_back("$120 = 2000\n");
+    _commands.emplace_back("$121 = 2000\n");
+    _commands.emplace_back("$122 = 2000\n");
+    _commands.emplace_back("$H\n");
+    _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");
 }
 
 // Read Write Functions
@@ -116,7 +100,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
     std::string command;
     char delimiter = ',';
 
-    if (type_string == "msg") {
+    if (type_string == "move_local") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
         int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
@@ -131,13 +115,28 @@ void GantryInterface::process_message(const char *type, const char *message) {
         command.append(y_position);
         command.append("Z");
         command.append(z_position);
-        command.append("F100");
-    } else if (type_string == "coordsys") {
-        if (message_string == "local") {
-            command = "G91";
-        } else {
-            command = "G90";
-        }
+        command.append("F2000");
+    } else if (type_string == "move_global") {
+        // Fix delimiter finder
+        int delimiter_1 = message_string.find(delimiter, 0);
+        int delimiter_2 = message_string.find(delimiter, delimiter_1 + sizeof(char));
+
+        std::string x_position = message_string.substr(0, delimiter_1);
+        std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
+        std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
+
+        command.append("G21G90G0X");
+        command.append(x_position);
+        command.append("Y");
+        command.append(y_position);
+        command.append("Z");
+        command.append(z_position);
+        command.append("F2000");
+//        if (message_string == "local") {
+//            command = "G91";
+//        } else {
+//            command = "G90";
+//        }
     } else if (type_string == "home_to_eye") {
         // Begin CV Eye Homing Sequence
     }
