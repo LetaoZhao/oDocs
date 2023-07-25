@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
     <div id="toolBox">
         <button id="toggleButton" class="btn"><i class="fa fa-video-camera"></i></button>
         <button id="toggleChat" class="btn"><i class="fa fa-comments"></i></button>
@@ -30,6 +29,21 @@
         <button id="stopScreenShare" class="btn"><i class="fa fa-stop-circle-o"></i></button>
         <button id="fullScreen" class="btn"><i class="fa fa-arrows-alt"></i></button>
         <button id="switchCoord" class="btn"><i class="fa fa-globe"></i></button>
+    </div>
+
+    <div id="controlPanel">
+        <button id="move_X_Neg_Z_Pos" class="btn"><i class="fa fa-arrow-up angle315-icon"></i></button>
+        <button id="move_Z_Pos" class="btn"><i class="fa fa-arrow-up"></i></button>
+        <button id="move_X_Pos_Z_Pos" class="btn"><i class="fa fa-arrow-up angle45-icon"></i></button>
+        <button id="move_Y_Pos" class="btn">Y+</button>
+        <button id="move_X_Neg" class="btn"><i class="fa fa-arrow-left"></i></button>
+        <button id="move_X_Pos" class="btn"><i class="fa fa-arrow-right"></i></button>
+        <button id="move_X_Neg_Z_Neg" class="btn"><i class="fa fa-arrow-down angle45-icon"></i></button>
+        <button id="move_Z_Neg" class="btn"><i class="fa fa-arrow-down"></i></button>
+        <button id="move_X_Pos_Z_Neg" class="btn"><i class="fa fa-arrow-down angle315-icon"></i></button>
+        <button id="move_Y_Neg" class="btn">Y-</button>
+
+        <input type="text" placeholder="Enter XYZ step size" id="stepSize_XYZ"></input>
     </div>
 
     <div id="videos">

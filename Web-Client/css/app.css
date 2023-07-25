@@ -3,10 +3,251 @@ body, html {
     height: 100%;
 }
 /* ------------------------------------------------------ */
+.angle45-icon {
+    transform: rotate(45deg); /* Rotate the icon by 45 degrees */
+}
+/* ------------------------------------------------------ */
+.angle315-icon {
+    transform: rotate(315deg); /* Rotate the icon by 45 degrees */
+}
+/* ------------------------------------------------------ */
+#controlPanel {
+    position: absolute;
+    width: 30%;
+    height: 60%;
+    bottom: 0%;
+    right: 0%;
+    z-index: 100;
+    border: 5px solid white;
+    background-color: rgb(47, 47, 47);
+    border-radius: 5%;
+    cursor: move;
+}
+/* ------------------------------------------------------ */
+button#move_X_Neg_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_X_Neg_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 26.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_X_Pos_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_X_Pos_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_Y_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Y_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_Y_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_X_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 21.6%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 21.9%;
+}
+#move_X_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_X_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 21.6%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 21.9%;
+}
+#move_X_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_X_Neg_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_X_Neg_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 26.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_X_Pos_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_X_Pos_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+button#move_Y_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Y_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_Y_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------ */
+input#stepSize_XYZ {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 65.8%;
+    Left: 26.5%;
+    transition: all 0.3s;
+    width: 45%;
+    height: 10%;
+}
+#tepSize_XYZ:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 50;
+}
+/* ------------------------------------------------------ */
+input#feedRate {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 65.8%;
+    Left: 26.5%;
+    transition: all 0.3s;
+    width: 45%;
+    height: 10%;
+}
+#tepSize_XYZ:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 50;
+}
+/* ------------------------------------------------------ */
 #toolBox {
     position: absolute;
     width: 4%;
-    height: 50%;
+    height: 40%;
     top: 0%;
     left: 70%;
     z-index: 20;

@@ -60,7 +60,7 @@ function initializeSession() {
 
     // Receive a message and append it to the history
   const msgHistory = document.querySelector('#history');
-  session.on('signal:msg', (event) => {
+  session.on('signal:move_local', (event) => {
     // alert("local mode");
     const msg = document.createElement('p');
     msg.textContent = event.data;
@@ -68,7 +68,7 @@ function initializeSession() {
     msgHistory.appendChild(msg);
     msg.scrollIntoView();
   });
-  session.on('signal:coord', (event) => {
+  session.on('signal:move_global', (event) => {
     // alert("global mode");
     const coord = document.createElement('p');
     coord.textContent = event.data;
@@ -76,7 +76,6 @@ function initializeSession() {
     msgHistory.appendChild(coord);
     coord.scrollIntoView();
   });
-
   // alert(token);
 }
 // initialise session----------------------------------------------------------------------------------
@@ -115,7 +114,7 @@ form.addEventListener('submit', (event) => {
   // Send a signal with the combined message
   if(!isChatSwapped){
     session.signal({
-      type: 'msg',
+      type: 'move_local',
       data: newMessage
     }, (error) => {
       if (error && (!isChatSwapped)) {
@@ -129,7 +128,7 @@ form.addEventListener('submit', (event) => {
     });
   } else {
     session.signal({
-      type: 'coord',
+      type: 'move_global',
       data: newMessage
     }, (error) => {
       if (error && (isChatSwapped)) {
@@ -418,8 +417,8 @@ switchCoord.addEventListener('click', () => {
     txt2Element.placeholder = "Enter y value";
     txt3Element.placeholder = "Enter z value";
     isChatSwapped = false;
-    session.on('signal:msg');
-    session.off('signal:coord');
+    session.on('signal:move_local');
+    session.off('signal:move_global');
   } else {
     alert("global mode");
     Object.assign(txt1Element.style, newTxtStyle);
@@ -429,11 +428,16 @@ switchCoord.addEventListener('click', () => {
     txt2Element.placeholder = "Enter y coord";
     txt3Element.placeholder = "Enter z coord";
     isChatSwapped = true;
-    session.on('signal:coord');
-    session.off('signal:msg');
+    session.on('signal:move_local');
+    session.off('signal:move_global');
   }
 });
 // able to swtich coord mode---------------------------------------------------------------------------
+
+// move tool box---------------------------------------------------------------------------------------
+const controlPanel = $('#controlPanel');
+controlPanel.draggable();
+// move video window-----------------------------------------------------------------------------------
 
 
 // See the config.js file------------------------------------------------------------------------------
