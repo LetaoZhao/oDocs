@@ -427,6 +427,10 @@ const newTxtStyle = {
 let isChatSwapped = false;
 
 switchCoord.addEventListener('click', () => {
+  if(jogging_mode){
+    alert('control panel only allows local mode');
+    return
+  }
   if (isChatSwapped) {
     alert("local mode");
     Object.assign(txt1Element.style, oldTxtStyle);
@@ -480,7 +484,7 @@ update.addEventListener('click', () => {
   const feed_rate = parseFloat(input2);
 
   // Combine the values into one message
-  const newMessage = `${step_size},${feed_rate}`;
+  const newMessage = `${feed_rate}`;
 
   // Send a signal with the combined message
   if(jogging_mode){
@@ -752,6 +756,24 @@ move_Y_Neg.addEventListener('click', () => {
   });
 });
 // send message to move in X Y Z direction depening on button and step size----------------------------
+
+
+// smaller---------------------------------------------------------------------------------------------
+const smaller = document.querySelector('#smaller');
+
+smaller.addEventListener('click', () => {
+  stepSize_XYZ.value = stepSize_XYZ.value / 10;
+});
+// smaller---------------------------------------------------------------------------------------------
+
+
+// larger---------------------------------------------------------------------------------------------
+const larger = document.querySelector('#larger');
+
+larger.addEventListener('click', () => {
+  stepSize_XYZ.value = stepSize_XYZ.value * 10;
+});
+// smaller---------------------------------------------------------------------------------------------
 
 
 // left eye home---------------------------------------------------------------------------------------

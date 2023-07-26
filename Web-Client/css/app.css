@@ -8,7 +8,7 @@ body, html {
     position: absolute;
     color: white;
     font-size: 10px;
-    left: 4%;
+    left: 3%;
     top: 69.5%;
   }
 /* ------------------------------------------------------ */
@@ -17,7 +17,7 @@ body, html {
     position: absolute;
     color: white;
     font-size: 10px;
-    left: 15.5%;
+    left: 14.5%;
     top: 86%;
   }
 /* ------------------------------------------------------ */
@@ -39,7 +39,7 @@ body, html {
     border: 5px solid white;
     background-color: rgb(47, 47, 47);
     border-radius: 5%;
-    cursor: move;
+    /* cursor: move; */
 }
 /* ------------------------------------------------------ */
 button#left_eye_home {
@@ -79,7 +79,6 @@ button#zero_eye_home {
 }
 /* ------------------------------------------------------ */
 button#right_eye_home {
-    /* font-size: 10px; */
     background-color: rgb(222, 222, 222);
     position: absolute;
     top: 0%;
@@ -107,7 +106,7 @@ button#right_eye_home {
     border: 5px solid white;
     background-color: rgb(47, 47, 47);
     border-radius: 5%;
-    cursor: move;
+    /* cursor: move; */
 }
 /* ------------------------------------------------------ */
 button#move_X_Neg_Z_Pos {
@@ -314,6 +313,25 @@ input#stepSize_XYZ {
     z-index: 50;
 }
 /* ------------------------------------------------------ */
+/* button#smaller_up_by_one {
+    font-size: 15px;
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 74.53%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#smaller_up_by_one:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 74.83%;
+}
+#smaller_up_by_one:hover {
+    cursor: hand;
+    cursor: pointer;
+} */
+/* ------------------------------------------------------ */
 input#feedRate {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -437,6 +455,7 @@ button#smaller {
     height: 100%;
     background-color: #333;
     z-index: 100;
+    /* z-index: 10; */
 }
 /* ------------------------------------------------------ */
 #history {
