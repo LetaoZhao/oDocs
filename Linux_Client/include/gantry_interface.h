@@ -45,6 +45,8 @@ private:
     char _read_buf[256] = {0};
     char _write_buf[256] = {0};
 
+    std::string _feed_rate = "2000";
+
     std::mutex _command_queue_mutex;
 
 // TODO: replace this with a deque

@@ -67,6 +67,8 @@ GantryInterface::GantryInterface() {
     _commands.emplace_back("$131 = 200\n");
     _commands.emplace_back("$132 = 226\n");
 
+    _commands.emplace_back("$G\n");             // ???
+
     _commands.emplace_back("$H\n");             // Home Device
     _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
     _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
@@ -129,7 +131,8 @@ void GantryInterface::process_message(const char *type, const char *message) {
         command.append(y_position);
         command.append("Z");
         command.append(z_position);
-        command.append("F2000");
+        command.append("F");
+        command.append(_feed_rate);
     } else if (type_string == "move_global") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
@@ -145,14 +148,12 @@ void GantryInterface::process_message(const char *type, const char *message) {
         command.append(y_position);
         command.append("Z");
         command.append(z_position);
-        command.append("F2000");
-//        if (message_string == "local") {
-//            command = "G91";
-//        } else {
-//            command = "G90";
-//        }
+        command.append("F");
+        command.append(_feed_rate);
     } else if (type_string == "home_to_eye") {
         // Begin CV Eye Homing Sequence
+    }else if (type_string == "config_step") {
+        _feed_rate = message_string;
     }
 
     // Append "\n"
