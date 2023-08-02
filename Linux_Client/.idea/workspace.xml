@@ -21,11 +21,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5685c56e-5b02-4b92-8511-84732ba4bb45" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/gantry_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/gantry_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/session.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/session.cfg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gantry_interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/gantry_interface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Web-Client/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Web-Client/js/config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +68,12 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="signaling" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="signaling" TARGET_NAME="signaling" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="signaling" RUN_TARGET_NAME="signaling">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="signaling" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="signaling" TARGET_NAME="signaling" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="signaling" RUN_TARGET_NAME="signaling">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -85,6 +89,8 @@
       <updated>1690330676021</updated>
       <workItem from="1690330677329" duration="4462000" />
       <workItem from="1690350942734" duration="24000" />
+      <workItem from="1690857281630" duration="609000" />
+      <workItem from="1690950510410" duration="2714000" />
     </task>
     <servers />
   </component>
