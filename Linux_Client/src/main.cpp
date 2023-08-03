@@ -7,6 +7,8 @@
 #include <thread>
 #include "otk_thread.h"
 
+#include <opencv2/opencv.hpp>
+
 #include "renderer.h"
 #include "gantry_interface.h"
 
@@ -131,25 +133,26 @@ static int generate_random_integer() {
 }
 
 static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
+    cv::VideoCapture vcap = cv::VideoCapture(2);
+    cv::Mat image = cv::Mat(640,480,CV_8UC4);
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
         otk_thread_func_return_value;
     }
 
-    uint8_t *buffer = (uint8_t *)malloc(sizeof(uint8_t) * video_capturer->width * video_capturer->height * 4);
+//    uint8_t *buffer = (uint8_t *)malloc(sizeof(uint8_t) * video_capturer->width * video_capturer->height * 4);
+    const uint8_t* buffer;
 
     while(video_capturer->capturer_thread_exit.load() == false) {
-        memset(buffer, generate_random_integer() & 0xFF, video_capturer->width * video_capturer->height * 4);
-        otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_ARGB32, video_capturer->width, video_capturer->height, buffer);
+        vcap.read(image);
+        buffer = (uint8_t *)(image.datastart);
+//        memset(buffer, generate_random_integer() & 0xFF, video_capturer->width * video_capturer->height * 4);
+        otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
         otc_video_capturer_provide_frame(video_capturer->video_capturer, 0, otc_frame);
         if (otc_frame != nullptr) {
             otc_video_frame_delete(otc_frame);
         }
         usleep(1000 / 30 * 1000);
-    }
-
-    if (buffer != nullptr) {
-        free(buffer);
     }
 
     otk_thread_func_return_value;
@@ -261,8 +264,8 @@ int main(int argc, char **argv) {
     video_capturer->video_capturer_callbacks.destroy = video_capturer_destroy;
     video_capturer->video_capturer_callbacks.start = video_capturer_start;
     video_capturer->video_capturer_callbacks.get_capture_settings = get_video_capturer_capture_settings;
-    video_capturer->width = 1280;
-    video_capturer->height = 720;
+    video_capturer->width = 640;
+    video_capturer->height = 480;
 
     otc_session *session = nullptr;
     std::fstream config_file;

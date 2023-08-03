@@ -1,8 +1,9 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+
 PROJECT(signaling)
 
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libc++")
 
 # Remove the commented out line below to enable OpenTok debug traces.
@@ -11,6 +12,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 SET(CMAKE_BUILD_TYPE Debug)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(LIBSDL2 REQUIRED sdl2)
+
+set(OpenCV_DIR /home/tazukiswift/Work/Prog/opencv/build)
+find_package( OpenCV REQUIRED )
 
 set(ENV{LIBOPENTOK_PATH} /home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/)
 
@@ -28,12 +32,12 @@ endif ()
 
 FIND_PACKAGE(Threads)
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCLUDE_DIRS} ${LIBOPENTOK_INCLUDE_DIRS} ${serial_INCLUDE_DIRS}/serial/ include)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCLUDE_DIRS} ${LIBOPENTOK_INCLUDE_DIRS} ${serial_INCLUDE_DIRS}/serial/ ${OpenCV_INCLUDE_DIRS} include)
 
 LINK_DIRECTORIES(${LIBSDL2_LIBRARY_DIRS} ${LIBOPENTOK_LIBRARY_DIRS} ${serial_LIBRARY_DIRS})
 
 ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/config-sample.h include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/error_handler.h src/error_handler.cpp)
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES} ${OpenCV_LIBS})
 
 get_cmake_property(_variableNames VARIABLES)
 list(SORT _variableNames)
