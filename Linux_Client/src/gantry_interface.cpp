@@ -1,5 +1,12 @@
 #include "../include/gantry_interface.h"
 #include "error_handler.h"
+#include <opencv2/opencv.hpp>
+#include <thread>
+#include <chrono>
+
+extern std::mutex _frame_mutex;
+extern std::vector<cv::Rect> eyes;
+
 
 GantryInterface::GantryInterface() {
     // empty buffers
@@ -45,7 +52,6 @@ GantryInterface::GantryInterface() {
         error_handler();
     };
     // Probably should be in a config file somewhere
-//    while (!_newline_received()) {};
     _commands.emplace_back("$100 = 200\n");     // Resolutions
     _commands.emplace_back("$101 = 200\n");
     _commands.emplace_back("$102 = 800\n");
@@ -73,6 +79,7 @@ GantryInterface::GantryInterface() {
     _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
     _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
     _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
+    while(!_newline_received());
 }
 
 // Read Write Functions
@@ -89,19 +96,19 @@ bool GantryInterface::_write_command(std::string const &command) {
 bool GantryInterface::_newline_received() {
     bool newline = false;
     memset(&_read_buf, '\0', sizeof(_read_buf));
-
+    int num_bytes = 0;
     // TODO: rewrite so only clears readbuff when "ok" was received
-    int num_bytes = read(_serial_port, &_read_buf, sizeof(_read_buf));
-
-    for (int i = 0; i < num_bytes; i++) {
-        if (_read_buf[i] == '\n') newline = true;
-    }
-
-    std::cout << _read_buf;
-    if (num_bytes < 0) {
-        std::cout << "Error reading: " << strerror(errno) << std::endl;
-        newline = false;
-    }
+        while(num_bytes == 0) {
+            num_bytes = read(_serial_port, &_read_buf, sizeof(_read_buf));
+            if (num_bytes < 0) {
+                std::cout << "Error reading: " << strerror(errno) << std::endl;
+                newline = false;
+            }
+        }
+        std::cout << _read_buf;
+        for (int i = 0; i < num_bytes; i++) {
+            if (_read_buf[i] == '\n') newline = true;
+        }
     return newline;
 }
 
@@ -109,13 +116,35 @@ bool GantryInterface::_newline_received() {
 // Will only function if output buffer is not full
 // So we have to read the output buffer
 
+// My favorite (w)rapper
+void GantryInterface::move_to(int x, int y, int z, MOVE_MODE coord_system) {
+    move_to(std::to_string(x),std::to_string(y),std::to_string(z), coord_system);
+}
+
+void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_MODE coord_system) {
+    std::string command;
+    if (coord_system == GANTRY_LOCAL) {
+        command.append("G21G91G0X");
+    } else {
+        command.append("G21G90G0X");
+    }
+    command.append(x);
+    command.append("Y");
+    command.append(y);
+    command.append("Z");
+    command.append(z);
+    command.append("F");
+    command.append(_feed_rate);
+    command.append("\n");
+    std::lock_guard<std::mutex> guard(_command_queue_mutex);
+    _commands.push_back(command);
+}
+
 // TODO: strip G21G91 from this command, should be a config option
 void GantryInterface::process_message(const char *type, const char *message) {
     std::string type_string(type);
     std::string message_string(message);
-    std::string command;
     char delimiter = ',';
-
     if (type_string == "move_local") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
@@ -125,14 +154,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
         std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
         std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
 
-        command.append("G21G91G0X");
-        command.append(x_position);
-        command.append("Y");
-        command.append(y_position);
-        command.append("Z");
-        command.append(z_position);
-        command.append("F");
-        command.append(_feed_rate);
+        move_to(x_position, y_position, z_position, GANTRY_LOCAL);
     } else if (type_string == "move_global") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
@@ -142,26 +164,55 @@ void GantryInterface::process_message(const char *type, const char *message) {
         std::string y_position = message_string.substr(delimiter_1 + 1, delimiter_2 - delimiter_1 - 1);
         std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
 
-        command.append("G21G90G0X");
-        command.append(x_position);
-        command.append("Y");
-        command.append(y_position);
-        command.append("Z");
-        command.append(z_position);
-        command.append("F");
-        command.append(_feed_rate);
-    } else if (type_string == "home_to_eye") {
+        move_to(x_position, y_position, z_position, GANTRY_GLOBAL);
+
+    } else if (type_string == "home") {
+        cv::Rect the_eye;
+        using namespace std::chrono_literals;
         // Begin CV Eye Homing Sequence
+        // LOGIC:
+        // Move to approximate center of face
+        // Get pointer to eyes vector
+        // Move to that point
+        // Get pointer to eyes vector
+        move_to(110,0,110,GANTRY_GLOBAL);
+        std::this_thread::sleep_for(4000ms);
+
+
+        _frame_mutex.lock();
+        if (message_string == "left") {
+            int eye_xpos = 1000;
+            if (eyes.size()) {
+                for (auto &eye: eyes) {
+                    if (eye.x < eye_xpos) {
+                        eye_xpos = eye.x;
+                        the_eye = eye;
+                    }
+                }
+            }
+        } else if(message_string == "right"){
+            int eye_xpos = 0;
+            if (eyes.size()) {
+                for (auto &eye: eyes) {
+                    if (eye.x > eye_xpos) {
+                        eye_xpos = eye.x;
+                        the_eye = eye;
+                    }
+                }
+            }
+        }
+
+        if ((message_string == "right")||(message_string == "left")) {
+            int x_move = -(the_eye.x + the_eye.width/2-640/2)/3;
+            int y_move = -(the_eye.y + the_eye.height/2-480/2)/3;
+            move_to(x_move,0,y_move,GANTRY_LOCAL);
+        }
+        _frame_mutex.unlock();
+
     }else if (type_string == "config_step") {
         _feed_rate = message_string;
     }
-
-    // Append "\n"
-    command.append("\n");
-
-    std::lock_guard<std::mutex> guard(_command_queue_mutex);
     // Process message into command here
-    _commands.push_back(command);
 }
 
 bool GantryInterface::process_interface_io() {
@@ -173,7 +224,6 @@ bool GantryInterface::process_interface_io() {
         _commands.pop_front();
         while (!_newline_received()) {}
     }
-    // Process readbuffer
     return true;
 }
 

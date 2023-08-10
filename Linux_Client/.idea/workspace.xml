@@ -22,6 +22,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5685c56e-5b02-4b92-8511-84732ba4bb45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/gantry_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/gantry_interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/session.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/session.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gantry_interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/gantry_interface.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +90,8 @@
       <workItem from="1691033558661" duration="46000" />
       <workItem from="1691033778378" duration="3448000" />
       <workItem from="1691368458022" duration="2081000" />
-      <workItem from="1691623510100" duration="4630000" />
+      <workItem from="1691623510100" duration="12722000" />
+      <workItem from="1691636986825" duration="5240000" />
     </task>
     <servers />
   </component>
@@ -99,5 +103,14 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="CMakeRunConfiguration">
+        <watch expression="_read_buf" />
+        <watch expression="_commands" />
+        <watch expression="eyes" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

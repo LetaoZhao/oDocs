@@ -51,11 +51,19 @@ private:
 
 // TODO: replace this with a deque
     std::deque<std::string> _commands;
-
+public:
+    enum MOVE_MODE {
+        GANTRY_LOCAL,
+        GANTRY_GLOBAL
+    };
 public:
     GantryInterface();
 
     void process_message(const char *type, const char *message);
+
+    void move_to(int x, int y, int z, MOVE_MODE coord_system);
+
+    void move_to(std::string x, std::string y, std::string z, MOVE_MODE coord_system);
 
     bool process_interface_io();
 };

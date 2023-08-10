@@ -19,7 +19,7 @@ static std::atomic<bool> g_is_connected(false);
 static otc_publisher *g_publisher = nullptr;
 static std::atomic<bool> g_is_publishing(false);
 // Don't tell anyone but...
-GantryInterface gantry;
+GantryInterface* gantry;
 
 // Callbacks for receiving messages
 static void on_session_connected(otc_session *session, void *user_data) {
@@ -62,7 +62,7 @@ static void on_session_signal_received(otc_session *session,
     if (session == nullptr) {
         return;
     }
-    gantry.process_message(type, signal);
+    gantry->process_message(type, signal);
     std::cout << "Type: " << type << ", Signal: " << signal << std::endl;
 }
 
@@ -135,11 +135,13 @@ static int generate_random_integer() {
     return rand();
 }
 
+// Don't ask hard questions
+std::vector<cv::Rect> eyes;
+// Try using atomic?
+std::mutex _frame_mutex;
+
 static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     cv::VideoCapture vcap = cv::VideoCapture(2);
-//    vcap.set(cv::CAP_PROP_FPS, 60.0f);
-//    vcap.set(cv::CAP_PROP_FRAME_WIDTH,1280);
-//    vcap.set(cv::CAP_PROP_FRAME_HEIGHT,720);
     cv::Mat image = cv::Mat(640,480,CV_8UC4);
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
@@ -154,14 +156,14 @@ static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
 
     while(video_capturer->capturer_thread_exit.load() == false) {
         vcap.read(image);
-
-        std::vector<cv::Rect> eyes;
+        _frame_mutex.lock();
         eyes_cascade.detectMultiScale(image, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70,70));
         if (eyes.size()) {
             for (auto &eye: eyes) {
                 cv::rectangle(image, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
             }
         }
+        _frame_mutex.unlock();
         buffer = (uint8_t *)(image.datastart);
 //        memset(buffer, generate_random_integer() & 0xFF, video_capturer->width * video_capturer->height * 4);
         otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
@@ -169,7 +171,7 @@ static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
         if (otc_frame != nullptr) {
             otc_video_frame_delete(otc_frame);
         }
-        usleep(1000 / 30 * 1000);
+        usleep(1000 / 60 * 1000);
     }
 
     otk_thread_func_return_value;
@@ -234,7 +236,7 @@ static otc_bool get_video_capturer_capture_settings(const otc_video_capturer *ca
 RendererManager renderer_manager;
 
 void system_loop_wrapper() {
-    while (gantry.process_interface_io()) {
+    while (gantry->process_interface_io()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     };
 }
@@ -248,6 +250,8 @@ int main(int argc, char **argv) {
         std::cout << "Could not init OpenTok library" << std::endl;
         return EXIT_FAILURE;
     }
+
+    gantry = new GantryInterface();
 
 #ifdef CONSOLE_LOGGING
     otc_log_set_logger_callback(on_otc_log_message);
