@@ -8,6 +8,9 @@
 #include "otk_thread.h"
 
 #include <opencv2/opencv.hpp>
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/objdetect/objdetect.hpp>
 
 #include "renderer.h"
 #include "gantry_interface.h"
@@ -115,9 +118,9 @@ static void on_publisher_error(otc_publisher *publisher,
     std::cout << __FUNCTION__ << " callback function" << std::endl;
     std::cout << "Publisher error. Error code: " << error_string << std::endl;
 }
-//////////////////////////////////////////
-// Custom video interpreter for droidcam//
-//////////////////////////////////////////
+////////////////////////////////////////////
+// Custom video interpreter for usb webcam//
+////////////////////////////////////////////
 struct custom_video_capturer {
     const otc_video_capturer *video_capturer;
     struct otc_video_capturer_callbacks video_capturer_callbacks;
@@ -134,17 +137,31 @@ static int generate_random_integer() {
 
 static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     cv::VideoCapture vcap = cv::VideoCapture(2);
+//    vcap.set(cv::CAP_PROP_FPS, 60.0f);
+//    vcap.set(cv::CAP_PROP_FRAME_WIDTH,1280);
+//    vcap.set(cv::CAP_PROP_FRAME_HEIGHT,720);
     cv::Mat image = cv::Mat(640,480,CV_8UC4);
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
         otk_thread_func_return_value;
     }
 
-//    uint8_t *buffer = (uint8_t *)malloc(sizeof(uint8_t) * video_capturer->width * video_capturer->height * 4);
+    // Image Detection stuff (move somewhere else)
+    cv::CascadeClassifier eyes_cascade;
+    eyes_cascade.load("/home/tazukiswift/Work/Prog/opencv/opencv-4.x/data/haarcascades/haarcascade_eye.xml");
+
     const uint8_t* buffer;
 
     while(video_capturer->capturer_thread_exit.load() == false) {
         vcap.read(image);
+
+        std::vector<cv::Rect> eyes;
+        eyes_cascade.detectMultiScale(image, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70,70));
+        if (eyes.size()) {
+            for (auto &eye: eyes) {
+                cv::rectangle(image, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
+            }
+        }
         buffer = (uint8_t *)(image.datastart);
 //        memset(buffer, generate_random_integer() & 0xFF, video_capturer->width * video_capturer->height * 4);
         otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);

@@ -22,7 +22,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5685c56e-5b02-4b92-8511-84732ba4bb45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +85,9 @@
       <workItem from="1690857281630" duration="609000" />
       <workItem from="1690950510410" duration="2714000" />
       <workItem from="1691033558661" duration="46000" />
-      <workItem from="1691033778378" duration="2731000" />
+      <workItem from="1691033778378" duration="3448000" />
+      <workItem from="1691368458022" duration="2081000" />
+      <workItem from="1691623510100" duration="4630000" />
     </task>
     <servers />
   </component>
@@ -98,16 +99,5 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/main.cpp</url>
-          <line>137</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
