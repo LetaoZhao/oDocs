@@ -1,8 +1,14 @@
+/* Set background color and height for body and HTML elements */
 body, html {
     background-color: gray;
     height: 100%;
 }
+
+
+
+
 /* ------------------------------------------------------ */
+/* Styling for text box 1 */
 .text1 {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
@@ -11,7 +17,7 @@ body, html {
     left: 3%;
     top: 69.5%;
   }
-/* ------------------------------------------------------ */
+/* Styling for text box 2 */
 .text2 {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
@@ -21,14 +27,11 @@ body, html {
     top: 86%;
   }
 /* ------------------------------------------------------ */
-.angle45-icon {
-    transform: rotate(45deg); /* Rotate the icon by 45 degrees */
-}
+
+
+
 /* ------------------------------------------------------ */
-.angle315-icon {
-    transform: rotate(315deg); /* Rotate the icon by 45 degrees */
-}
-/* ------------------------------------------------------ */
+/* Styling for eye tracking panel that will contain all the auto homing buttons */
 #eyeTractingPanel {
     position: absolute;
     width: 19%;
@@ -41,7 +44,7 @@ body, html {
     border-radius: 5%;
     /* cursor: move; */
 }
-/* ------------------------------------------------------ */
+/* Styling for the left eye auto align button that on the control panel */
 button#left_eye_home {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -59,7 +62,7 @@ button#left_eye_home {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the auto homing button that on the control panel */
 button#zero_eye_home {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -77,7 +80,7 @@ button#zero_eye_home {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the right eye auto align button that on the control panel */
 button#right_eye_home {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -96,6 +99,18 @@ button#right_eye_home {
     cursor: pointer;
 }
 /* ------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------ */
+/* Styling for diagonal movement icons used in control panel */
+.angle45-icon {
+    transform: rotate(45deg); /* Rotate the icon by 45 degrees */
+}
+.angle315-icon {
+    transform: rotate(315deg); /* Rotate the icon by 45 degrees */
+}
+/* Styling for the control panel that will contain all the jogging mode movement buttons */
 #controlPanel {
     position: absolute;
     width: 19%;
@@ -108,7 +123,7 @@ button#right_eye_home {
     border-radius: 5%;
     /* cursor: move; */
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the -x and +z direction */
 button#move_X_Neg_Z_Pos {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -127,7 +142,7 @@ button#move_X_Neg_Z_Pos {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the +z direction */
 button#move_Z_Pos {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -146,7 +161,7 @@ button#move_Z_Pos {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the +x and +z direction */
 button#move_X_Pos_Z_Pos {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -165,7 +180,7 @@ button#move_X_Pos_Z_Pos {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the +y direction */
 button#move_Y_Pos {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -184,7 +199,7 @@ button#move_Y_Pos {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the -x direction */
 button#move_X_Neg {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -203,7 +218,7 @@ button#move_X_Neg {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the +x direction */
 button#move_X_Pos {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -222,7 +237,7 @@ button#move_X_Pos {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the -x and -z direction */
 button#move_X_Neg_Z_Neg {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -241,7 +256,7 @@ button#move_X_Neg_Z_Neg {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the -z direction */
 button#move_Z_Neg {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -260,7 +275,7 @@ button#move_Z_Neg {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the +x and -z direction */
 button#move_X_Pos_Z_Neg {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -279,7 +294,7 @@ button#move_X_Pos_Z_Neg {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the movement button that makes the gantry move in the -y direction */
 button#move_Y_Neg {
     background-color: rgb(222, 222, 222);
     border-radius: 13%;
@@ -298,7 +313,7 @@ button#move_Y_Neg {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the text box for entering the desired step size (unit is mm) */
 input#stepSize_XYZ {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -312,26 +327,7 @@ input#stepSize_XYZ {
     border: 3px solid rgb(122, 176, 136);
     z-index: 50;
 }
-/* ------------------------------------------------------ */
-/* button#smaller_up_by_one {
-    font-size: 15px;
-    background-color: rgb(222, 222, 222);
-    position: absolute;
-    top: 74.53%;
-    Left: 75.5%;
-    width: 22.5%;
-    height: 9.73%;
-}
-#smaller_up_by_one:active {
-    background-color: rgb(190, 190, 190);
-    border-bottom: 3px solid #999;
-    top: 74.83%;
-}
-#smaller_up_by_one:hover {
-    cursor: hand;
-    cursor: pointer;
-} */
-/* ------------------------------------------------------ */
+/* Styling for the text box for entering the desired feed rate / speed */
 input#feedRate {
     background-color: rgb(222, 222, 222);
     position: absolute;
@@ -345,7 +341,7 @@ input#feedRate {
     border: 3px solid rgb(122, 176, 136);
     z-index: 50;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that updates the new step size and feedrate to the gantry */
 button#update {
     font-size: 15px;
     background-color: rgb(222, 222, 222);
@@ -364,7 +360,7 @@ button#update {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that increases the step size by a fold of 10 */
 button#larger {
     font-size: 15px;
     background-color: rgb(222, 222, 222);
@@ -383,7 +379,7 @@ button#larger {
     cursor: hand;
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that decreases the step size by a fold of 10 */
 button#smaller {
     font-size: 15px;
     background-color: rgb(222, 222, 222);
@@ -402,6 +398,10 @@ button#smaller {
     cursor: hand;
     cursor: pointer;
 }
+/* ------------------------------------------------------ */
+
+
+
 /* ------------------------------------------------------ */
 #toolBox {
     position: absolute;

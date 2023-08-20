@@ -79,7 +79,6 @@ function initializeSession() {
     coord.scrollIntoView();
   });
   session.on('signal:config_step', (event) => {
-    // alert("global mode");
     const config_step = document.createElement('p');
     config_step.textContent = event.data;
     config_step.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
@@ -87,7 +86,6 @@ function initializeSession() {
     config_step.scrollIntoView();
   });
   session.on('signal:home', (event) => {
-    // alert("global mode");
     const home = document.createElement('p');
     home.textContent = event.data;
     home.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
