@@ -1,20 +1,31 @@
-/* eslint-disable no-unused-vars */
+/**
+ * Configuration File
+ * Author: [Yijie Ren]
+ * 
+ * This file contains configuration settings for integrating the OpenTok video communication platform.
+ * You can retrieve the session ID and token from your own server or set them manually.
+ * 
+ * Variables:
+ * - SAMPLE_SERVER_BASE_URL: The base URL of the server to retrieve the session ID and token from.
+ * - API_KEY: Your OpenTok API key for authentication.
+ * - SESSION_ID: The session ID used to connect participants in a video session.
+ * - TOKEN: The authentication token used by participants to join the video session.
+ * 
+ * Last Updated: [21st Aug 2023]
+ */
 
-// Make a copy of this file and save it as config.js (in the js directory).
-
-// Set this to the base URL of your sample server, such as 'https://your-app-name.herokuapp.com'.
-// Do not include the trailing slash. See the README for more information:
-
+// Set up your own server to retrieve the Token and Session ID:
 const SAMPLE_SERVER_BASE_URL = 'http://127.0.0.1:5001';
 
-// OR, if you have not set up a web server that runs the learning-opentok-php code,
-// set these values to OpenTok API key, a valid session ID, and a token for the session.
-// For test purposes, you can obtain these from https://tokbox.com/account.
-
-// config.js
+// Or manually set the Token and Session ID:
 const API_KEY = '47679271';
-let SESSION_ID= '';
+let SESSION_ID = '';
 let TOKEN = '';
+
+// In the manual setup, replace the empty SESSION_ID and TOKEN variables with the actual values.
+
+// The rest of your code remains the same.
+
 
 
 
