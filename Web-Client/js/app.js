@@ -1,14 +1,35 @@
-/* global API_KEY TOKEN SESSION_ID SAMPLE_SERVER_BASE_URL OT */
-/* eslint-disable no-alert */
+
+// handle error
+// initialise session
+// Text chat
+// enable move tool box
+// able to toggle video window-
+// change between text mode and jogging mode
+// able to toggle camera view
+// able to screenshot subscriber video
+// start video share
+// end video share
+// able to make subcriber full screen
+// able to swtich coord mode
+// able update step size and feed rate
+// send message to move in X Y Z direction depening on button and step size
+// smaller
+// larger
+// left eye home
+// zero eye home
+// Fetch session data from Flask server and initialize the session
 
 
 // handle error----------------------------------------------------------------------------------------
 function handleError(error) {
+  // Check if an error exists
   if (error) {
+    // Log the error message to the console with console.error()
     console.error(error);
   }
 }
 // handle error----------------------------------------------------------------------------------------
+
 
 
 // initialise session----------------------------------------------------------------------------------
@@ -18,30 +39,36 @@ let sessionId;
 let token;
 
 function initializeSession() {
+  // Configure session options with apiKey, sessionId, and token
   const sessionOptions = {
     apiKey: apiKey,
     sessionId: sessionId,
     token: token,
     screenSharing: true // Enable screen sharing in the session options
   };
+
+  // Initialize an OpenTok session using the provided apiKey and sessionId
   session = OT.initSession(apiKey, sessionId);
 
-
-  // Subscribe to a newly created stream
+  // Subscribe to a newly created stream to display video from other participants
   session.on('streamCreated', (event) => {
+    // Configure subscriber options for stream display
     const subscriberOptions = {
       insertMode: 'replace',
       width: '100%',
       height: '100%'
     };
+
+    // Subscribe to the stream and display it in the 'subscriber' element
     session.subscribe(event.stream, 'subscriber', subscriberOptions, handleError);
   });
 
+  // Handle disconnection from the session
   session.on('sessionDisconnected', (event) => {
     console.error('You were disconnected from the session.', event.reason);
   });
 
-  // Initialize the publisher
+  // Initialize the local publisher for the user's own video
   const publisherOptions = {
     insertMode: 'append',
     width: '100%',
@@ -49,35 +76,37 @@ function initializeSession() {
   };
   const publisher = OT.initPublisher('publisher', publisherOptions, handleError);
 
-  // Connect to the session
+  // Connect to the session using the provided token
   session.connect(token, (error) => {
     if (error) {
       handleError(error);
     } else {
-      // If the connection is successful, publish the publisher to the session
+      // If the connection is successful, publish the user's video stream to the session
       session.publish(publisher, handleError);
     }
   });
 
-
-    // Receive a message and append it to the history
+  // Handle incoming chat messages and append them to the chat history
   const msgHistory = document.querySelector('#history');
+  // For message type = msg (movement message send through text chat under local mode) (only for manual control)
   session.on('signal:move_local', (event) => {
-    // alert("local mode");
     const msg = document.createElement('p');
     msg.textContent = event.data;
+    // Determine whether the message is sent by the user or others and assign appropriate styling
     msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
     msgHistory.appendChild(msg);
     msg.scrollIntoView();
   });
+  // For message type = coord (movement message send through text chat under global mode) (for both manual and jogging control)
   session.on('signal:move_global', (event) => {
-    // alert("global mode");
     const coord = document.createElement('p');
     coord.textContent = event.data;
     coord.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
     msgHistory.appendChild(coord);
     coord.scrollIntoView();
   });
+  // For message type = config_step (movement message send through text chat under jogging mode used to update
+  // step size and feed rate)
   session.on('signal:config_step', (event) => {
     const config_step = document.createElement('p');
     config_step.textContent = event.data;
@@ -85,6 +114,7 @@ function initializeSession() {
     msgHistory.appendChild(config_step);
     config_step.scrollIntoView();
   });
+  // For message type = home (movement message send through by clicking on one of the homing buttons)
   session.on('signal:home', (event) => {
     const home = document.createElement('p');
     home.textContent = event.data;
@@ -96,40 +126,45 @@ function initializeSession() {
 }
 // initialise session----------------------------------------------------------------------------------
 
+
+
 // Text chat-------------------------------------------------------------------------------------------
 const form = document.querySelector('form');
 const msgTxt1 = document.querySelector('#msgTxt1');
 const msgTxt2 = document.querySelector('#msgTxt2');
 const msgTxt3 = document.querySelector('#msgTxt3');
 
+// Add a click event listener to the any submit event inside the text chat
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  // Get the input values
+  // Get the input values for x, y, and z
   const inputValues1 = msgTxt1.value.trim();
   const inputValues2 = msgTxt2.value.trim();
   const inputValues3 = msgTxt3.value.trim();
 
-  // Validate the input
+  // when the inputs are not numbers and if any of the boxes are empty alert based on the mode (local/global)
   if ((inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) && (!isChatSwapped)) {
-    alert('Please enter valid values for x, y or z.');
+    alert('Please enter valid values for x, y, or z.');
     return;
-  } else if((inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) && (isChatSwapped)) {
-    alert('Please enter valid coords for x, y or z.');
+  } else if ((inputValues1 === '' || inputValues2 === '' || inputValues3 === '' || isNaN(inputValues1) || isNaN(inputValues2) || isNaN(inputValues3)) && (isChatSwapped)) {
+    alert('Please enter valid coords for x, y, or z.');
     return;
   }
 
-  // Parse the input values into numbers
+  // Parse the input values into numeric variables
   const x = parseFloat(inputValues1);
   const y = parseFloat(inputValues2);
   const z = parseFloat(inputValues3);
 
-  // Combine the values into one message
+  // Combine the values into a single message
   const newMessage = `${x},${y},${z}`;
 
-  // Send a signal with the combined message
-  if(!isChatSwapped){
+  // Send a signal with the combined message, distinguishing between local and global modes isChatSwapped is explained
+  // in detail in swtich coord mode
+  if (!isChatSwapped) {
     session.signal({
+      // message type move_local is for movement messages thats in local sub-mode
       type: 'move_local',
       data: newMessage
     }, (error) => {
@@ -137,6 +172,7 @@ form.addEventListener('submit', (event) => {
         alert(error);
         handleError(error);
       } else {
+        // Clear the input fields after successful signal
         document.querySelector('#msgTxt1').value = '';
         document.querySelector('#msgTxt2').value = '';
         document.querySelector('#msgTxt3').value = '';
@@ -144,6 +180,7 @@ form.addEventListener('submit', (event) => {
     });
   } else {
     session.signal({
+      // message type move_global is for movement messages thats in global sub-mode
       type: 'move_global',
       data: newMessage
     }, (error) => {
@@ -151,6 +188,7 @@ form.addEventListener('submit', (event) => {
         alert(error);
         handleError(error);
       } else {
+        // Clear the input fields after successful signal
         document.querySelector('#msgTxt1').value = '';
         document.querySelector('#msgTxt2').value = '';
         document.querySelector('#msgTxt3').value = '';
@@ -161,50 +199,78 @@ form.addEventListener('submit', (event) => {
 // Text chat-------------------------------------------------------------------------------------------
 
 
-// move tool box---------------------------------------------------------------------------------------
+
+// enable move tool box---------------------------------------------------------------------------------------
+// Select the 'toolBox' element using jQuery and assign it to the 'toolBox' variable
 const toolBox = $('#toolBox');
+// Make the selected 'toolBox' element draggable using jQuery UI's 'draggable()' method
 toolBox.draggable();
 // move video window-----------------------------------------------------------------------------------
 
 
+
 // able to toggle video window-------------------------------------------------------------------------
+// Select the element with the ID 'toggleButton' from the DOM and store it in 'toggleButton'
 const toggleButton = document.querySelector('#toggleButton');
 
+// Declare a variable 'isHidden' when it is false the publish window is not hidden, when it is true
+// the public window is hidden
 let isHidden = false;
 
+// Add a click event listener to the 'toggleButton'
 toggleButton.addEventListener('click', () => {
   if (isHidden) {
+    // If 'isHidden' is true, set the display style of 'publisher' to 'block'
     publisher.style.display = 'block';
+    // Set 'isHidden' to false, indicating the publisher is now visible
     isHidden = false;
   } else {
+    // If 'isHidden' is false, set the display style of 'publisher' to 'none'
     publisher.style.display = 'none';
+    // Set 'isHidden' to true, indicating the publisher is now hidden
     isHidden = true;
   }
 });
 // able to toggle video window-------------------------------------------------------------------------
 
 
+
 // change between text mode and jogging mode------------------------------------------------------------
+// Select the element with the ID 'toggleChat' from the DOM and store it in the variable 'toggleChat'
 const toggleChat = document.querySelector('#toggleChat');
 
+// Declare a variable 'jogging_mode', when it is false jogging mode is not on, when it is true jogging
+// mode is on
 let jogging_mode = false;
 
+// Add a click event listener to the 'toggleChat' element
 toggleChat.addEventListener('click', () => {
-  // alert(jogging_mode)
+  // Check if 'jogging_mode' is true
   if (jogging_mode) {
+    // If 'jogging_mode' is true, set the display style of 'textchat' to 'block'
     textchat.style.display = 'block';
+    // Set 'jogging_mode' to false, indicating the text chat is now visible
     jogging_mode = false;
   } else {
+    // If 'jogging_mode' is false, set the display style of 'textchat' to 'none'
     textchat.style.display = 'none';
+    // Set 'jogging_mode' to true, indicating the text chat is now hidden
     jogging_mode = true;
   }
 });
 // change between text mode and jogging mode------------------------------------------------------------
 
 
+
 // able to toggle camera view--------------------------------------------------------------------------
+// Select the element with the ID 'toggleCamera' from the DOM and store it in the variable 'toggleCameraButton'
 const toggleCameraButton = document.querySelector('#toggleCamera');
+
+// Declare a variable 'isSwapped', when it is false the camera window between publisher and subscriber has not 
+// been swapped, when it is true they have been swapped
 let isSwapped = false;
+
+// Define 'originalPublisherStyle' with the initial CSS styles for the publisher video element
 const originalPublisherStyle = {
   position: 'absolute',
   width: '360px',
@@ -216,6 +282,8 @@ const originalPublisherStyle = {
   border: '3px solid white',
   borderRadius: '3px'
 };
+
+// Define 'originalSubscriberStyle' with the initial CSS styles for the subscriber video element
 const originalSubscriberStyle = {
   position: 'absolute',
   width: '100%',
@@ -228,23 +296,26 @@ const originalSubscriberStyle = {
   borderRadius: '0px'
 };
 
+// Add a click event listener to the 'toggleCameraButton' element
 toggleCameraButton.addEventListener('click', () => {
-  // Get the publisher and subscriber elements
+  // Get the publisher and subscriber elements by their respective IDs
   const publisherElement = document.getElementById('publisher');
   const subscriberElement = document.getElementById('subscriber');
 
   // Swap the display formats of publisher and subscriber elements
   if (!isSwapped) {
-    // Change the video format
+    // Change the video format to subscriber format
     Object.assign(publisherElement.style, originalSubscriberStyle);
     Object.assign(subscriberElement.style, originalPublisherStyle);
 
+    // Update the 'isSwapped' flag to indicate the swap
     isSwapped = true;
   } else {
-    // Change back the video format
+    // Change back the video format to the original publisher format
     Object.assign(publisherElement.style, originalPublisherStyle);
     Object.assign(subscriberElement.style, originalSubscriberStyle);
 
+    // Update the 'isSwapped' flag to indicate the revert
     isSwapped = false;
   }
 });
@@ -291,6 +362,8 @@ function takeScreenshot() {
 // Get the start screen share button element
 const startScreenShareButton = document.getElementById('startScreenShare');
 
+// Declare a variable 'isSharing', when it is false screen sharing has not started,  when it is true 
+// screen sharing has started
 let isSharing = false;
 
 // Add click event listener to the screen sharing button
@@ -337,7 +410,7 @@ stopScreenShareButton.addEventListener('click', () => {
     // Get the publisher element
     const publisherElement = document.getElementById('publisher');
 
-    // // Create a screen sharing publisher
+    // // Create a publisher element same as before
     const webCamPublisher = OT.initPublisher(publisherElement, {
       insertMode: 'replace',
       position: 'absolute',
@@ -352,8 +425,10 @@ stopScreenShareButton.addEventListener('click', () => {
       publishAudio: true, // Set to false if you don't want to publish audio along with screen share
     }, handleError);
 
+    // publish the new publisher
     session.publish(webCamPublisher, handleError);
 
+    // Update the 'isSharing' flag to indicate the screen sharing has ended
     isSharing = false;
   }
 });
@@ -362,7 +437,12 @@ stopScreenShareButton.addEventListener('click', () => {
 
 // able to make subcriber full screen------------------------------------------------------------------
 const fullScreenButton = document.querySelector('#fullScreen');
+
+// Declare a variable 'isFullScreen', when it is false the screen has not in full screen mode,  when 
+// it is true full screen mode has started
 let isFullScreen = false;
+
+// create a new subscriber window element that takes up the whole screen
 const newSubscriberStyle = {
   position: 'fixed',
   width: '100%',
@@ -867,5 +947,4 @@ if (API_KEY && TOKEN && SESSION_ID) {
 } else {
   alert('You need to set either API_KEY, TOKEN, and SESSION_ID in config.js or SAMPLE_SERVER_BASE_URL to fetch session data from the Flask server.');
 }
-
 // See the config.js file------------------------------------------------------------------------------
