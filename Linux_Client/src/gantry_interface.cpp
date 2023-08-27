@@ -1,10 +1,12 @@
-#include "../include/gantry_interface.h"
+#include "gantry_interface.h"
 #include "error_handler.h"
+#include "gantry_config.h"
 #include <opencv2/opencv.hpp>
 #include <thread>
 #include <chrono>
+#include <cstring>
 
-extern std::mutex _frame_mutex;
+extern std::mutex frame_mutex;
 extern std::vector<cv::Rect> eyes;
 
 
@@ -69,9 +71,9 @@ GantryInterface::GantryInterface() {
 
     _commands.emplace_back("$20 = 1\n");    // Enable Soft-Limits
 
-    _commands.emplace_back("$130 = 200\n");
-    _commands.emplace_back("$131 = 200\n");
-    _commands.emplace_back("$132 = 226\n");
+    _commands.emplace_back("$130 = X_BOUNDING_BOX\n"); // x, y, z bounding boxes
+    _commands.emplace_back("$131 = Y_BOUNDING_BOX\n");
+    _commands.emplace_back("$132 = Z_BOUNDING_BOX\n");
 
     _commands.emplace_back("$G\n");             // ???
 
@@ -179,10 +181,10 @@ void GantryInterface::process_message(const char *type, const char *message) {
         std::this_thread::sleep_for(4000ms);
 
 
-        _frame_mutex.lock();
+        frame_mutex.lock();
         if (message_string == "left") {
             int eye_xpos = 1000;
-            if (eyes.size()) {
+            if (!eyes.empty()) {
                 for (auto &eye: eyes) {
                     if (eye.x < eye_xpos) {
                         eye_xpos = eye.x;
@@ -192,7 +194,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
             }
         } else if(message_string == "right"){
             int eye_xpos = 0;
-            if (eyes.size()) {
+            if (!eyes.empty()) {
                 for (auto &eye: eyes) {
                     if (eye.x > eye_xpos) {
                         eye_xpos = eye.x;
@@ -207,7 +209,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
             int y_move = -(the_eye.y + the_eye.height/2-480/2)/3;
             move_to(x_move,0,y_move,GANTRY_LOCAL);
         }
-        _frame_mutex.unlock();
+        frame_mutex.unlock();
 
     }else if (type_string == "config_step") {
         _feed_rate = message_string;

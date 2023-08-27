@@ -138,7 +138,7 @@ static int generate_random_integer() {
 // Don't ask hard questions
 std::vector<cv::Rect> eyes;
 // Try using atomic?
-std::mutex _frame_mutex;
+std::mutex frame_mutex;
 
 static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     cv::VideoCapture vcap = cv::VideoCapture(2);
@@ -156,14 +156,14 @@ static otk_thread_func_return_type capturer_thread_start_function(void *arg) {
 
     while(video_capturer->capturer_thread_exit.load() == false) {
         vcap.read(image);
-        _frame_mutex.lock();
+        frame_mutex.lock();
         eyes_cascade.detectMultiScale(image, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70,70));
         if (eyes.size()) {
             for (auto &eye: eyes) {
                 cv::rectangle(image, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
             }
         }
-        _frame_mutex.unlock();
+        frame_mutex.unlock();
         buffer = (uint8_t *)(image.datastart);
 //        memset(buffer, generate_random_integer() & 0xFF, video_capturer->width * video_capturer->height * 4);
         otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
@@ -201,7 +201,7 @@ static otc_bool video_capturer_destroy(const otc_video_capturer *capturer, void 
 }
 
 static otc_bool video_capturer_start(const otc_video_capturer *capturer, void *user_data) {
-    struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
+    auto *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
     if (video_capturer == nullptr) {
         return OTC_FALSE;
     }
@@ -236,6 +236,7 @@ static otc_bool get_video_capturer_capture_settings(const otc_video_capturer *ca
 RendererManager renderer_manager;
 
 void system_loop_wrapper() {
+    gantry = new GantryInterface();
     while (gantry->process_interface_io()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     };
@@ -245,13 +246,48 @@ void event_loop_wrapper() {
     renderer_manager.runEventLoop();
 }
 
-int main(int argc, char **argv) {
+// Handle Arguments
+bool handle_args(int argc, char *argv[], std::string *API_KEY, std::string *SESSION_ID, std::string *TOKEN) {
+    int flag = 0;
+    for (int i = 0;i<argc;i++) {
+        if (strcmp(argv[i],"--key") == 0) {
+            *API_KEY = argv[i+1];
+            i++;
+            flag++;
+        }
+        if (strcmp(argv[i],"--id") == 0) {
+            *SESSION_ID = argv[i+1];
+            i++;
+            flag++;
+        }
+        if (strcmp(argv[i],"--token") == 0) {
+            *TOKEN = argv[i+1];
+            i++;
+            flag++;
+        }
+    }
+    if (flag!=3) return false;
+    std::cout << "API KEY = " << *API_KEY << std::endl;
+    std::cout << "SESSION ID = " << *SESSION_ID << std::endl;
+    std::cout << "TOKEN = " << *TOKEN << std::endl;
+    return true;
+}
+
+// Call with api-key, session id, session token
+int main(int argc, char *argv[]) {
     if (otc_init(nullptr) != OTC_SUCCESS) {
         std::cout << "Could not init OpenTok library" << std::endl;
         return EXIT_FAILURE;
     }
 
-    gantry = new GantryInterface();
+    std::string API_KEY;
+    std::string SESSION_ID;
+    std::string TOKEN;
+
+    if (!handle_args(argc,argv,&API_KEY,&SESSION_ID,&TOKEN)) {
+        std::cout << "API_KEY, SESSION_ID or TOKEN not found" << std::endl;
+        return EXIT_FAILURE;
+    }
 
 #ifdef CONSOLE_LOGGING
     otc_log_set_logger_callback(on_otc_log_message);
@@ -278,7 +314,7 @@ int main(int argc, char **argv) {
     publisher_callbacks.on_error = on_publisher_error;
 
     // Custom Video Capturer
-    struct custom_video_capturer *video_capturer = (struct custom_video_capturer *)malloc(sizeof(struct custom_video_capturer));
+    auto *video_capturer = (struct custom_video_capturer *)malloc(sizeof(struct custom_video_capturer));
     video_capturer->video_capturer_callbacks = {0};
     video_capturer->video_capturer_callbacks.user_data = static_cast<void *>(video_capturer);
     video_capturer->video_capturer_callbacks.init = video_capturer_init;
@@ -289,19 +325,6 @@ int main(int argc, char **argv) {
     video_capturer->height = 480;
 
     otc_session *session = nullptr;
-    std::fstream config_file;
-    config_file.open("../session.cfg", std::ios::in);
-    std::string API_KEY;
-    std::string SESSION_ID;
-    std::string TOKEN;
-
-    if (config_file.is_open()) {
-        getline(config_file, API_KEY);
-        getline(config_file, SESSION_ID);
-        getline(config_file, TOKEN);
-    } else {
-        return EXIT_FAILURE;
-    }
 
     session = otc_session_new(API_KEY.c_str(), SESSION_ID.c_str(), &session_callbacks);
 
@@ -348,7 +371,6 @@ int main(int argc, char **argv) {
     if (session != nullptr) {
         otc_session_delete(session);
     }
-
 
     otc_destroy();
 

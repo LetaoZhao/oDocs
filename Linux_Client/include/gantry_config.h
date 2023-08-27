@@ -1,0 +1,12 @@
+//
+// Created by tazukiswift on 27/08/23.
+//
+
+#ifndef SIGNALING_GANTRY_CONFIG_H
+#define SIGNALING_GANTRY_CONFIG_H
+
+#define X_BOUNDING_BOX 200
+#define Y_BOUNDING_BOX 200
+#define Z_BOUNDING_BOX 226
+
+#endif //SIGNALING_GANTRY_CONFIG_H

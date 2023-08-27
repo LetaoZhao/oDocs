@@ -3,8 +3,11 @@
 
 // Headers for all Standard Library facilities.
 #ifndef _WIN32
+
 #include <pthread.h>
+
 #endif
+
 #include <stdio.h>
 #include <time.h>
 
@@ -40,7 +43,7 @@ extern "C" {
 #endif
 
 int
-otk_thread_create(otk_thread_t *thread, otk_thread_func_return_type (*start_routine)(void *), void *arg);
+otk_thread_create(otk_thread_t *thread, otk_thread_func_return_type(*start_routine)(void *), void *arg);
 
 int
 otk_thread_join(otk_thread_t thread);
@@ -78,13 +81,13 @@ otk_thread_self(void);
 
 int
 otk_thread_detach(otk_thread_t thread);
-    
+
 void
 otk_thread_print_self_id(FILE *f);
 
 // TODO-OPENTOK-38210 - Think about how to deal with interrupt and timed wait
 int
-otk_thread_cond_timedwait(otk_thread_cond_t* cond, otk_thread_mutex_t* mutex, struct timespec* to);
+otk_thread_cond_timedwait(otk_thread_cond_t *cond, otk_thread_mutex_t *mutex, struct timespec *to);
 
 #if defined(__cplusplus)
 }

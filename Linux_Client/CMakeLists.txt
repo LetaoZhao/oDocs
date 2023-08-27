@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
-PROJECT(signaling)
+PROJECT(odocs_gantry)
 
 SET(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -36,7 +36,9 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCL
 
 LINK_DIRECTORIES(${LIBSDL2_LIBRARY_DIRS} ${LIBOPENTOK_LIBRARY_DIRS} ${serial_LIBRARY_DIRS})
 
-ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/config-sample.h include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/error_handler.h src/error_handler.cpp)
+ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/error_handler.h src/error_handler.cpp
+        include/gantry_config.h
+        include/gantry_config.h)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES} ${OpenCV_LIBS})
 
 get_cmake_property(_variableNames VARIABLES)
