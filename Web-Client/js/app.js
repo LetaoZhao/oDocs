@@ -489,12 +489,18 @@ fullScreenButton.addEventListener('click', () => {
 // able to make subcriber full screen------------------------------------------------------------------
 
 
-// able to swtich coord mode---------------------------------------------------------------------------
+// able to switch coordinate mode----------------------------------------------------------------------
+
+// Get references to text input elements for x, y, and z values
 const txt1Element = document.getElementById('msgTxt1');
 const txt2Element = document.getElementById('msgTxt2');
 const txt3Element = document.getElementById('msgTxt3');
 
+// Get a reference to the button that switches coordinate modes
 const switchCoord = document.querySelector('#switchCoord');
+
+// Define styles for text elements in different coordinate modes in local mode the text boxes are white
+// in global mode the text boxes are green
 const oldTxtStyle = {
   backgroundColor: '#f0f0f0',
 };
@@ -502,15 +508,23 @@ const newTxtStyle = {
   backgroundColor: '#ccffcc',
 };
 
+// Declare a variable 'isChatSwapped', when it is false the text chat is in loacl mode and when it is true
+// text chat is in global mode
 let isChatSwapped = false;
 
+// Add a click event listener to the coordinate mode switch button
 switchCoord.addEventListener('click', () => {
-  if(jogging_mode){
-    alert('control panel only allows local mode');
-    return
+  // Check if jogging mode is active if it is return alert
+  if (jogging_mode) {
+    alert('Control panel only allows local mode');
+    return;
   }
+
+  // Check the current chat mode and switch accordingly
   if (isChatSwapped) {
-    alert("local mode");
+    // Switch to local mode
+    alert("Local mode");
+    // Restore original text styles and placeholders
     Object.assign(txt1Element.style, oldTxtStyle);
     Object.assign(txt2Element.style, oldTxtStyle);
     Object.assign(txt3Element.style, oldTxtStyle);
@@ -518,10 +532,13 @@ switchCoord.addEventListener('click', () => {
     txt2Element.placeholder = "Enter y value";
     txt3Element.placeholder = "Enter z value";
     isChatSwapped = false;
+    // Register event listener for local movement and deregister for global movement
     session.on('signal:move_local');
     session.off('signal:move_global');
   } else {
-    alert("global mode");
+    // Switch to global mode
+    alert("Global mode");
+    // Apply new text styles and placeholders
     Object.assign(txt1Element.style, newTxtStyle);
     Object.assign(txt2Element.style, newTxtStyle);
     Object.assign(txt3Element.style, newTxtStyle);
@@ -529,47 +546,62 @@ switchCoord.addEventListener('click', () => {
     txt2Element.placeholder = "Enter y coord";
     txt3Element.placeholder = "Enter z coord";
     isChatSwapped = true;
+    // Register event listener for local movement and deregister for global movement
     session.on('signal:move_local');
     session.off('signal:move_global');
   }
 });
-// able to swtich coord mode---------------------------------------------------------------------------
+// able to switch coordinate mode----------------------------------------------------------------------
+
 
 
 // able update step size and feed rate-----------------------------------------------------------------
+// Get reference to the "Update" button
 const update = document.querySelector('#update');
+
+// Get references to input fields for step size and feed rate
 const stepSize_XYZ = document.querySelector('#stepSize_XYZ');
 const feedRate = document.querySelector('#feedRate');
+
+// Flag to track whether step size and feed rate have been updated
 let updated = false;
+
+// Variable to store the step size value
 let stepSize_Value = '';
 
+// Add click event listener to the "Update" button
 update.addEventListener('click', () => {
-  // Get the input values
+  // Get the input values from step size and feed rate fields
   const input1 = stepSize_XYZ.value.trim();
   const input2 = feedRate.value.trim();
 
-  // Validate the input
+  // Validate the input values
   if (input1 === '' || input2 === '' || isNaN(input1) || isNaN(input2)) {
+    // Show an alert if input values are invalid
     alert('Please enter valid feed rate or step size.');
     return;
-  } else{
+  } else {
+    // Mark that inputs have been updated
     updated = true;
   }
 
-  // Parse the input values into numbers
+  // Parse the input values into floating-point numbers
   const step_size = parseFloat(input1);
+  // Store the parsed step size value
   stepSize_Value = step_size;
   const feed_rate = parseFloat(input2);
 
-  // Combine the values into one message
+  // Combine the parsed feed rate into a message
   const newMessage = `${feed_rate}`;
 
-  // Send a signal with the combined message
-  if(jogging_mode){
+  // Send a signal with the combined message based on jogging mode
+  if (jogging_mode) {
+    // Send signal to update configuration in the message type config_step
     session.signal({
       type: 'config_step',
       data: newMessage
     }, (error) => {
+      // Handle errors, but only if not in jogging mode anymore
       if (error && (!jogging_mode)) {
         alert(error);
         handleError(error);
@@ -583,6 +615,8 @@ update.addEventListener('click', () => {
 
 
 // send message to move in X Y Z direction depening on button and step size----------------------------
+// depending on the button that the user presses send relavent messages related to movement to x y and z
+// at the same time using the pre set step size 
 const move_X_Neg_Z_Pos = document.querySelector('#move_X_Neg_Z_Pos'); // 1
 const move_Z_Pos = document.querySelector('#move_Z_Pos'); // 2
 const move_X_Pos_Z_Pos = document.querySelector('#move_X_Pos_Z_Pos'); // 3
@@ -919,32 +953,38 @@ right_eye_home.addEventListener('click', () => {
 // See the config.js file------------------------------------------------------------------------------
 // Fetch session data from Flask server and initialize the session
 function fetchSessionData() {
+  // Fetch session data from the Flask server using SAMPLE_SERVER_BASE_URL
   fetch(SAMPLE_SERVER_BASE_URL) // Replace 'http://localhost:5001/' with the appropriate URL of your Flask server
     .then((response) => response.json())
     .then((data) => {
+      // Extract data from the response
       apiKey = API_KEY;
       sessionId = data[0];
       token = data[1];
 
-      // Initialize the session using the updated SESSION_ID and TOKEN
+      // Initialize the OpenTok session using the updated SESSION_ID and TOKEN
       initializeSession();
     })
     .catch((error) => {
+      // Handle errors during fetching and display an alert
       console.error('Failed to fetch session info:', error);
       alert('Failed to get OpenTok sessionId and token from the server. Make sure your Flask server is running and returning the correct data.');
     });
 }
 
-// See the config.js file
+// Check for existing session data or fetch it from the server
 if (API_KEY && TOKEN && SESSION_ID) {
+  // Use the provided API_KEY, SESSION_ID, and TOKEN
   apiKey = API_KEY;
   sessionId = SESSION_ID;
   token = TOKEN;
+  // Initialize the OpenTok session
   initializeSession();
 } else if (SAMPLE_SERVER_BASE_URL) {
-  // Fetch session data from the Flask server
+  // Fetch session data from the Flask server if SAMPLE_SERVER_BASE_URL is defined
   fetchSessionData();
 } else {
+  // Display an alert if no session data sources are configured
   alert('You need to set either API_KEY, TOKEN, and SESSION_ID in config.js or SAMPLE_SERVER_BASE_URL to fetch session data from the Flask server.');
 }
 // See the config.js file------------------------------------------------------------------------------
