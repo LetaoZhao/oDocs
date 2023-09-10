@@ -22,8 +22,8 @@
   <component name="ChangeListManager">
     <list default="true" id="5685c56e-5b02-4b92-8511-84732ba4bb45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/gantry_interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/gantry_interface.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gantry_interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/gantry_interface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/otk_thread.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/otk_thread.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

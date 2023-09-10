@@ -5,7 +5,6 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
-#include "otk_thread.h"
 
 #include "renderer.h"
 #include "gantry_interface.h"
@@ -21,13 +20,6 @@ GantryInterface* gantry;
 static void on_session_connected(otc_session *session, void *user_data) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
     g_is_connected = true;
-    if ((session != nullptr) && (g_publisher != nullptr)) {
-        if (otc_session_publish(session, g_publisher) == OTC_SUCCESS) {
-            g_is_publishing = true;
-            return;
-        }
-        std::cout << "Could not publish successfully" << std::endl;
-    }
 }
 
 static void on_session_connection_created(otc_session *session,
@@ -113,10 +105,6 @@ static void on_publisher_error(otc_publisher *publisher,
                                enum otc_publisher_error_code error_code) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
     std::cout << "Publisher error. Error code: " << error_string << std::endl;
-}
-static int generate_random_integer() {
-    srand(time(nullptr));
-    return rand();
 }
 
 // Cursed

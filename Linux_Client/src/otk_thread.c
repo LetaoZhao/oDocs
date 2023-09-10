@@ -159,7 +159,6 @@ otk_thread_print_self_id(FILE *f) {
     }
 }
 
-// TODO-OPENTOK-38210 - Think about how to deal with interrupt and timed wait
 int
 otk_thread_cond_timedwait(otk_thread_cond_t *cond, otk_thread_mutex_t *mutex, struct timespec *to) {
 #ifndef _WIN32
