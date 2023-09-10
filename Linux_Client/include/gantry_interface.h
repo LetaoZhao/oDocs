@@ -49,7 +49,6 @@ private:
 
     std::mutex _command_queue_mutex;
 
-// TODO: replace this with a deque
     std::deque<std::string> _commands;
 public:
     enum MOVE_MODE {

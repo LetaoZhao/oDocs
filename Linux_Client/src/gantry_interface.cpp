@@ -9,14 +9,6 @@
 
 #include <condition_variable>
 
-// TODO: Figure out how to remove mutex cause inefficient
-extern std::mutex eyes_vector_mutex;
-extern std::vector<cv::Rect> eyes;
-
-extern std::condition_variable stopped_condition;
-extern std::mutex stopped_mutex;
-extern bool stopped;
-
 GantryInterface::GantryInterface() {
     // empty buffers
     memset(&_write_buf, '\0', sizeof(_write_buf));
@@ -106,7 +98,6 @@ bool GantryInterface::_newline_received() {
     bool newline = false;
     memset(&_read_buf, '\0', sizeof(_read_buf));
     int num_bytes = 0;
-    // TODO: rewrite so only clears readbuff when "ok" was received
         while(num_bytes == 0) {
             num_bytes = read(_serial_port, &_read_buf, sizeof(_read_buf));
             if (num_bytes < 0) {
@@ -149,7 +140,6 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     _commands.push_back(command);
 }
 
-// TODO: strip G21G91 from this command, should be a config option
 void GantryInterface::process_message(const char *type, const char *message) {
     std::string type_string(type);
     std::string message_string(message);
@@ -177,7 +167,6 @@ void GantryInterface::process_message(const char *type, const char *message) {
 
     } else if (type_string == "home") {
 
-        // TODO: Handle "center"
         // Begin CV Eye Homing Sequence
         // LOGIC:
         // Move to approximate center of face
@@ -195,6 +184,8 @@ void GantryInterface::process_message(const char *type, const char *message) {
             eye = get_eye_pos(DIRECTION::LEFT); // gets eye pos from video thread
         } else if(message_string == "right"){
             eye = get_eye_pos(DIRECTION::RIGHT);
+        } else {
+            return;
         }
 
         if ((message_string == "right")||(message_string == "left")) {
@@ -203,7 +194,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
             move_to(x_move,0,y_move,GANTRY_LOCAL);
         }
 
-    }else if (type_string == "config_step") {
+    } else if (type_string == "config_step") {
         _feed_rate = message_string;
     }
 }
