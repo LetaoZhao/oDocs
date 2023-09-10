@@ -1,0 +1,153 @@
+
+#include "video_processing.h"
+#include "renderer.h"
+
+#include<opencv2/highgui/highgui.hpp>
+#include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/objdetect/objdetect.hpp>
+#include <atomic>
+
+#include <condition_variable>
+
+std::condition_variable stopped_condition;
+std::mutex stopped_mutex;
+bool stopped = false;
+
+// Image Detection stuff (move somewhere else)
+cv::CascadeClassifier eyes_cascade;
+
+// vector of all eyes in frame
+std::vector<cv::Rect> eyes;
+
+// mutex for using the current frame
+std::mutex frame_mutex;                                     // Mutex
+cv::Mat image = cv::Mat(640,480,CV_8UC4);   // The Frame Itself
+
+otc_bool video_capturer_init(const otc_video_capturer *capturer, void *user_data) {
+    struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
+    if (video_capturer == nullptr) {
+        return OTC_FALSE;
+    }
+
+    video_capturer->video_capturer = capturer;
+
+    return OTC_TRUE;
+}
+
+otc_bool video_capturer_destroy(const otc_video_capturer *capturer, void *user_data) {
+    auto *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
+    if (video_capturer == nullptr) {
+        return OTC_FALSE;
+    }
+
+    video_capturer->capturer_thread_exit = true;
+    otk_thread_join(video_capturer->capturer_thread);
+
+    return OTC_TRUE;
+}
+
+otc_bool video_capturer_start(const otc_video_capturer *capturer, void *user_data) {
+    auto *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
+    if (video_capturer == nullptr) {
+        return OTC_FALSE;
+    }
+
+    video_capturer->capturer_thread_exit = false;
+    if (otk_thread_create(&(video_capturer->capturer_thread), &capturer_thread_start_function, (void *)video_capturer) != 0) {
+        return OTC_FALSE;
+    }
+
+    return OTC_TRUE;
+}
+
+otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
+                                                    void *user_data,
+                                                    struct otc_video_capturer_settings *settings) {
+    struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
+    if (video_capturer == nullptr) {
+        return OTC_FALSE;
+    }
+
+    settings->format = OTC_VIDEO_FRAME_FORMAT_ARGB32;
+    settings->width = video_capturer->width;
+    settings->height = video_capturer->height;
+    settings->fps = 30;
+    settings->mirror_on_local_render = OTC_FALSE;
+    settings->expected_delay = 0;
+
+    return OTC_TRUE;
+}
+
+otk_thread_func_return_type capturer_thread_start_function(void *arg) {
+    cv::VideoCapture vcap = cv::VideoCapture(2);
+
+    struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
+    if (video_capturer == nullptr) {
+        otk_thread_func_return_value;
+    }
+
+    // Make sure eye_cascade is loaded
+    eyes_cascade.load("/home/tazukiswift/Work/Prog/opencv/opencv-4.x/data/haarcascades/haarcascade_eye.xml");
+
+    const uint8_t* buffer;
+
+    // We want this to get a request for eye position
+    while(!video_capturer->capturer_thread_exit.load()) {
+        // Lock frame for redraw
+        frame_mutex.lock();
+        vcap.read(image);
+        buffer = (uint8_t *)(image.datastart);
+        otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
+        otc_video_capturer_provide_frame(video_capturer->video_capturer, 0, otc_frame);
+        frame_mutex.unlock();
+
+        if (otc_frame != nullptr) {
+            otc_video_frame_delete(otc_frame);
+        }
+        usleep(1000 / 60 * 1000);
+    }
+
+    otk_thread_func_return_value;
+}
+
+cv::Rect get_eye_pos(DIRECTION which_eye) {
+
+    // Lock frame for this
+    frame_mutex.lock();
+    eyes_cascade.detectMultiScale(image, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70,70));
+
+    if (!eyes.empty()) {
+        for (auto &eye: eyes) {
+            cv::rectangle(image, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
+        }
+    }
+    frame_mutex.unlock();
+
+    cv::Rect the_eye;
+    if (which_eye == DIRECTION::LEFT) {
+        int eye_xpos = 1000;
+        if (!eyes.empty()) {
+            for (auto &eye: eyes) {
+                if (eye.x < eye_xpos) {
+                    eye_xpos = eye.x;
+                    the_eye = eye;
+                }
+            }
+        }
+    } else {
+        int eye_xpos = 0;
+        if (!eyes.empty()) {
+            for (auto &eye: eyes) {
+                if (eye.x > eye_xpos) {
+                    eye_xpos = eye.x;
+                    the_eye = eye;
+                }
+            }
+        }
+    }
+    return the_eye;
+}
+
+void wait_till_stopped() {
+
+}

@@ -1,14 +1,21 @@
 #include "gantry_interface.h"
 #include "error_handler.h"
-#include "gantry_config.h"
+#include "gantry_config.h"  // TODO: Implement software bounding box
+#include "video_processing.h"
 #include <opencv2/opencv.hpp>
 #include <thread>
 #include <chrono>
 #include <cstring>
 
-extern std::mutex frame_mutex;
+#include <condition_variable>
+
+// TODO: Figure out how to remove mutex cause inefficient
+extern std::mutex eyes_vector_mutex;
 extern std::vector<cv::Rect> eyes;
 
+extern std::condition_variable stopped_condition;
+extern std::mutex stopped_mutex;
+extern bool stopped;
 
 GantryInterface::GantryInterface() {
     // empty buffers
@@ -169,8 +176,8 @@ void GantryInterface::process_message(const char *type, const char *message) {
         move_to(x_position, y_position, z_position, GANTRY_GLOBAL);
 
     } else if (type_string == "home") {
-        cv::Rect the_eye;
-        using namespace std::chrono_literals;
+
+        // TODO: Handle "center"
         // Begin CV Eye Homing Sequence
         // LOGIC:
         // Move to approximate center of face
@@ -178,38 +185,21 @@ void GantryInterface::process_message(const char *type, const char *message) {
         // Move to that point
         // Get pointer to eyes vector
         move_to(110,0,110,GANTRY_GLOBAL);
-        std::this_thread::sleep_for(4000ms);
+        // Wait for the thing to stop moving
 
 
-        frame_mutex.lock();
+        cv::Rect eye;
         if (message_string == "left") {
-            int eye_xpos = 1000;
-            if (!eyes.empty()) {
-                for (auto &eye: eyes) {
-                    if (eye.x < eye_xpos) {
-                        eye_xpos = eye.x;
-                        the_eye = eye;
-                    }
-                }
-            }
+            eye = get_eye_pos(DIRECTION::LEFT);
         } else if(message_string == "right"){
-            int eye_xpos = 0;
-            if (!eyes.empty()) {
-                for (auto &eye: eyes) {
-                    if (eye.x > eye_xpos) {
-                        eye_xpos = eye.x;
-                        the_eye = eye;
-                    }
-                }
-            }
+            eye = get_eye_pos(DIRECTION::RIGHT);
         }
 
         if ((message_string == "right")||(message_string == "left")) {
-            int x_move = -(the_eye.x + the_eye.width/2-640/2)/3;
-            int y_move = -(the_eye.y + the_eye.height/2-480/2)/3;
+            int x_move = -(eye.x + eye.width/2-640/2)/3;
+            int y_move = -(eye.y + eye.height/2-480/2)/3;
             move_to(x_move,0,y_move,GANTRY_LOCAL);
         }
-        frame_mutex.unlock();
 
     }else if (type_string == "config_step") {
         _feed_rate = message_string;

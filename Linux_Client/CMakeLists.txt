@@ -38,7 +38,8 @@ LINK_DIRECTORIES(${LIBSDL2_LIBRARY_DIRS} ${LIBOPENTOK_LIBRARY_DIRS} ${serial_LIB
 
 ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/error_handler.h src/error_handler.cpp
         include/gantry_config.h
-        include/gantry_config.h)
+        include/video_processing.h
+        src/video_processing.cpp)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES} ${OpenCV_LIBS})
 
 get_cmake_property(_variableNames VARIABLES)
