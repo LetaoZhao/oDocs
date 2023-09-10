@@ -21,7 +21,10 @@ std::vector<cv::Rect> eyes;
 
 // mutex for using the current frame
 std::mutex frame_mutex;                                     // Mutex
-cv::Mat image = cv::Mat(640,480,CV_8UC4);   // The Frame Itself
+std::atomic<bool> writing_frame_zero(true);
+cv::Mat frame_buffer_zero = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
+cv::Mat frame_buffer_one = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
+
 
 otc_bool video_capturer_init(const otc_video_capturer *capturer, void *user_data) {
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
@@ -95,8 +98,10 @@ otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     while(!video_capturer->capturer_thread_exit.load()) {
         // Lock frame for redraw
         frame_mutex.lock();
-        vcap.read(image);
-        buffer = (uint8_t *)(image.datastart);
+        cv::Mat * frame_buffer = writing_frame_zero ? &frame_buffer_zero : &frame_buffer_one;
+        writing_frame_zero = !writing_frame_zero;
+        vcap.read(*frame_buffer);
+        buffer = (uint8_t *)(frame_buffer->datastart);
         otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
         otc_video_capturer_provide_frame(video_capturer->video_capturer, 0, otc_frame);
         frame_mutex.unlock();
@@ -112,13 +117,14 @@ otk_thread_func_return_type capturer_thread_start_function(void *arg) {
 
 cv::Rect get_eye_pos(DIRECTION which_eye) {
 
-    // Lock frame for this
+    // By using double buffering, we can minimize the time that the functions block each other
     frame_mutex.lock();
-    eyes_cascade.detectMultiScale(image, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70,70));
+    cv::Mat * frame_buffer = !writing_frame_zero ? &frame_buffer_zero : &frame_buffer_one;
+    eyes_cascade.detectMultiScale(*frame_buffer, eyes, 1.1, 40, 0 | cv::CASCADE_SCALE_IMAGE, cv::Size(70, 70));
 
     if (!eyes.empty()) {
         for (auto &eye: eyes) {
-            cv::rectangle(image, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
+            cv::rectangle(*frame_buffer, eye, cv::Scalar(255, 0, 0), 2, cv::LINE_8);
         }
     }
     frame_mutex.unlock();
@@ -149,5 +155,37 @@ cv::Rect get_eye_pos(DIRECTION which_eye) {
 }
 
 void wait_till_stopped() {
+    cv::Mat prev;
+    cv::Mat next;
+    cv::Mat diff;
 
+    int motion_pixels = 170001;
+    while(motion_pixels > 170000) {
+        frame_mutex.lock();
+        cv::cvtColor(frame_buffer_zero, prev, cv::COLOR_BGR2GRAY);
+        cv::cvtColor(frame_buffer_one, next, cv::COLOR_BGR2GRAY);
+        frame_mutex.unlock();
+
+        cv::absdiff(prev, next, diff);
+        motion_pixels = cv::countNonZero(diff);
+        std::cout << "Motion Pixels:" << motion_pixels << std::endl;
+    }
+}
+
+void wait_till_moving() {
+    cv::Mat prev;
+    cv::Mat next;
+    cv::Mat diff;
+
+    int motion_pixels = 169999;
+    while(motion_pixels < 170000) {
+        frame_mutex.lock();
+        cv::cvtColor(frame_buffer_zero, prev, cv::COLOR_BGR2GRAY);
+        cv::cvtColor(frame_buffer_one, next, cv::COLOR_BGR2GRAY);
+        frame_mutex.unlock();
+
+        cv::absdiff(prev, next, diff);
+        motion_pixels = cv::countNonZero(diff);
+        std::cout << "Motion Pixels:" << motion_pixels << std::endl;
+    }
 }

@@ -21,12 +21,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5685c56e-5b02-4b92-8511-84732ba4bb45" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/include/video_processing.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/video_processing.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/video_processing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/video_processing.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gantry_interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/gantry_interface.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/video_processing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/video_processing.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +129,8 @@
         <watch expression="eyes" />
         <watch expression="*argv @ 1" />
         <watch expression="*API_KEY @ 10" />
+        <watch expression="frame_buffer_zero" />
+        <watch expression="frame_buffer_one" />
       </configuration>
     </watches-manager>
   </component>

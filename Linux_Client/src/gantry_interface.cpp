@@ -186,11 +186,13 @@ void GantryInterface::process_message(const char *type, const char *message) {
         // Get pointer to eyes vector
         move_to(110,0,110,GANTRY_GLOBAL);
         // Wait for the thing to stop moving
-
+        wait_till_moving();
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));    // Move must be at least 300ms long
+        wait_till_stopped();
 
         cv::Rect eye;
         if (message_string == "left") {
-            eye = get_eye_pos(DIRECTION::LEFT);
+            eye = get_eye_pos(DIRECTION::LEFT); // gets eye pos from video thread
         } else if(message_string == "right"){
             eye = get_eye_pos(DIRECTION::RIGHT);
         }
@@ -204,7 +206,6 @@ void GantryInterface::process_message(const char *type, const char *message) {
     }else if (type_string == "config_step") {
         _feed_rate = message_string;
     }
-    // Process message into command here
 }
 
 bool GantryInterface::process_interface_io() {

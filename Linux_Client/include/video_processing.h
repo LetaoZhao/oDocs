@@ -36,4 +36,6 @@ cv::Rect get_eye_pos(DIRECTION eye);
 
 void wait_till_stopped();
 
+void wait_till_moving();
+
 #endif //ODOCS_GANTRY_VIDEO_PROCESSING_H
