@@ -13,10 +13,11 @@ SET(CMAKE_BUILD_TYPE Debug)
 INCLUDE(FindPkgConfig)
 PKG_SEARCH_MODULE(LIBSDL2 REQUIRED sdl2)
 
-set(OpenCV_DIR /home/tazukiswift/Work/Prog/opencv/build)
 find_package( OpenCV REQUIRED )
 
-set(ENV{LIBOPENTOK_PATH} /home/tazukiswift/Work/Prog/toolchains/libopentok_linux_llvm_x86_64/)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/libraries/opencv_build)
+
+set(ENV{LIBOPENTOK_PATH} ${CMAKE_SOURCE_DIR}/libraries/libopentok_linux_llvm_x86_64/)
 
 if (DEFINED ENV{LIBOPENTOK_PATH})
     find_path(LIBOPENTOK_HEADER opentok.h PATHS $ENV{LIBOPENTOK_PATH}/include NO_DEFAULT_PATH)
@@ -36,9 +37,7 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/./libs/common/src ${LIBSDL2_INCL
 
 LINK_DIRECTORIES(${LIBSDL2_LIBRARY_DIRS} ${LIBOPENTOK_LIBRARY_DIRS} ${serial_LIBRARY_DIRS})
 
-ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp include/otk_thread.h src/gantry_interface.cpp include/renderer.h src/otk_thread.c src/renderer.cpp src/renderer.cpp src/renderer.cpp include/error_handler.h src/error_handler.cpp
-        include/gantry_config.h
-        include/video_processing.h
+ADD_EXECUTABLE(${PROJECT_NAME} src/main.cpp src/gantry_interface.cpp src/otk_thread.cpp src/renderer.cpp src/renderer.cpp src/renderer.cpp src/error_handler.cpp
         src/video_processing.cpp)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIBSDL2_LIBRARIES} ${LIBOPENTOK_LIBRARIES} ${serial_LIBRARIES} ${OpenCV_LIBS})
 
@@ -48,4 +47,8 @@ foreach (_variableName ${_variableNames})
     message(STATUS "${_variableName}=${${_variableName}}")
 endforeach ()
 
-
+get_cmake_property(_variableNames VARIABLES)
+list (SORT _variableNames)
+foreach (_variableName ${_variableNames})
+    message(STATUS "${_variableName}=${${_variableName}}")
+endforeach()

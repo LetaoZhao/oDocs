@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['otc_5faudio_5fdevice_715',['otc_audio_device',['../audio__device_8h.html#a146751878b330e569001c4e16d0a300b',1,'audio_device.h']]],
+  ['otc_5faudio_5fmodule_5finput_5fdevice_5fenumerator_716',['otc_audio_module_input_device_enumerator',['../audio__module__input__device_8h.html#ac08be13769e76fe40cd44423eea10876',1,'audio_module_input_device.h']]],
+  ['otc_5faudio_5fmodule_5foutput_5fdevice_5fenumerator_717',['otc_audio_module_output_device_enumerator',['../audio__module__output__device_8h.html#a8b9ede09ec7b9f1d03204562ff2b6caf',1,'audio_module_output_device.h']]],
+  ['otc_5fbool_718',['otc_bool',['../base_8h.html#a369665a8d677d682c604449588e87b51',1,'base.h']]],
+  ['otc_5fconnection_719',['otc_connection',['../connection_8h.html#ad961ec0eafef689335c103f420408271',1,'connection.h']]],
+  ['otc_5flogger_5fcallback_720',['otc_logger_callback',['../base_8h.html#a91066e2890fbb45eb0623859ab97f920',1,'base.h']]],
+  ['otc_5fpublisher_721',['otc_publisher',['../publisher_8h.html#abb2094d1d7b7c22f042d6b197c779e20',1,'publisher.h']]],
+  ['otc_5fpublisher_5fsettings_722',['otc_publisher_settings',['../publisher_8h.html#ad7845283139c2e05ba7b19012d9620e9',1,'publisher.h']]],
+  ['otc_5fsession_723',['otc_session',['../session_8h.html#a3ae81649530891ab6e9007b4694fe54c',1,'session.h']]],
+  ['otc_5fsession_5fsettings_724',['otc_session_settings',['../session_8h.html#a76a550054c4a2def99a49148b3c793ab',1,'session.h']]],
+  ['otc_5fstatus_725',['otc_status',['../base_8h.html#ab50ab22c297874fcb1e2da57dbc74e50',1,'base.h']]],
+  ['otc_5fstream_726',['otc_stream',['../stream_8h.html#a8bffa84898b6f9952563bbf1e4cb962e',1,'stream.h']]],
+  ['otc_5fsubscriber_727',['otc_subscriber',['../subscriber_8h.html#a7cf150ff8426656bec6bdb8c7ec092b1',1,'subscriber.h']]],
+  ['otc_5fvideo_5fcapturer_728',['otc_video_capturer',['../video__capturer_8h.html#aecffa8c3f6306a578e6bf1fd38f8a79e',1,'video_capturer.h']]],
+  ['otc_5fvideo_5fcodec_5ftype_729',['otc_video_codec_type',['../media__utils_8h.html#a82f409e7dcca08ace817a56a352e1632',1,'media_utils.h']]],
+  ['otc_5fvideo_5fframe_730',['otc_video_frame',['../video__frame_8h.html#a156d9da389ced48b6889b671ec0dc7fb',1,'video_frame.h']]],
+  ['otc_5fvideo_5fframe_5fmemory_5frelease_5fcallback_731',['otc_video_frame_memory_release_callback',['../video__frame_8h.html#ad4564ce70e9c149971b7141a4d5f1e6f',1,'video_frame.h']]]
+];

@@ -1,5 +1,5 @@
-#include <map>
 #include <memory>
+#include <map>
 
 #include "SDL.h"
 #include "opentok.h"

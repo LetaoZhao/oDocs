@@ -6,6 +6,9 @@
 #include <atomic>
 #include <opencv2/opencv.hpp>
 
+#include <memory>
+#include <map>
+
 // Custom Video Interpreter
 struct custom_video_capturer {
     const otc_video_capturer *video_capturer;
