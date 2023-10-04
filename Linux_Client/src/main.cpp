@@ -210,7 +210,8 @@ int main(int argc, char *argv[]) {
 
     // Register Publisher
     g_publisher = otc_publisher_new("opentok-linux-sdk-samples",
-                                    &(video_capturer->video_capturer_callbacks), /* Use WebRTC's video capturer. */
+//                                    &(video_capturer->video_capturer_callbacks),
+                                    nullptr,
                                     &publisher_callbacks);
     if (g_publisher == nullptr) {
         std::cout << "Could not create OpenTok publisher successfully" << std::endl;

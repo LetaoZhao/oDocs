@@ -22,8 +22,9 @@ std::vector<cv::Rect> eyes;
 // mutex for using the current frame
 std::mutex frame_mutex;                                     // Mutex
 std::atomic<bool> writing_frame_zero(true);
-cv::Mat frame_buffer_zero = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
-cv::Mat frame_buffer_one = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
+cv::Mat frame_buffer_zero = cv::Mat(480, 640, CV_8UC4);   // The Frame Itself
+cv::Mat frame_buffer_one = cv::Mat(480, 640, CV_8UC4);   // The Frame Itself
+cv::Mat frame_buffer_raw = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
 
 
 otc_bool video_capturer_init(const otc_video_capturer *capturer, void *user_data) {
@@ -31,7 +32,8 @@ otc_bool video_capturer_init(const otc_video_capturer *capturer, void *user_data
     if (video_capturer == nullptr) {
         return OTC_FALSE;
     }
-
+    video_capturer->width = 640;
+    video_capturer->height = 480;
     video_capturer->video_capturer = capturer;
 
     return OTC_TRUE;
@@ -82,7 +84,7 @@ otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
 }
 
 otk_thread_func_return_type capturer_thread_start_function(void *arg) {
-    cv::VideoCapture vcap = cv::VideoCapture(2);
+    cv::VideoCapture vcap = cv::VideoCapture("/dev/video0");
 
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
@@ -93,23 +95,25 @@ otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     eyes_cascade.load("/home/tazukiswift/Work/Prog/opencv/opencv-4.x/data/haarcascades/haarcascade_eye.xml");
 
     const uint8_t* buffer;
-
     // We want this to get a request for eye position
     while(!video_capturer->capturer_thread_exit.load()) {
         // Lock frame for redraw
         frame_mutex.lock();
         cv::Mat * frame_buffer = writing_frame_zero ? &frame_buffer_zero : &frame_buffer_one;
         writing_frame_zero = !writing_frame_zero;
-        vcap.read(*frame_buffer);
+        vcap.read(frame_buffer_raw);
+        cv::rotate(frame_buffer_raw,*frame_buffer,cv::ROTATE_90_COUNTERCLOCKWISE);
+//        cv::imshow("CV Rotated",*frame_buffer);
+//        cv::waitKey(1);
         buffer = (uint8_t *)(frame_buffer->datastart);
-        otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->width, video_capturer->height, buffer);
+        otc_video_frame *otc_frame = otc_video_frame_new(OTC_VIDEO_FRAME_FORMAT_RGB24, video_capturer->height, video_capturer->width, buffer);
         otc_video_capturer_provide_frame(video_capturer->video_capturer, 0, otc_frame);
         frame_mutex.unlock();
 
         if (otc_frame != nullptr) {
             otc_video_frame_delete(otc_frame);
         }
-        usleep(1000 / 60 * 1000);
+        usleep(1000 / 30 * 1000);
     }
 
     otk_thread_func_return_value;
