@@ -82,6 +82,7 @@ otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
     return OTC_TRUE;
 }
 
+// TODO: add this as an argument to program
 otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     cv::VideoCapture vcap = cv::VideoCapture("/dev/video0");
 
@@ -114,7 +115,6 @@ otk_thread_func_return_type capturer_thread_start_function(void *arg) {
         }
         usleep(1000 / 30 * 1000);
     }
-
     otk_thread_func_return_value;
 }
 

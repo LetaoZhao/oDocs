@@ -45,6 +45,15 @@ private:
     char _read_buf[256] = {0};
     char _write_buf[256] = {0};
 
+    // gantry config (messy solution)
+    int x_home = 110;
+    int y_home = 110;
+    int z_home = 65;
+
+    int current_x = 0;
+    int current_y = 0;
+    int current_z = 225;
+
     std::string _feed_rate = "2000";
 
     std::mutex _command_queue_mutex;
@@ -65,6 +74,8 @@ public:
     void move_to(std::string x, std::string y, std::string z, MOVE_MODE coord_system);
 
     bool process_interface_io();
+
+    void reset_gantry();
 };
 
 #endif //SIGNALING_GANTRY_INTERFACE_H

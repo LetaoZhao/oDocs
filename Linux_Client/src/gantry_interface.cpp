@@ -138,8 +138,34 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     command.append("\n");
     std::lock_guard<std::mutex> guard(_command_queue_mutex);
     _commands.push_back(command);
+
+    int x_int = std::stoi(x);
+    int y_int = std::stoi(y);
+    int z_int = std::stoi(z);
+
+    if (coord_system == GANTRY_LOCAL) {
+        current_x += x_int;
+        current_y += y_int;
+        current_z += z_int;
+    } else {
+        current_x = x_int;
+        current_y = y_int;
+        current_z = z_int;
+    }
+    std::cout << "Gantry Pos:" << current_x << "," << current_y << "," << current_z << std::endl;
 }
 
+void GantryInterface::reset_gantry() {
+    _commands.clear();
+    _commands.emplace_back("$$\n");
+    _commands.emplace_back("$X\n");
+    _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
+    _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
+    _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
+}
+
+// TODO: Implement global coordinate tracking in here
+// TODO: make directions consistent
 void GantryInterface::process_message(const char *type, const char *message) {
     std::string type_string(type);
     std::string message_string(message);
@@ -154,6 +180,7 @@ void GantryInterface::process_message(const char *type, const char *message) {
         std::string z_position = message_string.substr(delimiter_2 + 1, message_string.length() - delimiter_2);
 
         move_to(x_position, y_position, z_position, GANTRY_LOCAL);
+
     } else if (type_string == "move_global") {
         // Fix delimiter finder
         int delimiter_1 = message_string.find(delimiter, 0);
@@ -173,29 +200,35 @@ void GantryInterface::process_message(const char *type, const char *message) {
         // Get pointer to eyes vector
         // Move to that point
         // Get pointer to eyes vector
-        move_to(110,0,110,GANTRY_GLOBAL);
+        move_to(x_home,y_home,z_home,GANTRY_GLOBAL);
         // Wait for the thing to stop moving
         wait_till_moving();
         std::this_thread::sleep_for(std::chrono::milliseconds(300));    // Move must be at least 300ms long
         wait_till_stopped();
 
-        cv::Rect eye;
-        if (message_string == "left") {
-            eye = get_eye_pos(DIRECTION::LEFT); // gets eye pos from video thread
-        } else if(message_string == "right"){
-            eye = get_eye_pos(DIRECTION::RIGHT);
-        } else {
-            return;
-        }
+//        cv::Rect eye;
+//        if (message_string == "left") {
+//            eye = get_eye_pos(DIRECTION::LEFT); // gets eye pos from video thread
+//        } else if(message_string == "right"){
+//            eye = get_eye_pos(DIRECTION::RIGHT);
+//        } else {
+//            return;
+//        }
 
+        // Using inter-pupilliary distance
         if ((message_string == "right")||(message_string == "left")) {
-            int x_move = -(eye.x + eye.width/2-640/2)/3;
-            int y_move = -(eye.y + eye.height/2-480/2)/3;
+//            int x_move = -(eye.x + eye.width/2-640/2)/3;
+//            int y_move = -(eye.y + eye.height/2-480/2)/3;
+            int y_move = 0;
+            int x_move = message_string == "right" ? 32 : -32;
+
             move_to(x_move,0,y_move,GANTRY_LOCAL);
         }
 
     } else if (type_string == "config_step") {
         _feed_rate = message_string;
+    } else if (type_string == "reset") {
+        reset_gantry();
     }
 }
 
