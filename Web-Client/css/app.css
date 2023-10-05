@@ -488,7 +488,7 @@ button#toggleButton {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.5%;
+    height: 11.1%;
 }
 #toggleButton:active {
     border-bottom: 3px solid #999;
@@ -504,7 +504,7 @@ button#toggleChat {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.5%;
+    height: 11.1%;
 }
 #toggleChat:active {
     border-bottom: 3px solid #999;
@@ -520,7 +520,7 @@ button#toggleCamera {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.5%;
+    height: 11.1%;
 }
 #toggleCamera:active {
     border-bottom: 3px solid #999;
@@ -536,7 +536,7 @@ button#screenShot {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.5%;
+    height: 11.1%;
 }
 #screenShot:active {
     border-bottom: 3px solid #999;
@@ -552,7 +552,7 @@ button#startScreenShare {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.6%;
+    height: 11.1%;
 }
 #startScreenShare:active {
     border-bottom: 3px solid #999;
@@ -568,7 +568,7 @@ button#stopScreenShare {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.6%;
+    height: 11.1%;
 }
 #stopScreenShare:active {
     border-bottom: 3px solid #999;
@@ -584,7 +584,7 @@ button#fullScreen {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.6%;
+    height: 11.1%;
 }
 #fullScreen:active {
     border-bottom: 3px solid #999;
@@ -600,13 +600,29 @@ button#switchCoord {
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 12.6%;
+    height: 11.1%;
 }
 #switchCoord:active {
     border-bottom: 3px solid #999;
     top: 0.3%;
 }
 #switchCoord:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for the button that resets the gantry */
+button#reset {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#reset:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#reset:hover {
     cursor: hand; 
     cursor: pointer;
 }

@@ -122,6 +122,14 @@ function initializeSession() {
     msgHistory.appendChild(home);
     home.scrollIntoView();
   });
+  // For message type = home (movement message send through by clicking on one of the homing buttons)
+  session.on('signal:reset', (event) => {
+    const rest = document.createElement('p');
+    rest.textContent = event.data;
+    rest.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    msgHistory.appendChild(rest);
+    rest.scrollIntoView();
+  });
   // alert(token);
 }
 // initialise session----------------------------------------------------------------------------------
@@ -939,6 +947,27 @@ right_eye_home.addEventListener('click', () => {
   // Send a signal with the combined message
   session.signal({
     type: 'home',
+    data: newMessage
+  }, (error) => {
+    if (error) {
+      alert(error);
+      handleError(error);
+    }
+  });
+});
+// zero eye home---------------------------------------------------------------------------------------
+
+
+// right eye home---------------------------------------------------------------------------------------
+const reset = document.querySelector('#reset');
+
+reset.addEventListener('click', () => {
+  // Combine the values into one message
+  const newMessage = 'reset';
+
+  // Send a signal with the combined message
+  session.signal({
+    type: 'reset',
     data: newMessage
   }, (error) => {
     if (error) {
