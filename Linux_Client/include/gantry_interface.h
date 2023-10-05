@@ -50,6 +50,10 @@ private:
     int y_home = 110;
     int z_home = 65;
 
+    static const int x_limit = 200;
+    static const int y_limit = 200;
+    static const int z_limit = 226;
+
     int current_x = 0;
     int current_y = 0;
     int current_z = 225;

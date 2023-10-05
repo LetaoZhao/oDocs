@@ -70,9 +70,9 @@ GantryInterface::GantryInterface() {
 
     _commands.emplace_back("$20 = 1\n");    // Enable Soft-Limits
 
-    _commands.emplace_back("$130 = 300\n"); // x, y, z bounding boxes
-    _commands.emplace_back("$131 = 300\n");
-    _commands.emplace_back("$132 = 300\n");
+    _commands.emplace_back("$130 = "+std::to_string(x_limit)+"\n"); // x, y, z bounding boxes
+    _commands.emplace_back("$131 = "+std::to_string(y_limit)+"\n");
+    _commands.emplace_back("$132 = "+std::to_string(z_limit)+"\n");
 
     _commands.emplace_back("$G\n");             // ???
 
@@ -128,6 +128,20 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     } else {
         command.append("G21G90G0X");
     }
+    int x_int = std::stoi(x);
+    int y_int = std::stoi(y);
+    int z_int = std::stoi(z);
+
+    if (coord_system == GANTRY_LOCAL) {
+        if ((current_x + x_int > x_limit)||(current_x + x_int < 0)) return;
+        if ((current_y + y_int > y_limit)||(current_y + y_int < 0)) return;
+        if ((current_z + z_int > z_limit)||(current_z + z_int < 0)) return;
+    } else {
+        if ((x_int > x_limit)||(x_int < 0)) return;
+        if ((y_int > y_limit)||(y_int < 0)) return;
+        if ((z_int > z_limit)||(z_int < 0)) return;
+    }
+
     command.append(x);
     command.append("Y");
     command.append(y);
@@ -138,10 +152,6 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     command.append("\n");
     std::lock_guard<std::mutex> guard(_command_queue_mutex);
     _commands.push_back(command);
-
-    int x_int = std::stoi(x);
-    int y_int = std::stoi(y);
-    int z_int = std::stoi(z);
 
     if (coord_system == GANTRY_LOCAL) {
         current_x += x_int;
