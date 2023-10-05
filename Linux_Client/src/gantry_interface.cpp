@@ -164,7 +164,6 @@ void GantryInterface::reset_gantry() {
     _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
 }
 
-// TODO: Implement global coordinate tracking in here
 // TODO: make directions consistent
 void GantryInterface::process_message(const char *type, const char *message) {
     std::string type_string(type);
@@ -229,6 +228,10 @@ void GantryInterface::process_message(const char *type, const char *message) {
         _feed_rate = message_string;
     } else if (type_string == "reset") {
         reset_gantry();
+    } else if (type_string == "set_home") {
+        x_home = current_x;
+        y_home = current_y;
+        z_home = current_z;
     }
 }
 
