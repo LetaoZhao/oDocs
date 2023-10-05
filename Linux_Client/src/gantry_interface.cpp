@@ -70,9 +70,9 @@ GantryInterface::GantryInterface() {
 
     _commands.emplace_back("$20 = 1\n");    // Enable Soft-Limits
 
-    _commands.emplace_back("$130 = X_BOUNDING_BOX\n"); // x, y, z bounding boxes
-    _commands.emplace_back("$131 = Y_BOUNDING_BOX\n");
-    _commands.emplace_back("$132 = Z_BOUNDING_BOX\n");
+    _commands.emplace_back("$130 = 300\n"); // x, y, z bounding boxes
+    _commands.emplace_back("$131 = 300\n");
+    _commands.emplace_back("$132 = 300\n");
 
     _commands.emplace_back("$G\n");             // ???
 

@@ -26,7 +26,6 @@ cv::Mat frame_buffer_zero = cv::Mat(480, 640, CV_8UC4);   // The Frame Itself
 cv::Mat frame_buffer_one = cv::Mat(480, 640, CV_8UC4);   // The Frame Itself
 cv::Mat frame_buffer_raw = cv::Mat(640, 480, CV_8UC4);   // The Frame Itself
 
-
 otc_bool video_capturer_init(const otc_video_capturer *capturer, void *user_data) {
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(user_data);
     if (video_capturer == nullptr) {

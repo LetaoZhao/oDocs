@@ -13,13 +13,63 @@
 static std::atomic<bool> g_is_connected(false);
 static otc_publisher *g_publisher = nullptr;
 static std::atomic<bool> g_is_publishing(false);
+static std::map<std::string, void*> g_subscriber_map;
+static std::mutex g_subscriber_map_mutex;
+
 // Don't tell anyone but...
 GantryInterface* gantry;
 
-// Callbacks for receiving messages
+
+static void on_session_signal_received(otc_session *session,
+                                       void *user_data,
+                                       const char *type,
+                                       const char *signal,
+                                       const otc_connection *connection) {
+    std::cout << __FUNCTION__ << " callback function" << std::endl;
+    std::cout << "RECEIVED A SIGNAL" << std::endl;
+    if (session == nullptr) {
+        return;
+    }
+    gantry->process_message(type, signal);
+    std::cout << "Type: " << type << ", Signal: " << signal << std::endl;
+}
+
+static void on_subscriber_connected(otc_subscriber *subscriber,
+                                    void *user_data,
+                                    const otc_stream *stream) {
+    std::cout << __FUNCTION__ << " callback function" << std::endl;
+}
+
+static void on_subscriber_render_frame(otc_subscriber *subscriber,
+                                       void *user_data,
+                                       const otc_video_frame *frame) {
+    RendererManager *render_manager = static_cast<RendererManager*>(user_data);
+    if (render_manager == nullptr) {
+        return;
+    }
+    render_manager->addFrame(subscriber, frame);
+}
+
+static void on_subscriber_error(otc_subscriber* subscriber,
+                                void *user_data,
+                                const char* error_string,
+                                enum otc_subscriber_error_code error) {
+    std::cout << __FUNCTION__ << " callback function" << std::endl;
+    std::cout << "Subscriber error. Error code: " << error_string << std::endl;
+}
+
 static void on_session_connected(otc_session *session, void *user_data) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
+
     g_is_connected = true;
+
+    if ((session != nullptr) && (g_publisher != nullptr)) {
+        if (otc_session_publish(session, g_publisher) == OTC_SUCCESS) {
+            g_is_publishing = true;
+            return;
+        }
+        std::cout << "Could not publish successfully" << std::endl;
+    }
 }
 
 static void on_session_connection_created(otc_session *session,
@@ -38,26 +88,49 @@ static void on_session_stream_received(otc_session *session,
                                        void *user_data,
                                        const otc_stream *stream) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
-}
-
-static void on_session_signal_received(otc_session *session,
-                                       void *user_data,
-                                       const char *type,
-                                       const char *signal,
-                                       const otc_connection *connection) {
-    std::cout << __FUNCTION__ << " callback function" << std::endl;
-    std::cout << "RECEIVED A SIGNAL" << std::endl;
-    if (session == nullptr) {
+    RendererManager *render_manager = static_cast<RendererManager*>(user_data);
+    if (render_manager == nullptr) {
         return;
     }
-    gantry->process_message(type, signal);
-    std::cout << "Type: " << type << ", Signal: " << signal << std::endl;
+
+    struct otc_subscriber_callbacks subscriber_callbacks = {0};
+    subscriber_callbacks.user_data = user_data;
+    subscriber_callbacks.on_connected = on_subscriber_connected;
+    subscriber_callbacks.on_render_frame = on_subscriber_render_frame;
+    subscriber_callbacks.on_error = on_subscriber_error;
+
+    otc_subscriber *subscriber = otc_subscriber_new(stream,
+                                                    &subscriber_callbacks);
+    if (subscriber == nullptr) {
+        std::cout << "Could not create OpenTok subscriber successfully" << std::endl;
+        return;
+    }
+    render_manager->createRenderer(subscriber);
+    if (otc_session_subscribe(session, subscriber) == OTC_SUCCESS) {
+        const std::lock_guard<std::mutex> lock(g_subscriber_map_mutex);
+        g_subscriber_map[std::string(otc_stream_get_id(stream))] = subscriber;
+        return;
+    }
+    std::cout << "Could not subscribe successfully" << std::endl;
 }
 
 static void on_session_stream_dropped(otc_session *session,
                                       void *user_data,
                                       const otc_stream *stream) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
+    otc_subscriber *subscriber = static_cast<otc_subscriber *>(g_subscriber_map[std::string(otc_stream_get_id(stream))]);
+    if (subscriber == nullptr) {
+        return;
+    }
+
+    RendererManager *render_manager = static_cast<RendererManager*>(user_data);
+    if (render_manager != nullptr) {
+        render_manager->destroyRenderer(subscriber);
+    }
+    otc_subscriber_delete(subscriber);
+    const std::lock_guard<std::mutex> lock(g_subscriber_map_mutex);
+    g_subscriber_map[std::string(otc_stream_get_id(stream))] = nullptr;
+    subscriber = nullptr;
 }
 
 static void on_session_disconnected(otc_session *session, void *user_data) {
@@ -69,12 +142,7 @@ static void on_session_error(otc_session *session,
                              const char *error_string,
                              enum otc_session_error_code error) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
-    std::cout << "Session error. Error is: " << error_string << std::endl;
-}
-
-// Callbacks for Publishing a stream
-static void on_otc_log_message(const char *message) {
-    std::cout << __FUNCTION__ << ":" << message << std::endl;
+    std::cout << "Session error. Error : " << error_string << std::endl;
 }
 
 static void on_publisher_stream_created(otc_publisher *publisher,
@@ -86,7 +154,7 @@ static void on_publisher_stream_created(otc_publisher *publisher,
 static void on_publisher_render_frame(otc_publisher *publisher,
                                       void *user_data,
                                       const otc_video_frame *frame) {
-    auto *render_manager = static_cast<RendererManager*>(user_data);
+    RendererManager *render_manager = static_cast<RendererManager*>(user_data);
     if (render_manager == nullptr) {
         return;
     }
@@ -105,6 +173,10 @@ static void on_publisher_error(otc_publisher *publisher,
                                enum otc_publisher_error_code error_code) {
     std::cout << __FUNCTION__ << " callback function" << std::endl;
     std::cout << "Publisher error. Error code: " << error_string << std::endl;
+}
+
+static void on_otc_log_message(const char* message) {
+    std::cout <<  __FUNCTION__ << ":" << message << std::endl;
 }
 
 // Cursed
@@ -211,7 +283,7 @@ int main(int argc, char *argv[]) {
     // Register Publisher
     g_publisher = otc_publisher_new("opentok-linux-sdk-samples",
 //                                    &(video_capturer->video_capturer_callbacks),
-                                    nullptr,
+                                    &video_capturer->video_capturer_callbacks,
                                     &publisher_callbacks);
     if (g_publisher == nullptr) {
         std::cout << "Could not create OpenTok publisher successfully" << std::endl;
