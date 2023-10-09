@@ -123,12 +123,12 @@ function initializeSession() {
     home.scrollIntoView();
   });
   // For message type = home (movement message send through by clicking on one of the homing buttons)
-  session.on('signal:reset', (event) => {
-    const rest = document.createElement('p');
-    rest.textContent = event.data;
-    rest.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
-    msgHistory.appendChild(rest);
-    rest.scrollIntoView();
+  session.on('signal:set_home', (event) => {
+    const set_home = document.createElement('p');
+    set_home.textContent = event.data;
+    set_home.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    msgHistory.appendChild(set_home);
+    set_home.scrollIntoView();
   });
   // alert(token);
 }
@@ -958,16 +958,16 @@ right_eye_home.addEventListener('click', () => {
 // zero eye home---------------------------------------------------------------------------------------
 
 
-// right eye home---------------------------------------------------------------------------------------
-const reset = document.querySelector('#reset');
+// reset gantry---------------------------------------------------------------------------------------
+const set_home = document.querySelector('#set_home');
 
-reset.addEventListener('click', () => {
+set_home.addEventListener('click', () => {
   // Combine the values into one message
-  const newMessage = 'reset';
+  const newMessage = 'set_home';
 
   // Send a signal with the combined message
   session.signal({
-    type: 'reset',
+    type: 'set_home',
     data: newMessage
   }, (error) => {
     if (error) {
