@@ -129,7 +129,7 @@ bool GantryInterface::_check_collision(int x, int y, int z) const {
     if ((z > z_limit)||(z < 0)) return true;
     // Check cylindrical mask
     int radius = std::pow((float)(x - rail_x_offset),2)+std::pow((float)z,2);
-    if ((radius > armature_outer_radius)||(radius < armature_inner_radius)) return true;
+    if ((radius > std::pow(armature_outer_radius,2))||(radius < std::pow(armature_inner_radius,2))) return true;
     return false;
 }
 
