@@ -33,6 +33,8 @@
 class GantryInterface {
 private:
 
+    bool _check_collision(int x, int y, int z) const;
+
     bool _newline_received();
 
     bool _write_command(std::string const &command);
@@ -45,8 +47,12 @@ private:
     char _read_buf[256] = {0};
     char _write_buf[256] = {0};
 
+    int rail_x_offset = 103;
+    int armature_inner_radius = 100;
+    int armature_outer_radius = 200;
+
     // gantry config (messy solution)
-    int x_home = 103;
+    int x_home = rail_x_offset;
     int y_home = 0;
     int z_home = 124;
 

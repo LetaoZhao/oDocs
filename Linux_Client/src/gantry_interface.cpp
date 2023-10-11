@@ -122,6 +122,17 @@ void GantryInterface::move_to(int x, int y, int z, MOVE_MODE coord_system) {
     move_to(std::to_string(x),std::to_string(y),std::to_string(z), coord_system);
 }
 
+bool GantryInterface::_check_collision(int x, int y, int z) const {
+    // Check rectangular mask
+    if ((x > x_limit)||(x < 0)) return true;
+    if ((y > y_limit)||(y < 0)) return true;
+    if ((z > z_limit)||(z < 0)) return true;
+    // Check cylindrical mask
+    int radius = std::pow((float)(x - rail_x_offset),2)+std::pow((float)z,2);
+    if ((radius > armature_outer_radius)||(radius < armature_inner_radius)) return true;
+    return false;
+}
+
 void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_MODE coord_system) {
     std::string command;
     if (coord_system == GANTRY_LOCAL) {
@@ -134,13 +145,9 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     int z_int = std::stoi(z);
 
     if (coord_system == GANTRY_LOCAL) {
-        if ((current_x + x_int > x_limit)||(current_x + x_int < 0)) return;
-        if ((current_y + y_int > y_limit)||(current_y + y_int < 0)) return;
-        if ((current_z + z_int > z_limit)||(current_z + z_int < 0)) return;
+        if (_check_collision(current_x + x_int,current_y + y_int,current_z + z_int > z_limit)) return;
     } else {
-        if ((x_int > x_limit)||(x_int < 0)) return;
-        if ((y_int > y_limit)||(y_int < 0)) return;
-        if ((z_int > z_limit)||(z_int < 0)) return;
+        if (_check_collision(x_int,y_int,z_int)) return;
     }
 
     command.append(x);
