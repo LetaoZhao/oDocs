@@ -46,17 +46,17 @@ private:
     char _write_buf[256] = {0};
 
     // gantry config (messy solution)
-    int x_home = 110;
-    int y_home = 110;
-    int z_home = 65;
+    int x_home = 103;
+    int y_home = 0;
+    int z_home = 124;
 
     static const int x_limit = 200;
-    static const int y_limit = 200;
-    static const int z_limit = 226;
+    static const int y_limit = 51;
+    static const int z_limit = 150;
 
     int current_x = 0;
     int current_y = 0;
-    int current_z = 225;
+    int current_z = z_limit;
 
     std::string _feed_rate = "2000";
 

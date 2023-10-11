@@ -75,11 +75,12 @@ GantryInterface::GantryInterface() {
     _commands.emplace_back("$132 = "+std::to_string(z_limit)+"\n");
 
     _commands.emplace_back("$G\n");             // ???
+    _commands.emplace_back("$X\n");
+//    _commands.emplace_back("G21G90G0X"+std::to_string(x_limit-2)+"Y"+std::to_string(y_limit-2)+"Z"+std::to_string(z_limit-2)+"F2000\n");  // Align Top
 
     _commands.emplace_back("$H\n");             // Home Device
     _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
-    _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
-    _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
+    _commands.emplace_back("G21G91G0X0Y0Z"+std::to_string(this->z_limit-2)+"F2000\n");  // Align Top
     while(!_newline_received());
 }
 
@@ -170,7 +171,7 @@ void GantryInterface::reset_gantry() {
     _commands.emplace_back("$$\n");
     _commands.emplace_back("$X\n");
     _commands.emplace_back("G10 P0 L20 X0 Y0 Z0\n");    // Reset Device 0 to home
-    _commands.emplace_back("G21G91G0X0Y0Z220F2000\n");  // Align Top
+    _commands.emplace_back("G21G91G0X0Y0Z"+std::to_string(this->z_limit)+"F2000\n");  // Align Top
     _commands.emplace_back("G21G91G0X0Y0Z5F100\n");
 }
 

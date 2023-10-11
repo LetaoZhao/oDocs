@@ -84,7 +84,7 @@ otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
 
 // TODO: add this as an argument to program
 otk_thread_func_return_type capturer_thread_start_function(void *arg) {
-    cv::VideoCapture vcap = cv::VideoCapture("/dev/video0");
+    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2");
 
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
@@ -162,8 +162,8 @@ void wait_till_stopped() {
     cv::Mat next;
     cv::Mat diff;
 
-    int motion_pixels = 170001;
-    while(motion_pixels > 170000) {
+    int motion_pixels = 210001;
+    while(motion_pixels > 209999) {
         frame_mutex.lock();
         cv::cvtColor(frame_buffer_zero, prev, cv::COLOR_BGR2GRAY);
         cv::cvtColor(frame_buffer_one, next, cv::COLOR_BGR2GRAY);
@@ -180,8 +180,8 @@ void wait_till_moving() {
     cv::Mat next;
     cv::Mat diff;
 
-    int motion_pixels = 169999;
-    while(motion_pixels < 170000) {
+    int motion_pixels = 209999;
+    while(motion_pixels < 210000) {
         frame_mutex.lock();
         cv::cvtColor(frame_buffer_zero, prev, cv::COLOR_BGR2GRAY);
         cv::cvtColor(frame_buffer_one, next, cv::COLOR_BGR2GRAY);
