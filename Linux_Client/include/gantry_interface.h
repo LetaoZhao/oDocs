@@ -51,18 +51,18 @@ private:
     int armature_inner_radius = 100;
     int armature_outer_radius = 200;
 
+    static const int x_limit = 200;
+    static const int y_limit = 51;
+    static const int z_limit = 110;
+
     // gantry config (messy solution)
     int x_home = rail_x_offset;
     int y_home = 0;
-    int z_home = 124;
-
-    static const int x_limit = 200;
-    static const int y_limit = 51;
-    static const int z_limit = 150;
+    int z_home = z_limit/2;
 
     int current_x = 0;
     int current_y = 0;
-    int current_z = z_limit;
+    int current_z = z_limit-2;
 
     std::string _feed_rate = "2000";
 
