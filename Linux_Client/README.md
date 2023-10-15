@@ -1,178 +1,86 @@
-# Signaling
+# Documentation of C++ Client
 
-The Signaling sample application shows how to use the OpenTok
-[signaling](https://tokbox.com/developer/guides/signaling/) feature.
-This lets clients connected to an OpenTok session send data to other
-clients connected to the session.
+---
 
-You will need a valid [Vonage Video API](https://tokbox.com/developer/)
-account to build this app. (Note that OpenTok is now the Vonage Video API.)
+The purpose of the C++ Client is to provide a bridge between opentok and the telemedicine gantry. It publishes a camera
+stream to an opentok session and allows for control via a protocol built on opentok signaling.
 
-## Setting up your environment
+## Hardware Setup
 
-### OpenTok SDK
+---
 
-Building this sample application requires having a local installation of the
-OpenTok Linux SDK.
+### Raspberry Pi Login Details
 
-#### On Debian-based Linuxes
 
-The OpenTok Linux SDK for x86_64 is available as a Debian
-package. For Debian we support Debian 9 (Strech) and 10 (Buster). We maintain
-our own Debian repository on packagecloud. For Debian 10, follow these steps
-to install the packages from our repository.
+This software interfaces with any printer running `GRBL` via usb-serial at a baudrate of 115200 bit/s. Programming the
+bounding box is required as this software uses soft limits, this should be done in the `gantry_config.h` header. With
+this in place the device will work.
 
-* Add packagecloud repository:
+Additionally, a USB-WEBCAM currently needs to be plugged in to publish the video stream back to opentok.
 
-```bash
-curl -s https://packagecloud.io/install/repositories/tokbox/debian/script.deb.sh | sudo bash
-```
+## Using the Client (quick-start)
+### Dependencies
+`opencv, libsdl2, cmake, threads`
 
-* Install the OpenTok Linux SDK packages.
+### Usage
+This client is standalone, and the built executable is meant to be called externally. `The API-KEY`, `SESSION_ID`, and  
+`TOKEN` are passed as arguments, shown below for calling the code from bash.
 
 ```bash
-sudo apt install libopentok-dev
+./odocs_gantry --key <key> --id <id> --token <token>
 ```
 
-#### On non-Debian-based Linuxes
+Provided that the gantry and web-cam are plugged in, it will then start, home and receive commands
 
-Download the OpenTok SDK from [https://tokbox.com/developer/sdks/linux/](https://tokbox.com/developer/sdks/linux/)
-and extract it and set the `LIBOPENTOK_PATH` environment variable to point to the path where you extracted the SDK.
-For example:
+## Control Protocol
 
-```bash
-wget https://tokbox.com/downloads/libopentok_linux_llvm_x86_64-2.23.0
-tar xvf libopentok_linux_llvm_x86_64-2.23.0
-export LIBOPENTOK_PATH=<path_to_SDK>
-```
+The gantry currently receives commands via opentok signaling protocol. Provided a valid api-key, session-id and
+token are provided it will receive commands in the format-spec outlined below:
 
-## Other dependencies
+| Signal Type   | Signal Contents Formatspec | Description                           |
+|:--------------|:---------------------------|---------------------------------------|
+| `move_local`  | `<dx>,<dy>,<dz>`           | Moves relative to current position    |
+| `move_global` | `<x>,<y>,<z>`              | Moves to global position              |
+| `home`        | `<eye>`                    | Moves to either `left` or `right` eye |
+| `config_step` | `<feed_rate>`              | Changes the speed of the gantry       |
 
-Before building the sample application you will need to install the following dependencies
+## Code Breakdown
 
-### On Debian-based Linuxes
+The code is well commented, so should be reviewed by itself for functional description.  However, a high level 
+breakdown is provided here, with the aim to assist someone with digesting the application.
 
-```bash
-sudo apt install build-essential cmake clang libc++-dev libc++abi-dev \
-    pkg-config libasound2 libpulse-dev libsdl2-dev
-```
+ ```
+├── include
+    ├── error_handler.h
+    ├── gantry_config.h
+    ├── gantry_interface.h
+    ├── otk_thread.h
+    ├── renderer.h
+├── src
+    ├── error_handler.cpp       
+    ├── gantry_interface.cpp
+    ├── main.cpp
+    ├── otk_thread.c
+    ├── renderer.cpp
+ ```
+ 
+The gantry itself contains an api for control explained below. 
 
-### On Fedora
+### `gantry_config.h`
+Defines the physical properties of the gantry
 
-```bash
-sudo dnf groupinstall "Development Tools" "Development Libraries"
-sudo dnf install SDL2-devel clang pkg-config libcxx-devel libcxxabi-devel cmake
-```
+### `gantry_interface.h`
 
-## Building and running the sample app
+`GantryInterface()` constructs the gantry.  Uses default `tty_USB0` object in `/dev` to do so.
 
-Once you have installed the dependencies, you can build the sample application.
-Since it's good practice to create a build folder, let's go ahead and create it
-in the project directory:
+`void process_message(const char *type, const char *message)` Called to process a received opentok signal defined by 
+the protocol above
 
-```bash
-$ mkdir Signaling/build
-```
+`void move_to(int x, int y, int z, MOVE_MODE coord_system)` Moves to a position in `mm`, specifying coordinate 
+system AS `GANTRY_LOCAL` or `GANTRY_GLOBAL` for local vs global moves.
 
-Copy the [config-sample.h](../common/src/config-sample.h) file as `config.h` at
-`Signaling/`:
+`void move_to(std::string x, std::string y, std::string z, MOVE_MODE coord_system)` Overloads above function to take 
+strings, useful for processing opentok messages.
 
-```bash
-$ cp common/src/config-sample.h  Signaling/config.h
-```
-
-Edit the `config.h` file and add your OpenTok API key,
-an OpenTok session ID, and token for that session. For test purposes,
-you can obtain a session ID and token from the project page in your
-[Vonage Video API](https://tokbox.com/developer/) account. However,
-in a production application, you will need to dynamically obtain the session
-ID and token from a web service that uses one of
-the [Vonage Video API server SDKs](https://tokbox.com/developer/sdks/server/).
-
-Next, create the building bits using `cmake`:
-
-```bash
-$ cd Signaling/build
-$ CC=clang CXX=clang++ cmake ..
-```
-
-Note we are using `clang/clang++` compilers.
-
-Use `make` to build the code:
-
-```bash
-$ make
-```
-
-When the `signaling` binary is built, run it:
-
-```bash
-$ ./signaling
-```
-
-You can use the [OpenTok Playground](https://tokbox.com/developer/tools/playground/)
-to connect to the OpenTok session in a web browser, view the stream published
-by the Basic Video Chat app, and publish a stream that the app can subscribe to.
-
-You can end the sample application by typing Control + C in the console.
-
-## Understanding the code
-
-The main.cpp file includes the OpenTok Linux SDK header:
-
-```c
-#include "opentok.h"
-```
-
-### Connecting to the session
-
-See the [Understanding the code section](../Basic-Video-Chat/README.md#understanding-the-code)
-of the Basic Video Chat application's README file how the code uses the OpenTok Linux SDK
-to connect to an OpenTok session.
-
-### Adding signal-related callbacks
-
-When the application initializes the `otc_session_callbacks` structure, it
-adds a callback function to the `on_signal_received` method:
-
-```c
-struct otc_session_callbacks session_callbacks = {0};
-// ...
-// This sample listens for signals.
-session_callbacks.on_signal_received = on_session_signal_received;
-// ...
-```
-
-### Sending and receiving signals in the session
-
-The implementation of the `session_callbacks.on_signal_received` callback
-function is invoked when the application receives an incoming signal from
-another client in the OpenTok session:
-
-```c
-static void on_session_signal_received(otc_session *session,
-                                       void *user_data,
-                                       const char *type,
-                                       const char *signal,
-                                       const otc_connection *connection) {
-  std::cout << __FUNCTION__ << " callback function" << std::endl;
-
-  if (session == nullptr) {
-    return;
-  }
-  // It echoes back whatever is sent to it.
-  otc_session_send_signal_to_connection(session, type, signal, connection);
-}
-```
-
-It then calls the `otc_session_send_signal_to_connection()` function,
-defined in the OpenTok Linux SDK, to send a signal back to the client that
-sent the signal. (It echos the same information back to the client.)
-
-## Next steps
-
-The [Basic Video Chat application](../Basic-Video_Chat) sample builds upon the
-Publisher Only sample, adding an OpenTok stream subscriber in addition to a publisher. 
-
-See the [Vonage Video API developer center](https://tokbox.com/developer/)
-for more information on the OpenTok Linux SDK.
+`bool process_interface_io()` Tick function needs to be called regularly in code for gantry to process polling based 
+serial functions.

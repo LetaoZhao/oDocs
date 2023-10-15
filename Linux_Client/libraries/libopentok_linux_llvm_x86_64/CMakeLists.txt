@@ -1,0 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+
+PROJECT(libopentok)
+
+ADD_LIBRARY(libopentok IMPORTED SHARED GLOBAL)
+SET_TARGET_PROPERTIES(libopentok PROPERTIES
+                                 IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/lib/libopentok.so
+                                 INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR}/include)

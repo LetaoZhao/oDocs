@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['otc_5faudio_5fdata_421',['otc_audio_data',['../structotc__audio__data.html',1,'']]],
+  ['otc_5faudio_5fdevice_5fcallbacks_422',['otc_audio_device_callbacks',['../structotc__audio__device__callbacks.html',1,'']]],
+  ['otc_5faudio_5fdevice_5fsettings_423',['otc_audio_device_settings',['../structotc__audio__device__settings.html',1,'']]],
+  ['otc_5fcustom_5fice_5fconfig_424',['otc_custom_ice_config',['../structotc__custom__ice__config.html',1,'']]],
+  ['otc_5fmedia_5futils_5fcodecs_425',['otc_media_utils_codecs',['../structotc__media__utils__codecs.html',1,'']]],
+  ['otc_5fon_5fmute_5fforced_5finfo_426',['otc_on_mute_forced_info',['../structotc__on__mute__forced__info.html',1,'']]],
+  ['otc_5fpublisher_5faudio_5fstats_427',['otc_publisher_audio_stats',['../structotc__publisher__audio__stats.html',1,'']]],
+  ['otc_5fpublisher_5fcallbacks_428',['otc_publisher_callbacks',['../structotc__publisher__callbacks.html',1,'']]],
+  ['otc_5fpublisher_5frtc_5fstats_429',['otc_publisher_rtc_stats',['../structotc__publisher__rtc__stats.html',1,'']]],
+  ['otc_5fpublisher_5frtc_5fstats_5freport_5fcb_430',['otc_publisher_rtc_stats_report_cb',['../structotc__publisher__rtc__stats__report__cb.html',1,'']]],
+  ['otc_5fpublisher_5fvideo_5fstats_431',['otc_publisher_video_stats',['../structotc__publisher__video__stats.html',1,'']]],
+  ['otc_5fsession_5fcallbacks_432',['otc_session_callbacks',['../structotc__session__callbacks.html',1,'']]],
+  ['otc_5fsession_5fcapabilities_433',['otc_session_capabilities',['../structotc__session__capabilities.html',1,'']]],
+  ['otc_5fsignal_5foptions_434',['otc_signal_options',['../structotc__signal__options.html',1,'']]],
+  ['otc_5fsubscriber_5faudio_5fstats_435',['otc_subscriber_audio_stats',['../structotc__subscriber__audio__stats.html',1,'']]],
+  ['otc_5fsubscriber_5fcallbacks_436',['otc_subscriber_callbacks',['../structotc__subscriber__callbacks.html',1,'']]],
+  ['otc_5fsubscriber_5frtc_5fstats_5freport_5fcb_437',['otc_subscriber_rtc_stats_report_cb',['../structotc__subscriber__rtc__stats__report__cb.html',1,'']]],
+  ['otc_5fsubscriber_5fvideo_5fstats_438',['otc_subscriber_video_stats',['../structotc__subscriber__video__stats.html',1,'']]],
+  ['otc_5fvideo_5fcapturer_5fcallbacks_439',['otc_video_capturer_callbacks',['../structotc__video__capturer__callbacks.html',1,'']]],
+  ['otc_5fvideo_5fcapturer_5fsettings_440',['otc_video_capturer_settings',['../structotc__video__capturer__settings.html',1,'']]],
+  ['otc_5fvideo_5fframe_5fplanar_5fmemory_5fcallbacks_441',['otc_video_frame_planar_memory_callbacks',['../structotc__video__frame__planar__memory__callbacks.html',1,'']]]
+];

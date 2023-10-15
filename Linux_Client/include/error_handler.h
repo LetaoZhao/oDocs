@@ -1,0 +1,6 @@
+#ifndef SIGNALING_ERROR_HANDLER_H
+#define SIGNALING_ERROR_HANDLER_H
+
+void error_handler();
+
+#endif //SIGNALING_ERROR_HANDLER_H
