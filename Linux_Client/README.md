@@ -27,7 +27,7 @@ This client is standalone, and the built executable is meant to be called extern
 `TOKEN` are passed as arguments, shown below for calling the code from bash.
 
 ```bash
-./odocs_gantry --key <key> --id <id> --token <token>
+./odocs_gantry --key <key> --id <id> --token <token> --device </dev/videoX>
 ```
 
 Provided that the gantry and web-cam are plugged in, it will then start, home and receive commands

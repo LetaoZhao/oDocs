@@ -16,6 +16,9 @@ static std::atomic<bool> g_is_publishing(false);
 static std::map<std::string, void*> g_subscriber_map;
 static std::mutex g_subscriber_map_mutex;
 
+// Camera USB Device
+std::string camera_usb_device;
+
 // Don't tell anyone but...
 GantryInterface* gantry;
 
@@ -212,11 +215,17 @@ bool handle_args(int argc, char *argv[], std::string *API_KEY, std::string *SESS
             i++;
             flag++;
         }
+        if (strcmp(argv[i],"--device") == 0) {
+            camera_usb_device = argv[i+1];
+            i++;
+            flag++;
+        }
     }
-    if (flag!=3) return false;
+    if (flag!=4) return false;
     std::cout << "API KEY = " << *API_KEY << std::endl;
     std::cout << "SESSION ID = " << *SESSION_ID << std::endl;
     std::cout << "TOKEN = " << *TOKEN << std::endl;
+    std::cout << "DEVICE = " << camera_usb_device << std::endl;
     return true;
 }
 

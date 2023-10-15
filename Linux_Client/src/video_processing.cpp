@@ -9,6 +9,8 @@
 
 #include <condition_variable>
 
+extern std::string camera_usb_device;
+
 std::condition_variable stopped_condition;
 std::mutex stopped_mutex;
 bool stopped = false;
@@ -84,7 +86,9 @@ otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
 
 // TODO: add this as an argument to program
 otk_thread_func_return_type capturer_thread_start_function(void *arg) {
-    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2");
+//    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2");
+    cv::VideoCapture vcap = cv::VideoCapture(camera_usb_device);
+
 
     struct custom_video_capturer *video_capturer = static_cast<struct custom_video_capturer *>(arg);
     if (video_capturer == nullptr) {
