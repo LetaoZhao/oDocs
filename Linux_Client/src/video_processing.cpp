@@ -92,7 +92,7 @@ otk_thread_func_return_type capturer_thread_start_function(void *arg) {
     }
 
     // Make sure eye_cascade is loaded
-    eyes_cascade.load("/home/tazukiswift/Work/Prog/opencv/opencv-4.x/data/haarcascades/haarcascade_eye.xml");
+    eyes_cascade.load("../libraries/haar_cascades/haarcascade_eye.xml");
 
     const uint8_t* buffer;
     // We want this to get a request for eye position
