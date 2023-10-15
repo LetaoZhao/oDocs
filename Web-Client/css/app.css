@@ -1,131 +1,494 @@
+/**
+ * Author: [Yijie Ren]
+ * 
+ * Purpose:
+ * This CSS file contains styles for the web client. It is designed
+ * to provide consistent styling and layout across the application's web pages. The styles
+ * in this file contribute to the user interface and overall user experience.
+ * 
+ * Structure:
+ * The CSS rules are organized into sections that correspond to different components or
+ * sections of the application. Each section includes styles for specific elements and
+ * may contain additional comments to explain the purpose and usage of those styles.
+ * 
+ * 1. Background
+ *
+ * 2. eye tracking panel
+ *    2.1 left eye homing button
+ *    2.2 homing button
+ *    2.3 right eye homing button
+ *
+ * 3. control panel
+ *    3.1 button icon
+ *    3.2 jogging buttons
+ *         3.2.1 -x and +z button
+ *         3.2.2 +z button
+ *         3.2.3 +x and +z button
+ *         3.2.4 +y button
+ *         3.2.5 -x button
+ *         3.2.6 +x button
+ *         3.2.7 -x and -z button
+ *         3.2.8 -z button
+ *         3.2.9 +x and -z button
+ *         3.2.10 -y button
+ *    3.3 step size and feed rate font
+ *    3.5 step size text box
+ *    3.6 feed rate text box
+ *    3.7 update button
+ *    3.8 larger button
+ *    3.9 smaller button
+ *
+ * 4. tool box
+ *    4.1 toggle publsiher window button
+ *    4.2 toggle text chat and control panel button
+ *    4.3 swtich publsiher and subscriber window button
+ *    4.4 screen shot button
+ *    4.5 start screen sharing button
+ *    4.6 end screen sharing button
+ *    4.7 full screen button
+ *    4.8 swtich coordinate system button
+ *
+ * 5. text chat
+ *    5.1 history bar
+ *         5.1.1 publisher history font
+ *         5.1.2 subscriber history font
+ *    5.2 text box 1
+ *    5.3 text box 2
+ *    5.4 text box 3
+ *    5.5 send button
+ *    5.6 button font
+ * 
+ * Note:
+ * This file should be used in conjunction with the HTML templates of the application.
+ * It is recommended to refer to the relevant HTML files to understand how these styles
+ * are applied to the different components and elements.
+ * 
+ * Last Updated: [21st Aug 2023]
+ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Set background color and height for body and HTML elements */
 body, html {
     background-color: gray;
     height: 100%;
 }
-/* ------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Styling for eye tracking panel that will contain all the auto homing buttons */
+#eyeTractingPanel {
+    position: absolute;
+    width: 19%;
+    height: 6%;
+    bottom: 51%;
+    right: 0.6%;
+    z-index: 50;
+    border: 5px solid white;
+    background-color: rgb(47, 47, 47);
+    border-radius: 5%;
+    /* cursor: move; */
+}
+/* Styling for the left eye auto align button that on the control panel */
+button#left_eye_home {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 0%;
+    Left: 0%;
+    width: 33.4%;
+    height: 100%;
+}
+#left_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#left_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the auto homing button that on the control panel */
+button#zero_eye_home {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 0%;
+    Left: 33.4%;
+    width: 33.4%;
+    height: 100%;
+}
+#zero_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#zero_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the right eye auto align button that on the control panel */
+button#right_eye_home {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 0%;
+    Left: 66.8%;
+    width: 33.4%;
+    height: 100%;
+}
+#right_eye_home:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#right_eye_home:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Styling for the control panel that will contain all the jogging mode movement buttons */
+#controlPanel {
+    position: absolute;
+    width: 19%;
+    height: 50%;
+    bottom: 0%;
+    right: 0.6%;
+    z-index: 50;
+    border: 5px solid white;
+    background-color: rgb(47, 47, 47);
+    border-radius: 5%;
+    /* cursor: move; */
+}
+/* Styling for diagonal movement icons used in control panel */
+.angle45-icon {
+    transform: rotate(45deg); /* Rotate the icon by 45 degrees */
+}
+.angle315-icon {
+    transform: rotate(315deg); /* Rotate the icon by 45 degrees */
+}
+/* Styling for the movement button that makes the gantry move in the -x and +z direction */
+button#move_X_Neg_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_X_Neg_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the +z direction */
+button#move_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 26.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the +x and +z direction */
+button#move_X_Pos_Z_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos_Z_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_X_Pos_Z_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the +y direction */
+button#move_Y_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 2%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Y_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 2.3%;
+}
+#move_Y_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the -x direction */
+button#move_X_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 21.6%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 21.9%;
+}
+#move_X_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the +x direction */
+button#move_X_Pos {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 21.6%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 21.9%;
+}
+#move_X_Pos:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the -x and -z direction */
+button#move_X_Neg_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 2%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Neg_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_X_Neg_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the -z direction */
+button#move_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 26.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the +x and -z direction */
+button#move_X_Pos_Z_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 51%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_X_Pos_Z_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_X_Pos_Z_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the movement button that makes the gantry move in the -y direction */
+button#move_Y_Neg {
+    background-color: rgb(222, 222, 222);
+    border-radius: 13%;
+    position: absolute;
+    top: 41.2%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 17.6%;
+}
+#move_Y_Neg:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 41.5%;
+}
+#move_Y_Neg:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for text used to indicate where the step size text box is */
+.text1 {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    left: 3%;
+    top: 69.5%;
+  }
+/* Styling for text used to indicate where the feed rate text box is */
+.text2 {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    color: white;
+    font-size: 10px;
+    left: 14.5%;
+    top: 86%;
+  }
+/* Styling for the text box for entering the desired step size (unit is mm) */
+input#stepSize_XYZ {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 65.8%;
+    Left: 36.5%;
+    transition: all 0.3s;
+    width: 35%;
+    height: 10%;
+}
+#tepSize_XYZ:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 50;
+}
+/* Styling for the text box for entering the desired feed rate / speed */
+input#feedRate {
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 82.8%;
+    Left: 36.5%;
+    transition: all 0.3s;
+    width: 35%;
+    height: 10%;
+}
+#tepSize_XYZ:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 50;
+}
+/* Styling for the button that updates the new step size and feedrate to the gantry */
+button#update {
+    font-size: 15px;
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 61.8%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#update:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 62.1%;
+}
+#update:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the button that increases the step size by a fold of 10 */
+button#larger {
+    font-size: 15px;
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 74.53%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#larger:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 74.83%;
+}
+#larger:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* Styling for the button that decreases the step size by a fold of 10 */
+button#smaller {
+    font-size: 15px;
+    background-color: rgb(222, 222, 222);
+    position: absolute;
+    top: 87.26%;
+    Left: 75.5%;
+    width: 22.5%;
+    height: 9.73%;
+}
+#smaller:active {
+    background-color: rgb(190, 190, 190);
+    border-bottom: 3px solid #999;
+    top: 87.56%;
+}
+#smaller:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+/* ------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Styling for the tool box which will contain all of the basic video chating functions */
 #toolBox {
     position: absolute;
     width: 4%;
     height: 40%;
     top: 0%;
-    left: 0%;
-    z-index: 100;
-    border: 3px solid white;
+    left: 70%;
+    z-index: 20;
+    border: 5px solid white;
     background-color: rgb(47, 47, 47);
     border-radius: 3px;
     cursor: move;
 }
-/* ------------------------------------------------------ */
-#videos {
-    position: relative;
-    width: 70%;
-    height: 100%;
-    float: left;
-}
-/* ------------------------------------------------------ */
-#subscriber {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    margin-left: 50px;
-    z-index: 10;
-}
-/* ------------------------------------------------------ */
-#publisher {
-    position: absolute;
-    width: 360px;
-    height: 240px;
-    bottom: 10px;
-    left: 10px;
-    z-index: 100;
-    border: 3px solid white;
-    border-radius: 3px;
-}
-/* ------------------------------------------------------ */
-#textchat{
-    position: relative;
-    width: 20%;
-    float: right;
-    right: 0;
-    height: 100%;
-    background-color: #333;
-}
-/* ------------------------------------------------------ */
-#history {
-    width: 100%;
-    height: calc(100% - 40px);
-    overflow: auto;
-}
-/* ------------------------------------------------------ */
-input#msgTxt1 {
-    height: 7%;
-    position: absolute;
-    bottom: 0%;
-    border: 2px solid transparent;
-    transition: all 0.3s;
-    width: 25%;
-    z-index: 1;
-}
-#msgTxt1:hover {
-    border: 3px solid rgb(122, 176, 136);
-    z-index: 2;
-}
-/* ------------------------------------------------------ */
-input#msgTxt2 {
-    height: 7%;
-    position: absolute;
-    bottom: 0%;
-    right: 46%;
-    border: 2px solid transparent;
-    transition: all 0.3s;
-    width: 25%;
-    z-index: 1;
-}
-#msgTxt2:hover {
-    border: 3px solid rgb(122, 176, 136);
-    z-index: 2;
-}
-/* ------------------------------------------------------ */
-input#msgTxt3 {
-    height: 7%;
-    position: absolute;
-    bottom: 0%;
-    right: 19%;
-    border: 2px solid transparent;
-    transition: all 0.3s;
-    width: 25%;
-    z-index: 1;
-}
-#msgTxt3:hover {
-    border: 3px solid rgb(122, 176, 136);
-    z-index: 2;
-}
-/* ------------------------------------------------------ */
-button#sendButton {
-    position: absolute;
-    bottom: 0%;
-    right: 0%;
-    width: 19%;
-    height: 7.8%;
-    z-index: 1;
-}
-#sendButton:active {
-    border-bottom: 3px solid #999;
-    bottom: -0.3%;
-}
-#sendButton:hover {
-    cursor: hand; 
-    cursor: pointer;
-}
-/* ------------------------------------------------------ */
+/* Styling for the button that toggles publisher video window */
 button#toggleButton {
-    position: absolute;
+    position: relative;
     top: 0%;
     left: 0%;
     width: 100%;
-    height: 15%;
+    height: 11.1%;
 }
 #toggleButton:active {
     border-bottom: 3px solid #999;
@@ -135,66 +498,265 @@ button#toggleButton {
     cursor: hand; 
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that toggles text chat and brings out the control panel */
 button#toggleChat {
-    position: absolute;
-    top: 15%;
+    position: relative;
+    top: 0%;
     left: 0%;
     width: 100%;
-    height: 15%;
+    height: 11.1%;
 }
 #toggleChat:active {
     border-bottom: 3px solid #999;
-    top: 15.3%;
+    top: 0.3%;
 }
-#toggleButton:hover {
+#toggleChat:hover {
     cursor: hand; 
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that swtiches the position of publisher and subscriber window */
 button#toggleCamera {
-    position: absolute;
-    top: 30%;
+    position: relative;
+    top: 0%;
     left: 0%;
     width: 100%;
-    height: 15%;
+    height: 11.1%;
 }
 #toggleCamera:active {
     border-bottom: 3px solid #999;
-    top: 30.3%;
+    top: 0.3%;
 }
 #toggleCamera:hover {
     cursor: hand; 
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that takes a screen shot of what is currently being displayed on subscriber window */
 button#screenShot {
-    position: absolute;
-    top: 45%;
+    position: relative;
+    top: 0%;
     left: 0%;
     width: 100%;
-    height: 15%;
+    height: 11.1%;
 }
 #screenShot:active {
     border-bottom: 3px solid #999;
-    top: 45.3%;
+    top: 0.3%;
 }
 #screenShot:hover {
     cursor: hand; 
     cursor: pointer;
 }
-/* ------------------------------------------------------ */
+/* Styling for the button that starts sharing the publishers screen */
+button#startScreenShare {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#startScreenShare:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#startScreenShare:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for the button that terminates the screen sharing */
+button#stopScreenShare {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#stopScreenShare:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#stopScreenShare:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for the button that makes the subscriber window take up the entire screen */
+button#fullScreen {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#fullScreen:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#fullScreen:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for the button that swtiches between global sub-mode and local sub-mode */
+button#switchCoord {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#switchCoord:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#switchCoord:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for the button that resets the gantry */
+button#set_home {
+    position: relative;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 11.1%;
+}
+#set_home:active {
+    border-bottom: 3px solid #999;
+    top: 0.3%;
+}
+#set_home:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* ------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Styling for all of the video chatting windows */
+#videos {
+    position: relative;
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+/* Styling for the subscriber video chatting window (i.e. the bigger one) */
+#subscriber {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    margin-left: 50px;
+    z-index: 10;
+    border: 0px;
+    border-radius: 0px;
+}
+/* Styling for the publisher video chatting window (i.e. the smaller one) */
+#publisher {
+    position: absolute;
+    width: 360px;
+    height: 240px;
+    bottom: 10px;
+    left: 10px;
+    margin-left: 0px;
+    z-index: 10;
+    border: 3px solid white;
+    border-radius: 3px;
+}
+/* ------------------------------------------------------------------------------------------------------------ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+/* Styling for the entire text chat which will contain the text chat boxes and the history bar */
+#textchat{
+    position: relative;
+    width: 20%;
+    float: right;
+    right: 0;
+    height: 100%;
+    background-color: #333;
+    z-index: 100;
+}
+/* Styling for the history bar */
+#history {
+    width: 100%;
+    height: calc(100% - 40px);
+    overflow: auto;
+}
+/* Styling for the text in the history for the text you have commited */
 #history .mine {
     color: #00FF00;
     text-align: right;
     margin-right: 10px;
 }
-/* ------------------------------------------------------ */
+/* Styling for the text in the history for the text the other user have commited */
 #history .theirs {
     color: #00FFFF;
     margin-left: 10px;
 }
-/* ------------------------------------------------------ */
-.btn {
-    font-size: 120%;
+/* Styling for text box 1 for x values */
+input#msgTxt1 {
+    height: 7%;
+    position: absolute;
+    bottom: 0%;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    width: 25%;
+    z-index: 4;
 }
+#msgTxt1:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 5;
+}
+/* Styling for text box 2 for y values */
+input#msgTxt2 {
+    height: 7%;
+    position: absolute;
+    bottom: 0%;
+    right: 46%;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    width: 25%;
+    z-index: 4;
+}
+#msgTxt2:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 5;
+}
+/* Styling for text box 3 for z values */
+input#msgTxt3 {
+    height: 7%;
+    position: absolute;
+    bottom: 0%;
+    right: 19%;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    width: 25%;
+    z-index: 4;
+}
+#msgTxt3:hover {
+    border: 3px solid rgb(122, 176, 136);
+    z-index: 5;
+}
+/* Styling for the button that commits the content of the text boxs to the other user and history bar */
+button#sendButton {
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    width: 19%;
+    height: 7.8%;
+    z-index: 2;
+}
+#sendButton:active {
+    border-bottom: 3px solid #999;
+    bottom: -0.3%;
+}
+#sendButton:hover {
+    cursor: hand; 
+    cursor: pointer;
+}
+/* Styling for all the text that shows up on buttons  */
+.btn {
+    font-size: 150%;
+}
+/* ------------------------------------------------------------------------------------------------------------ */
