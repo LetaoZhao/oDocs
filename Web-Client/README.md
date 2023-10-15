@@ -1,11 +1,7 @@
 # Documentation Of Javascript Web Client
 
-
-
 ## Introduction
 This documentation provides a comprehensive overview of the JavaScript code used to interact with the OpenTok API for video communication and control. The code facilitates video streaming, text chat, video manipulation, and movement control within a web application.
-
-
 
 ## Prerequisites
 Below is a list of prerequisites or requirements before diving into the code:
@@ -36,7 +32,7 @@ Below is a list of prerequisites or requirements before diving into the code:
 
  6. Now, both parties are connected to the same Opentok video chatting session.
 
-
+**alternatively** after step 1 copy the session-ID and one of the tokens into `js/config.js`
 
 ## How to use the Web Client
 In this section, the primary function of the web client will be discussed.
@@ -106,4 +102,4 @@ There are two significant components to the web client code:
 
  2.3 config.js: This file contains the configuration settings required to integrate the OpenTok video communication platform into a web application. It specifies how to obtain the session ID and token necessary for establishing video sessions between participants.
 
- 2.4 index.html:  It contains all the libraries used to build this web client. Plue this file also defines the structure of all the elements defined in app.css
+ 2.4 index.html: It contains all the libraries used to build this web client. Plue this file also defines the structure of all the elements defined in app.css

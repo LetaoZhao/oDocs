@@ -8,10 +8,6 @@ stream to an opentok session and allows for control via a protocol built on open
 ## Hardware Setup
 
 ---
-
-### Raspberry Pi Login Details
-
-
 This software interfaces with any printer running `GRBL` via usb-serial at a baudrate of 115200 bit/s. Programming the
 bounding box is required as this software uses soft limits, this should be done in the `gantry_config.h` header. With
 this in place the device will work.
@@ -21,6 +17,8 @@ Additionally, a USB-WEBCAM currently needs to be plugged in to publish the video
 ## Using the Client (quick-start)
 ### Dependencies
 `opencv, libsdl2, cmake, threads`
+
+Make sure these are installed from your package manager.  Code can be compiled on any distribution that supports these.  For this project, we recommend debian.
 
 ### Usage
 This client is standalone, and the built executable is meant to be called externally. `The API-KEY`, `SESSION_ID`, and  
@@ -64,14 +62,14 @@ breakdown is provided here, with the aim to assist someone with digesting the ap
     ├── renderer.cpp
  ```
  
-The gantry itself contains an api for control explained below. 
+The gantry itself contains an api for control explained below. For more comprehensive documentation, review `/reports/tosb789-final-report.pdf` appendix B.
 
 ### `gantry_config.h`
-Defines the physical properties of the gantry
+Defines the physical properties of the gantry.
 
 ### `gantry_interface.h`
 
-`GantryInterface()` constructs the gantry.  Uses default `tty_USB0` object in `/dev` to do so.
+`GantryInterface()` constructs the gantry.  Uses default `tty_USB0` object in `/dev` for serial.
 
 `void process_message(const char *type, const char *message)` Called to process a received opentok signal defined by 
 the protocol above
