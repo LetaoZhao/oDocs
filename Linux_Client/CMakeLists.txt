@@ -17,7 +17,7 @@ find_package( OpenCV REQUIRED )
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/libraries/opencv_build)
 
-set(ENV{LIBOPENTOK_PATH} ${CMAKE_SOURCE_DIR}/libraries/libopentok_linux_llvm_x86_64/)
+set(ENV{LIBOPENTOK_PATH} ${CMAKE_SOURCE_DIR}/libraries/libopentok_linux_llvm_x86_64)
 
 if (DEFINED ENV{LIBOPENTOK_PATH})
     find_path(LIBOPENTOK_HEADER opentok.h PATHS $ENV{LIBOPENTOK_PATH}/include NO_DEFAULT_PATH)
@@ -46,9 +46,3 @@ list(SORT _variableNames)
 foreach (_variableName ${_variableNames})
     message(STATUS "${_variableName}=${${_variableName}}")
 endforeach ()
-
-get_cmake_property(_variableNames VARIABLES)
-list (SORT _variableNames)
-foreach (_variableName ${_variableNames})
-    message(STATUS "${_variableName}=${${_variableName}}")
-endforeach()

@@ -9,6 +9,9 @@ stream to an opentok session and allows for control via a protocol built on open
 
 ---
 
+### Raspberry Pi Login Details
+
+
 This software interfaces with any printer running `GRBL` via usb-serial at a baudrate of 115200 bit/s. Programming the
 bounding box is required as this software uses soft limits, this should be done in the `gantry_config.h` header. With
 this in place the device will work.
@@ -16,7 +19,10 @@ this in place the device will work.
 Additionally, a USB-WEBCAM currently needs to be plugged in to publish the video stream back to opentok.
 
 ## Using the Client (quick-start)
+### Dependencies
+`opencv, libsdl2, cmake, threads`
 
+### Usage
 This client is standalone, and the built executable is meant to be called externally. `The API-KEY`, `SESSION_ID`, and  
 `TOKEN` are passed as arguments, shown below for calling the code from bash.
 
