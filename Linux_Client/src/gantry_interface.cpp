@@ -128,8 +128,8 @@ bool GantryInterface::_check_collision(int x, int y, int z) const {
     if ((y > y_limit)||(y < 0)) return true;
     if ((z > z_limit)||(z < 0)) return true;
     // Check cylindrical mask
-    int radius = std::pow((float)(x - rail_x_offset),2)+std::pow((float)z,2);
-    if ((radius > std::pow(armature_outer_radius,2))||(radius < std::pow(armature_inner_radius,2))) return true;
+//    int radius = std::pow((float)(x - rail_x_offset),2)+std::pow((float)z,2);
+//    if ((radius > std::pow(armature_outer_radius,2))||(radius < std::pow(armature_inner_radius,2))) return true;
     return false;
 }
 
@@ -145,7 +145,7 @@ void GantryInterface::move_to(std::string x, std::string y, std::string z, MOVE_
     int z_int = std::stoi(z);
 
     if (coord_system == GANTRY_LOCAL) {
-        if (_check_collision(current_x + x_int,current_y + y_int,current_z + z_int > z_limit)) return;
+        if (_check_collision(current_x + x_int,current_y + y_int,current_z + z_int)) return;
     } else {
         if (_check_collision(x_int,y_int,z_int)) return;
     }
@@ -211,31 +211,14 @@ void GantryInterface::process_message(const char *type, const char *message) {
 
     } else if (type_string == "home") {
 
-        // Begin CV Eye Homing Sequence
-        // LOGIC:
-        // Move to approximate center of face
-        // Get pointer to eyes vector
-        // Move to that point
-        // Get pointer to eyes vector
+        // Calculate how long the move will take.  Useful for future implementation of CV
+        int milliseconds_to_wait = (std::sqrt(std::pow((current_x-x_home),2)+std::pow(current_y-y_home,2)+std::pow(current_z-z_home,2)))/(std::stoi(_feed_rate)/60.0)+300;
         move_to(x_home,y_home,z_home,GANTRY_GLOBAL);
-        // Wait for the thing to stop moving
-        wait_till_moving();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));    // Move must be at least 300ms long
-        wait_till_stopped();
-
-//        cv::Rect eye;
-//        if (message_string == "left") {
-//            eye = get_eye_pos(DIRECTION::LEFT); // gets eye pos from video thread
-//        } else if(message_string == "right"){
-//            eye = get_eye_pos(DIRECTION::RIGHT);
-//        } else {
-//            return;
-//        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds_to_wait));
 
         // Using inter-pupilliary distance
         if ((message_string == "right")||(message_string == "left")) {
-//            int x_move = -(eye.x + eye.width/2-640/2)/3;
-//            int y_move = -(eye.y + eye.height/2-480/2)/3;
+
             int y_move = 0;
             int x_move = message_string == "right" ? 32 : -32;
 

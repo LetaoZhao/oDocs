@@ -53,7 +53,7 @@ private:
 
     static const int x_limit = 200;
     static const int y_limit = 51;
-    static const int z_limit = 110;
+    static const int z_limit = 95;
 
     // gantry config (messy solution)
     int x_home = rail_x_offset;
