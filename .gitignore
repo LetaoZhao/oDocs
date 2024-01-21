@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
-cmake-build-debug/
+# cmake-build-debug/
 cmake-build-release/
 develop-eggs/
 dist/
