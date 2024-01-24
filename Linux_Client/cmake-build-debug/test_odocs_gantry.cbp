@@ -8,27 +8,27 @@
 		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\opencv4\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/~/oDocs/Linux_Client/cmake-build-debug"/>
+				<Option working_dir="~/oDocs/Linux_Client/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="odocs_gantry">
-				<Option output="/~/oDocs/Linux_Client/cmake-build-debug/odocs_gantry" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/~/oDocs/Linux_Client/cmake-build-debug"/>
+				<Option output="~/oDocs/Linux_Client/cmake-build-debug/odocs_gantry" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="~/oDocs/Linux_Client/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/~/oDocs/Linux_Client/./libs/common/src"/>
+					<Add directory="~/oDocs/Linux_Client/./libs/common/src"/>
 					<Add directory="/usr/include/SDL2"/>
-					<Add directory="/~/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/include"/>
+					<Add directory="~/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/include"/>
 					<Add directory="/serial"/>
-					<Add directory="/~/oDocs/Linux_Client/include"/>
+					<Add directory="~/oDocs/Linux_Client/include"/>
 					<Add directory="/usr/include/opencv4"/>
 					<Add directory="/usr/include/c++/12"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/12"/>
@@ -39,24 +39,24 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 odocs_gantry"/>
-					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 odocs_gantry"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="odocs_gantry/fast">
-				<Option output="/~/oDocs/Linux_Client/cmake-build-debug/odocs_gantry" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/~/oDocs/Linux_Client/cmake-build-debug"/>
+				<Option output="~/oDocs/Linux_Client/cmake-build-debug/odocs_gantry" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="~/oDocs/Linux_Client/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/~/oDocs/Linux_Client/./libs/common/src"/>
+					<Add directory="~/oDocs/Linux_Client/./libs/common/src"/>
 					<Add directory="/usr/include/SDL2"/>
-					<Add directory="/~/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/include"/>
+					<Add directory="~/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/include"/>
 					<Add directory="/serial"/> 
-					<Add directory="/~/oDocs/Linux_Client/include"/>
+					<Add directory="~/oDocs/Linux_Client/include"/>
 					<Add directory="/usr/include/opencv4"/>
 					<Add directory="/usr/include/c++/12"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/12"/>
@@ -67,64 +67,64 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 odocs_gantry/fast"/>
-					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 odocs_gantry/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/~/oDocs/Linux_Client/cmake-build-debug"/>
+				<Option working_dir="~/oDocs/Linux_Client/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/~/oDocs/Linux_Client/cmake-build-debug"/>
+				<Option working_dir="~/oDocs/Linux_Client/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j8 -f &quot;/~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;~/oDocs/Linux_Client/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/~/oDocs/Linux_Client/src/error_handler.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/error_handler.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/src/gantry_interface.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/gantry_interface.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/src/main.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/main.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/src/otk_thread.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/otk_thread.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/src/renderer.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/renderer.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/src/video_processing.cpp">
+		<Unit filename="~/oDocs/Linux_Client/src/video_processing.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/CMakeLists.txt">
+		<Unit filename="~/oDocs/Linux_Client/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVConfig-version.cmake">
+		<Unit filename="~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVConfig-version.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVConfig.cmake">
+		<Unit filename="~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVConfig.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVModules-release.cmake">
+		<Unit filename="~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVModules-release.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVModules.cmake">
+		<Unit filename="~/oDocs/Linux_Client/../../../usr/lib/x86_64-linux-gnu/cmake/opencv4/OpenCVModules.cmake">
 			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\opencv4\"/>
 		</Unit>
 	</Project>
