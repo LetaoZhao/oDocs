@@ -97,7 +97,7 @@
 		<Unit filename="~/oDocs/Linux_Client/src/error_handler.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/src/gantry_interface.cpph">
+		<Unit filename="~/oDocs/Linux_Client/src/gantry_interface.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>
 		<Unit filename="~/oDocs/Linux_Client/src/main.cpp">
