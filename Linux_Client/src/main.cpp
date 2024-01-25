@@ -4,8 +4,8 @@
 #include <fstream>
 #include <thread>
 
-#include "renderer.h"
 #include "gantry_interface.h"
+#include "renderer.h"
 #include <video_processing.h>
 
 #include <opentok.h>
