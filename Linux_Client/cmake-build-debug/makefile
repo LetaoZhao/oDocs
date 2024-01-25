@@ -70,7 +70,7 @@ LDFLAGS_REBUILD_CACHE = $(LDFLAGS)
 OBJDIR_REBUILD_CACHE = .objs
 DEP_REBUILD_CACHE = 
 
-OBJ_ODOCS_GANTRY = $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o
+OBJ_ODOCS_GANTRY = $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o
 
 OBJ_ODOCS_GANTRY_FAST = 
 
@@ -93,20 +93,20 @@ odocs_gantry: before_odocs_gantry out_odocs_gantry after_odocs_gantry
 out_odocs_gantry: before_odocs_gantry $(OBJ_ODOCS_GANTRY) $(DEP_ODOCS_GANTRY)
 	$(LD) $(LIBDIR_ODOCS_GANTRY) -o $(OUT_ODOCS_GANTRY) $(OBJ_ODOCS_GANTRY)  $(LDFLAGS_ODOCS_GANTRY) $(LIB_ODOCS_GANTRY)
 
+$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o: ~/oDocs/Linux_Client/src/error_handler.cpp
+	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/error_handler.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o
+
 $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o: ~/oDocs/Linux_Client/src/main.cpp
 	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/main.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o
-
-$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o: ~/oDocs/Linux_Client/src/video_processing.cpp
-	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/video_processing.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o
-
-$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o: ~/oDocs/Linux_Client/src/renderer.cpp
-	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/renderer.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o
 
 $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o: ~/oDocs/Linux_Client/src/otk_thread.cpp
 	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/otk_thread.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o
 
-$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o: ~/oDocs/Linux_Client/src/error_handler.cpp
-	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/error_handler.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o
+$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o: ~/oDocs/Linux_Client/src/renderer.cpp
+	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/renderer.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o
+
+$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o: ~/oDocs/Linux_Client/src/video_processing.cpp
+	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/video_processing.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o
 
 clean_odocs_gantry: 
 	rm -f $(OBJ_ODOCS_GANTRY) $(OUT_ODOCS_GANTRY)
