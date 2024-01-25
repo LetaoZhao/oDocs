@@ -70,7 +70,7 @@ LDFLAGS_REBUILD_CACHE = $(LDFLAGS)
 OBJDIR_REBUILD_CACHE = .objs
 DEP_REBUILD_CACHE = 
 
-OBJ_ODOCS_GANTRY = $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o
+OBJ_ODOCS_GANTRY = $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/gantry_interface.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/otk_thread.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/renderer.o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/video_processing.o
 
 OBJ_ODOCS_GANTRY_FAST = 
 
@@ -95,6 +95,9 @@ out_odocs_gantry: before_odocs_gantry $(OBJ_ODOCS_GANTRY) $(DEP_ODOCS_GANTRY)
 
 $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o: ~/oDocs/Linux_Client/src/error_handler.cpp
 	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/error_handler.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o
+
+$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/gantry_interface.o: ~/oDocs/Linux_Client/src/gantry_interface.cpp
+	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/gantry_interface.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/gantry_interface.o
 
 $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o: ~/oDocs/Linux_Client/src/main.cpp
 	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/main.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/main.o
