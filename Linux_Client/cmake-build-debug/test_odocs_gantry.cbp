@@ -94,24 +94,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="~/oDocs/Linux_Client/include/error_handler.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/include/gantry_interface.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/include/main.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/include/otk_thread.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/include/renderer.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
-		<Unit filename="~/oDocs/Linux_Client/include/video_processing.h">
-			<Option target="odocs_gantry"/>
-		</Unit>
 		<Unit filename="~/oDocs/Linux_Client/src/error_handler.cpp">
 			<Option target="odocs_gantry"/>
 		</Unit>

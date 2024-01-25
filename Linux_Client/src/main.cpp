@@ -1,3 +1,5 @@
+#include <opentok.h>
+
 #include <atomic>
 #include <cstdlib>
 #include <iostream>
@@ -7,8 +9,6 @@
 #include <video_processing.h>
 #include "gantry_interface.h"
 #include "renderer.h"
-
-#include <opentok.h>
 
 static std::atomic<bool> g_is_connected(false);
 static otc_publisher *g_publisher = nullptr;
