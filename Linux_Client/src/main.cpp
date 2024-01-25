@@ -3,10 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
-
+\
+#include <video_processing.h>
 #include "gantry_interface.h"
 #include "renderer.h"
-#include <video_processing.h>
 
 #include <opentok.h>
 
