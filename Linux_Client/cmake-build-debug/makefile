@@ -93,7 +93,7 @@ odocs_gantry: before_odocs_gantry out_odocs_gantry after_odocs_gantry
 out_odocs_gantry: before_odocs_gantry $(OBJ_ODOCS_GANTRY) $(DEP_ODOCS_GANTRY)
 	$(LD) $(LIBDIR_ODOCS_GANTRY) -o $(OUT_ODOCS_GANTRY) $(OBJ_ODOCS_GANTRY)  $(LDFLAGS_ODOCS_GANTRY) $(LIB_ODOCS_GANTRY)
 
-$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o: ~/oDocs/Linux_Client/src/error_handler.cpp
+$(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o: ~/oDocs/Linux_Client/src/error_handler.cpp ~/oDocs/Linux_Client/include/*.h
 	$(CXX) $(CFLAGS_ODOCS_GANTRY) $(INC_ODOCS_GANTRY) -c ~/oDocs/Linux_Client/src/error_handler.cpp -o $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/error_handler.o
 
 $(OBJDIR_ODOCS_GANTRY)/~/oDocs/Linux_Client/src/gantry_interface.o: ~/oDocs/Linux_Client/src/gantry_interface.cpp
