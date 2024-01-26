@@ -2,4 +2,4 @@ THIRD_PARTY_LIB := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/SDL2 
 EDITER_LIB := -I./include
 
 all: ~/oDocs/Linux_Client/src/*.cpp
-	g++ $(EDITER_LIB) ~/oDocs/Linux_Client/src/*.cpp -o ~/oDocs/Linux_Client/Linux_Client_App
+	g++ $(EDITER_LIB) -I/usr/include/SDL2 ~/oDocs/Linux_Client/src/*.cpp -o ~/oDocs/Linux_Client/Linux_Client_App
