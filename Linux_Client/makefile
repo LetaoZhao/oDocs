@@ -1,6 +1,6 @@
 SOURCE := ./src/*.cpp
 #OBJ := ./src/*.o
-TARGET := Linux_Client_App
+#TARGET := Linux_Client_App
 
 LIBS := -Iopentok
 LIBS_PATH := -L ./libraries/libopentok_linux_llvm_x86_64/lib/libopentok.so
@@ -8,7 +8,7 @@ THIRD_PARTY_INCLUDE := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/S
 EDITER_INCLUDE := -I./include
 
 all: $(SOURCE)
-	g++ $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) $(SOURCE) -o $(LIBS_PATH) $(LIBS) $(TARGET) 
+	g++ $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) $(SOURCE) -o $(LIBS_PATH) $(LIBS)
 
 #$(OBJ): $(SOURCE) 
 #	g++ -c $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) -o $(OBJ)
