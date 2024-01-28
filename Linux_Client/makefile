@@ -1,6 +1,6 @@
 SOURCE := ./src/*.cpp
 #OBJ := ./src/*.o
-TARGET := ./Linux_Client_App.elf
+TARGET := Linux_Client_App
 
 LIBS := -Iopentok
 LIBS_PATH := -L ./libraries/libopentok_linux_llvm_x86_64/lib/libopentok.so
