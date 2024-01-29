@@ -1,6 +1,6 @@
 SOURCE := ./src/*.cpp
 #OBJ := ./src/*.o
-#TARGET := Linux_Client_App
+TARGET := Linux_Client_App
 
 LIBS := -Iopentok -lSDL2 -lSDL2-2.0 -lSDL2main -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_videoio -lopencv_objdetect
 LIBS_PATH := -L ./libraries/libopentok_linux_llvm_x86_64/lib/libopentok.so -L /usr/lib/x86_64-linux-gnu
@@ -8,7 +8,7 @@ THIRD_PARTY_INCLUDE := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/S
 EDITER_INCLUDE := -I./include
 
 all: $(SOURCE)
-	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(LIBS_PATH) $(LIBS)
+	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(TARGET) $(LIBS_PATH) $(LIBS)
 
 #$(OBJ): $(SOURCE) 
 #	g++ -c $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) -o $(OBJ)
