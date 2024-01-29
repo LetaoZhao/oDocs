@@ -8,7 +8,7 @@ THIRD_PARTY_INCLUDE := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/S
 EDITER_INCLUDE := -I./include
 
 all: $(SOURCE)
-	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(TARGET) $(LIBS_PATH) $(LIBS)
+	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(LIBS_PATH) $(LIBS) $(TARGET)
 
 #$(OBJ): $(SOURCE) 
 #	g++ -c $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) -o $(OBJ)
