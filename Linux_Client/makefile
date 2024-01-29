@@ -1,3 +1,5 @@
+CXXFLAGS = -Wall -g
+
 SOURCE := ./src/*.cpp
 #OBJ := ./src/*.o
 TARGET := Linux_Client_App.out
@@ -8,7 +10,7 @@ THIRD_PARTY_INCLUDE := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/S
 EDITER_INCLUDE := -I./include
 
 all: $(SOURCE)
-	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(LIBS_PATH) $(LIBS) -o $(TARGET)
+	g++ $(CXXFLAGS) $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(LIBS_PATH) $(LIBS) -o $(TARGET)
 
 #$(OBJ): $(SOURCE) 
 #	g++ -c $(THIRD_PARTY_INCLUDE) $(EDITER_INCLUDE) -o $(OBJ)  
