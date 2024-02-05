@@ -9,5 +9,5 @@ THIRD_PARTY_INCLUDE := -I~/oDocs/Linux_Client/./libs/common/src -I/usr/include/S
 EDITER_INCLUDE := -I./include
 
 all: $(SOURCE)
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/letaozhao/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/lib/
 	g++ $(SOURCE) $(EDITER_INCLUDE) $(THIRD_PARTY_INCLUDE) -o $(LIBS_PATH) $(LIBS) -o $(TARGET)
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/letaozhao/oDocs/Linux_Client/libraries/libopentok_linux_llvm_x86_64/lib/
