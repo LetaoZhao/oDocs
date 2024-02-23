@@ -66,7 +66,7 @@ void RendererManager::handleCustomEvent(const SDL_Event &event) {
 }
 
 void RendererManager::createRenderer(void *key) {
-    std::cout << "CreateRenderer with key: " << key << std::endl;
+    std::cout << "CreateRenderer with: " << key << std::endl;
     pushEvent(kRendererCreate, key, NULL);
     std::cout << "CreateRenderer" << std::endl;
 }
