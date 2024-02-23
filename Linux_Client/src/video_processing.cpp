@@ -86,9 +86,10 @@ otc_bool get_video_capturer_capture_settings(const otc_video_capturer *capturer,
 
 // TODO: add this as an argument to program
 otk_thread_func_return_type capturer_thread_start_function(void *arg) {
-//    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2");
+//    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2"); cv::VideoCapture vcap = cv::VideoCapture(camera_usb_device);
     std::cout << "start vcap" << std::endl;
-    cv::VideoCapture vcap = cv::VideoCapture(camera_usb_device);
+    cv::VideoCapture vcap = cv::VideoCapture("/dev/video2");
+    
     std::cout << "created vcap" << std::endl;
 
 
